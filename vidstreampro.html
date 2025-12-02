@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidStream Pro | The Creator's Video Platform</title>
+    <meta name="description" content="Upload, stream, and monetize your video content. The world's fastest growing video community for creators. Built by Shiboshree Ry.">
+    <meta name="keywords" content="video hosting, streaming platform, creator studio, upload video, 4k streaming, watch online, shiboshree roy, vidstream">
+    <meta name="author" content="Shiboshree Roy">
+    <meta name="author" content="Shiboshree Roy Full Stack Developer & Software Engineer">
+  
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.vidstream.pro/">
+    <meta property="og:title" content="VidStream Pro | Watch. Create. Share.">
+    <meta property="og:description" content="Experience 4K streaming and powerful creator tools.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/f43f5e/0f172a?text=VidStream+Pro">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#f43f5e', // Rose
+                            dark: '#0f172a',
+                            panel: '#1e293b',
+                            surface: '#334155',
+                            google: '#DB4437'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .font-display { font-family: 'Oswald', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f43f5e; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Video Aspect Ratio */
+        .video-card-thumb { aspect-ratio: 16 / 9; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-brand-dark dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
+<script type="text/javascript">
+	atOptions = {
+		'key' : '7add090bf3973635cbc8340f4f73c336',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/7add090bf3973635cbc8340f4f73c336/invoke.js"></script>
+    <!-- HEADER -->
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="flex justify-between h-16 items-center px-4">
+            
+            <!-- Left: Menu & Logo -->
+            <div class="flex items-center gap-4">
+                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-8 h-8 bg-brand-red rounded-lg flex items-center justify-center text-white text-lg shadow-lg">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <span class="font-display text-2xl tracking-tight hidden md:block">Vid<span class="text-brand-red">Stream</span></span>
+                </div>
+            </div>
+
+            <!-- Center: Search -->
+            <div class="hidden md:flex flex-1 max-w-2xl mx-8">
+                <div class="flex w-full">
+                    <input type="text" id="search-input" placeholder="Search videos..." 
+                        class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-l-full py-2 pl-6 focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition">
+                    <button onclick="searchVideos()" class="bg-slate-200 dark:bg-slate-800 border border-l-0 border-slate-300 dark:border-slate-700 px-6 rounded-r-full hover:bg-slate-300 dark:hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-magnifying-glass text-slate-500"></i>
+                    </button>
+                </div>
+                <button class="ml-4 w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-3">
+                <button onclick="openUploadModal()" class="hidden md:flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-4 py-2 rounded-full font-bold text-sm transition">
+                    <i class="fa-solid fa-video text-brand-red"></i> Create
+                </button>
+                
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+
+                <!-- Auth Section -->
+                <div id="auth-section">
+                    <!-- Injected by JS: Login Button OR User Profile -->
+                    <button onclick="openLoginModal()" class="bg-brand-red text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg hover:bg-red-600 transition flex items-center gap-2">
+                        <i class="fa-regular fa-user"></i> Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-64 hidden lg:flex flex-col bg-white dark:bg-brand-dark overflow-y-auto border-r border-slate-200 dark:border-slate-800 pb-4">
+            <div class="p-3 space-y-1">
+                <a href="#" onclick="filterVideos('all')" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-red text-white font-bold">
+                    <i class="fa-solid fa-house text-lg w-6"></i> Home
+                </a>
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-compass text-lg w-6"></i> Explore
+                </a>
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-clapperboard text-lg w-6"></i> Shorts
+                </a>
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-bolt text-lg w-6"></i> Live
+                </a>
+            </div>
+            
+            <div class="h-px bg-slate-200 dark:bg-slate-800 mx-4 my-2"></div>
+            
+            <div class="p-3 space-y-1">
+                <h3 class="px-4 text-xs font-bold uppercase text-slate-500 mb-2">You</h3>
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-clock-rotate-left text-lg w-6"></i> History
+                </a>
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-thumbs-up text-lg w-6"></i> Liked Videos
+                </a>
+            </div>
+
+            <div class="h-px bg-slate-200 dark:bg-slate-800 mx-4 my-2"></div>
+
+            <div class="p-3 space-y-1">
+                <h3 class="px-4 text-xs font-bold uppercase text-slate-500 mb-2">Subscriptions</h3>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=Tech" class="w-6 h-6 rounded-full">
+                    <span class="text-sm font-medium truncate">Tech Daily</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <img src="https://api.dicebear.com/7.x/identicon/svg?seed=Music" class="w-6 h-6 rounded-full">
+                    <span class="text-sm font-medium truncate">Lofi Girl</span>
+                    <i class="fa-solid fa-circle text-brand-red text-[8px] ml-auto"></i>
+                </a>
+            </div>
+            
+            <div class="mt-auto px-6 py-4 text-xs text-slate-500">
+                <p>&copy; 2025 VidStream LLC</p>
+                <p>Dev: <a href="#" class="text-brand-red">Shiboshree Ry</a></p>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 w-full" id="main-scroll">
+            
+            <!-- Category Chips -->
+            <div class="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+                <button onclick="filterVideos('all')" class="px-4 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-black rounded-lg text-sm font-bold whitespace-nowrap transition">All</button>
+                <button onclick="filterVideos('gaming')" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg text-sm font-bold whitespace-nowrap transition">Gaming</button>
+                <button onclick="filterVideos('music')" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg text-sm font-bold whitespace-nowrap transition">Music</button>
+                <button onclick="filterVideos('tech')" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg text-sm font-bold whitespace-nowrap transition">Technology</button>
+                <button onclick="filterVideos('live')" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg text-sm font-bold whitespace-nowrap transition text-brand-red"><i class="fa-solid fa-tower-broadcast mr-1"></i> Live</button>
+            </div>
+
+            <!-- Video Grid -->
+            <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-8 gap-x-4">
+                <!-- Videos Injected Here -->
+                <div class="col-span-full h-96 flex items-center justify-center">
+                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-brand-red"></i>
+                </div>
+            </div>
+            
+            <!-- Load More Btn -->
+            <div class="mt-8 text-center">
+                <button onclick="loadMoreVideos()" class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 px-6 py-3 rounded-full font-bold text-sm transition">Load More Videos</button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- PLAYER OVERLAY (SPA Mode) -->
+    <div id="player-overlay" class="fixed inset-0 z-[60] bg-white dark:bg-brand-dark hidden overflow-y-auto">
+        <nav class="sticky top-0 z-50 bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md px-4 h-16 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+            <button onclick="closePlayer()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> <span class="font-bold">Back</span>
+            </button>
+            <div class="font-display font-bold text-xl tracking-tight">Vid<span class="text-brand-red">Stream</span></div>
+            <div class="w-10"></div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto px-4 py-6 grid lg:grid-cols-3 gap-8">
+            <!-- Left: Player & Info -->
+            <div class="lg:col-span-2 space-y-4">
+                <!-- Player -->
+                <div class="w-full bg-black rounded-xl overflow-hidden aspect-video relative group shadow-2xl">
+                    <video id="main-video-player" class="w-full h-full object-contain" controls autoplay>
+                        <source src="" type="video/mp4">
+                    </video>
+                </div>
+
+                <!-- Info -->
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold mb-2" id="player-title">Video Title Loading...</h1>
+                    <div class="flex flex-wrap justify-between items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <img id="player-channel-img" src="" class="w-10 h-10 rounded-full">
+                            <div>
+                                <h4 class="font-bold text-sm" id="player-channel-name">Channel Name</h4>
+                                <p class="text-xs text-slate-500">1.2M subscribers</p>
+                            </div>
+                            <button class="bg-brand-red hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-bold transition ml-4">Subscribe</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                                <i class="fa-regular fa-thumbs-up"></i> <span id="player-likes">12k</span>
+                            </button>
+                            <button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                                <i class="fa-solid fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="bg-slate-100 dark:bg-brand-panel p-4 rounded-xl text-sm space-y-2 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <p class="font-bold"><span id="player-views">100k</span> views • <span id="player-date">2 days ago</span></p>
+                    <p class="text-slate-700 dark:text-slate-300" id="player-desc">Video description goes here...</p>
+                </div>
+
+                <!-- Comments -->
+                <div class="pt-6">
+                    <h3 class="font-bold text-lg mb-4">Comments</h3>
+                    <div class="flex gap-4 mb-6">
+                        <img id="comment-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" class="w-10 h-10 rounded-full">
+                        <div class="flex-1 relative">
+                            <input id="comment-input" type="text" placeholder="Add a comment..." class="w-full bg-transparent border-b border-slate-300 dark:border-slate-700 focus:border-brand-red focus:outline-none py-2 transition pr-10">
+                            <button onclick="postComment()" class="absolute right-0 top-2 text-brand-red font-bold hover:text-white transition"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <!-- Fake Comment -->
+                    <div id="comments-list" class="space-y-4">
+                        <div class="flex gap-3">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=User1" class="w-8 h-8 rounded-full">
+                            <div>
+                                <p class="text-xs font-bold">RandomUser123 <span class="text-slate-500 font-normal ml-2">1 hour ago</span></p>
+                                <p class="text-sm mt-1">This quality is insane! Great upload. 🔥</p>
+                                <div class="flex gap-3 mt-2 text-xs text-slate-500">
+                                    <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                                    <button>Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Recommended -->
+            <div class="lg:col-span-1 space-y-3" id="related-videos">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL (Google Sim) -->
+    <div id="login-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-sm rounded-2xl shadow-2xl p-8 text-center relative overflow-hidden">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="w-16 h-16 bg-brand-red/10 text-brand-red rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
+                <i class="fa-solid fa-user-lock"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Sign In</h2>
+            <p class="text-slate-500 mb-8 text-sm">Login to upload videos, subscribe to channels, and comment.</p>
+            
+            <button onclick="signInWithGoogle()" id="google-btn" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600 font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-3">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+                <span>Continue with Google</span>
+            </button>
+            <p class="mt-6 text-xs text-slate-400">By continuing, you agree to our Terms & Privacy Policy.</p>
+        </div>
+    </div>
+
+    <!-- UPLOAD MODAL -->
+    <div id="upload-modal" class="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Upload Video</h3>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="p-8 flex-1 overflow-y-auto">
+                <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-10 text-center hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer group" onclick="document.getElementById('file-upload').click()">
+                    <div class="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-upload text-3xl text-brand-red"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Drag and drop video files to upload</h4>
+                    <p class="text-sm text-slate-500 mt-2">Your videos will be private until you publish them.</p>
+                    <input type="file" id="file-upload" class="hidden" accept="video/*" onchange="handleFileSelect(this)">
+                </div>
+
+                <div id="upload-form" class="hidden mt-6 space-y-4 fade-in">
+                    <div class="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg flex items-center gap-4">
+                        <i class="fa-solid fa-file-video text-2xl text-brand-red"></i>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-bold text-sm truncate" id="upload-filename">video.mp4</p>
+                            <div class="w-full bg-slate-300 dark:bg-slate-600 h-1.5 rounded-full mt-2 overflow-hidden">
+                                <div class="bg-brand-red h-full w-0 transition-all duration-300" id="upload-progress"></div>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold" id="upload-pct">0%</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Title</label>
+                        <input type="text" id="video-title-input" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-3 text-sm focus:border-brand-red outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Description</label>
+                        <textarea class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-3 text-sm h-24 resize-none focus:border-brand-red outline-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex justify-end gap-3">
+                <button onclick="closeUploadModal()" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-white">Cancel</button>
+                <button onclick="finishUpload()" class="px-6 py-2 bg-brand-red hover:bg-red-600 text-white rounded-lg text-sm font-bold shadow-lg disabled:opacity-50" id="publish-btn" disabled>Publish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. STATE & AUTH ---
+        let user = JSON.parse(localStorage.getItem('vidUser'));
+        
+        // Initial Dataset (Simulated API Response)
+        let videos = [
+            {
+                id: 1,
+                title: "Cinematic City Night Drive 4K",
+                src: "https://assets.mixkit.co/videos/preview/mixkit-night-sky-with-stars-at-a-calm-lake-time-lapse-1704-large.mp4",
+                thumb: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=1974&auto=format&fit=crop",
+                views: "1.2M",
+                date: "2 days ago",
+                channel: "Urban Explorer",
+                avatar: "https://api.dicebear.com/7.x/identicon/svg?seed=Urban",
+                verified: true
+            },
+            {
+                id: 2,
+                title: "Top 10 Coding Setup Aesthetic 2025",
+                src: "https://assets.mixkit.co/videos/preview/mixkit-tech-hacker-working-on-code-on-multiple-screens-43097-large.mp4",
+                thumb: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop",
+                views: "850k",
+                date: "1 week ago",
+                channel: "DevSpace",
+                avatar: "https://api.dicebear.com/7.x/identicon/svg?seed=Dev",
+                verified: true
+            },
+            {
+                id: 3,
+                title: "Calm Ocean Waves - Relaxation & Focus",
+                src: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+                thumb: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=2026&auto=format&fit=crop",
+                views: "3.4M",
+                date: "1 month ago",
+                channel: "Nature Hub",
+                avatar: "https://api.dicebear.com/7.x/identicon/svg?seed=Nature",
+                verified: false
+            },
+            {
+                id: 4,
+                title: "Cyberpunk 2077 - Next Gen Graphics Mod",
+                src: "https://assets.mixkit.co/videos/preview/mixkit-abstract-video-of-a-man-with-heads-like-a-fan-32631-large.mp4",
+                thumb: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+                views: "500k",
+                date: "3 hours ago",
+                channel: "Gaming Elite",
+                avatar: "https://api.dicebear.com/7.x/identicon/svg?seed=Game",
+                verified: true
+            },
+            {
+                id: 5,
+                title: "Delicious Pasta Recipe in 5 Minutes",
+                src: "https://assets.mixkit.co/videos/preview/mixkit-serving-dinner-421-large.mp4",
+                thumb: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=2070&auto=format&fit=crop",
+                views: "200k",
+                date: "5 days ago",
+                channel: "Chef's Table",
+                avatar: "https://api.dicebear.com/7.x/identicon/svg?seed=Food",
+                verified: false
+            },
+            {
+                id: 6,
+                title: "Abstract Art Fluid Dynamics Simulation",
+                src: "https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-202-large.mp4",
+                thumb: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop",
+                views: "45k",
+                date: "1 day ago",
+                channel: "Artistic Soul",
+                avatar: "https://api.dicebear.com/7.x/identicon/svg?seed=Art",
+                verified: true
+            }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            renderGrid(videos);
+            // Merge user uploads
+            const uploads = JSON.parse(localStorage.getItem('myUploads') || '[]');
+            if(uploads.length > 0) videos.unshift(...uploads);
+        });
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- 2. AUTHENTICATION (Google OmniAuth) ---
+        function checkAuth() {
+            const authSection = document.getElementById('auth-section');
+            const commentAvatar = document.getElementById('comment-avatar');
+            
+            if (user) {
+                authSection.innerHTML = `
+                    <div class="relative group">
+                        <button class="w-9 h-9 rounded-full overflow-hidden border-2 border-transparent hover:border-brand-red transition">
+                            <img src="${user.avatar}" alt="User">
+                        </button>
+                        <div class="absolute right-0 mt-2 w-56 bg-white dark:bg-brand-panel rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block fade-in z-50">
+                            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center gap-3">
+                                <img src="${user.avatar}" class="w-10 h-10 rounded-full">
+                                <div class="overflow-hidden">
+                                    <p class="font-bold text-sm truncate">${user.name}</p>
+                                    <p class="text-xs text-slate-500 truncate">${user.email}</p>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-video w-6"></i> Studio</a>
+                                <button onclick="logout()" class="w-full text-left block px-4 py-2 text-sm text-red-500 hover:bg-slate-100 dark:hover:bg-slate-700"><i class="fa-solid fa-right-from-bracket w-6"></i> Sign Out</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                if(commentAvatar) commentAvatar.src = user.avatar;
+            } else {
+                authSection.innerHTML = `
+                    <button onclick="openLoginModal()" class="bg-brand-red text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg hover:bg-red-600 transition flex items-center gap-2">
+                        <i class="fa-regular fa-user"></i> Sign In
+                    </button>
+                `;
+            }
+        }
+
+        function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); document.getElementById('login-modal').classList.add('flex'); }
+        function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); document.getElementById('login-modal').classList.remove('flex'); }
+
+        function signInWithGoogle() {
+            const btn = document.getElementById('google-btn');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-brand-red"></i> Connecting...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                user = {
+                    name: "Shiboshree Ry",
+                    email: "dev@vidstream.pro",
+                    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=SR"
+                };
+                localStorage.setItem('vidUser', JSON.stringify(user));
+                closeLoginModal();
+                checkAuth();
+                alert("Login Successful!");
+            }, 1500);
+        }
+
+        function logout() {
+            localStorage.removeItem('vidUser');
+            user = null;
+            checkAuth();
+            window.location.reload();
+        }
+
+        // --- 3. VIDEO RENDERER & LOGIC ---
+        function renderGrid(data) {
+            const grid = document.getElementById('video-grid');
+            grid.innerHTML = '';
+
+            data.forEach(video => {
+                const verifiedBadge = video.verified ? '<i class="fa-solid fa-circle-check text-slate-500 ml-1 text-[10px]"></i>' : '';
+                
+                const card = document.createElement('div');
+                card.className = 'flex flex-col gap-3 cursor-pointer group fade-in';
+                card.onclick = () => openPlayer(video.id);
+                
+                card.innerHTML = `
+                    <div class="relative video-card-thumb rounded-xl overflow-hidden bg-slate-800">
+                        <img src="${video.thumb}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs font-bold px-1.5 py-0.5 rounded">
+                            12:45
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 group-hover:opacity-0 transition"></div>
+                    </div>
+                    <div class="flex gap-3 items-start px-1">
+                        <img src="${video.avatar}" class="w-9 h-9 rounded-full mt-1">
+                        <div>
+                            <h3 class="font-bold text-sm leading-tight text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-red transition">${video.title}</h3>
+                            <p class="text-xs text-slate-500 mt-1 hover:text-slate-700 dark:hover:text-slate-300 transition">${video.channel} ${verifiedBadge}</p>
+                            <p class="text-xs text-slate-500">${video.views} views • ${video.date}</p>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function loadMoreVideos() {
+            // Simulator for fetching more data
+            const btn = document.querySelector('button[onclick="loadMoreVideos()"]');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+            
+            setTimeout(() => {
+                // Duplicate existing videos to simulate more content
+                const newVideos = videos.map(v => ({...v, id: Math.random()})); 
+                videos.push(...newVideos);
+                renderGrid(videos);
+                btn.innerHTML = "Load More Videos";
+            }, 1000);
+        }
+
+        function searchVideos() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = videos.filter(v => v.title.toLowerCase().includes(query) || v.channel.toLowerCase().includes(query));
+            renderGrid(filtered);
+        }
+
+        function filterVideos(tag) {
+            if(tag === 'all') renderGrid(videos);
+            else {
+                const shuffled = [...videos].sort(() => 0.5 - Math.random());
+                renderGrid(shuffled.slice(0, 4));
+            }
+        }
+
+        // --- 4. PLAYER LOGIC ---
+        function openPlayer(id) {
+            const video = videos.find(v => v.id === id);
+            if(!video) return;
+
+            const overlay = document.getElementById('player-overlay');
+            const player = document.getElementById('main-video-player');
+            
+            player.src = video.src;
+            document.getElementById('player-title').innerText = video.title;
+            document.getElementById('player-channel-name').innerText = video.channel;
+            document.getElementById('player-channel-img').src = video.avatar;
+            document.getElementById('player-views').innerText = video.views;
+            document.getElementById('player-date').innerText = video.date;
+
+            // Related Videos
+            const related = videos.filter(v => v.id !== id).slice(0, 6);
+            const relatedContainer = document.getElementById('related-videos');
+            relatedContainer.innerHTML = related.map(v => `
+                <div class="flex gap-2 cursor-pointer group" onclick="openPlayer(${v.id})">
+                    <div class="relative w-40 h-24 rounded-lg overflow-hidden bg-slate-800 flex-shrink-0">
+                        <img src="${v.thumb}" class="w-full h-full object-cover">
+                        <div class="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1 rounded">04:20</div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-sm leading-tight text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-red transition">${v.title}</h4>
+                        <p class="text-xs text-slate-500 mt-1">${v.channel}</p>
+                        <p class="text-xs text-slate-500">${v.views} views</p>
+                    </div>
+                </div>
+            `).join('');
+
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closePlayer() {
+            const overlay = document.getElementById('player-overlay');
+            const player = document.getElementById('main-video-player');
+            player.pause();
+            player.src = ""; 
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function postComment() {
+            if(!user) return openLoginModal();
+            const input = document.getElementById('comment-input');
+            if(!input.value) return;
+
+            const list = document.getElementById('comments-list');
+            const newComment = `
+                <div class="flex gap-3 fade-in">
+                    <img src="${user.avatar}" class="w-8 h-8 rounded-full">
+                    <div>
+                        <p class="text-xs font-bold">${user.name} <span class="text-slate-500 font-normal ml-2">Just now</span></p>
+                        <p class="text-sm mt-1">${input.value}</p>
+                    </div>
+                </div>
+            `;
+            list.insertAdjacentHTML('afterbegin', newComment);
+            input.value = '';
+        }
+
+        // --- 5. UPLOAD LOGIC ---
+        let uploadedFile = null;
+
+        function openUploadModal() {
+            if(!user) return openLoginModal();
+            document.getElementById('upload-modal').classList.remove('hidden');
+            document.getElementById('upload-modal').classList.add('flex');
+        }
+        function closeUploadModal() {
+            document.getElementById('upload-modal').classList.add('hidden');
+            document.getElementById('upload-modal').classList.remove('flex');
+            document.getElementById('upload-form').classList.add('hidden');
+            document.getElementById('file-upload').value = '';
+        }
+
+        function handleFileSelect(input) {
+            if(input.files && input.files[0]) {
+                uploadedFile = input.files[0];
+                document.getElementById('upload-form').classList.remove('hidden');
+                document.getElementById('upload-filename').innerText = uploadedFile.name;
+                document.getElementById('video-title-input').value = uploadedFile.name.split('.')[0];
+                
+                let w = 0;
+                const bar = document.getElementById('upload-progress');
+                const pct = document.getElementById('upload-pct');
+                const btn = document.getElementById('publish-btn');
+                
+                const interval = setInterval(() => {
+                    w += Math.random() * 10;
+                    if(w >= 100) {
+                        w = 100;
+                        clearInterval(interval);
+                        btn.disabled = false;
+                        btn.classList.add('animate-pulse');
+                    }
+                    bar.style.width = w + '%';
+                    pct.innerText = Math.floor(w) + '%';
+                }, 200);
+            }
+        }
+
+        function finishUpload() {
+            const newVideo = {
+                id: Date.now(),
+                title: document.getElementById('video-title-input').value,
+                src: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-green-grid-1002-large.mp4",
+                thumb: "https://via.placeholder.com/640x360/f43f5e/ffffff?text=New+Video",
+                views: "0",
+                date: "Just now",
+                channel: user.name,
+                avatar: user.avatar,
+                verified: true
+            };
+
+            const currentUploads = JSON.parse(localStorage.getItem('myUploads') || '[]');
+            currentUploads.unshift(newVideo);
+            localStorage.setItem('myUploads', JSON.stringify(currentUploads));
+
+            videos.unshift(newVideo);
+            renderGrid(videos);
+            closeUploadModal();
+            alert("Video Published Successfully!");
+        }
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/ac/69/37/ac693712a2d4cdf82e1da4b220c7ef90.js'></script>
+</body>
+</html>

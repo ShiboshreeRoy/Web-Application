@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online stopwatch and countdown timer tool. Increase productivity with TimeMaster. Features lap times, custom alarms, and responsive design.">
+    <meta name="keywords" content="online stopwatch, countdown timer, productivity tool, pomodoro timer, time management">
+    <meta name="author" content="Shiboshree Roy shiboshree Roy | Full Stack Developer & Software Engineer ">
+    <title>TimeMaster | Free Online Stopwatch & Timer Tool</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/1407/1407089.png" type="image/x-icon">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .digit-font { font-family: 'JetBrains Mono', monospace; }
+        /* Smooth fade for tab switching */
+        .hidden-tab { display: none; }
+        .active-tab { display: flex; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 min-h-screen flex flex-col">
+<script type='text/javascript' src='//saladattic.com/ca/e4/e4/cae4e4f844db191bbee291d35a1ab40d.js'></script>
+    <nav class="w-full bg-slate-800 border-b border-slate-700 p-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-400 tracking-tighter">Time<span class="text-white">Master</span></div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#tool" class="hover:text-blue-400 transition">Tool</a>
+                <a href="#features" class="hover:text-blue-400 transition">Features</a>
+                <a href="#about" class="hover:text-blue-400 transition">About</a>
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition">Get Pro</button>
+        </div>
+    </nav>
+
+    <main id="tool" class="flex-grow flex flex-col items-center justify-center py-12 px-4">
+        
+        <div class="bg-slate-800 p-1 rounded-xl mb-8 flex space-x-2 border border-slate-700">
+            <button onclick="switchTab('stopwatch')" id="btn-stopwatch" class="px-6 py-2 rounded-lg text-sm font-bold bg-blue-600 text-white shadow-lg transition">Stopwatch</button>
+            <button onclick="switchTab('timer')" id="btn-timer" class="px-6 py-2 rounded-lg text-sm font-bold text-slate-400 hover:text-white transition">Timer</button>
+        </div>
+
+        <div id="stopwatch-ui" class="active-tab flex-col items-center w-full max-w-xl">
+            <div class="digit-font text-6xl md:text-8xl font-bold tracking-widest text-white mb-8 text-center bg-slate-800/50 p-8 rounded-2xl border border-slate-700 shadow-2xl w-full">
+                <span id="sw-min">00</span>:<span id="sw-sec">00</span>.<span id="sw-ms" class="text-blue-400 text-4xl md:text-6xl">00</span>
+            </div>
+            
+            <div class="flex space-x-4 mb-8">
+                <button onclick="startStopwatch()" class="w-24 h-24 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg shadow-lg transition transform active:scale-95">START</button>
+                <button onclick="stopStopwatch()" class="w-24 h-24 rounded-full bg-red-500 hover:bg-red-600 text-white font-bold text-lg shadow-lg transition transform active:scale-95">STOP</button>
+                <button onclick="resetStopwatch()" class="w-24 h-24 rounded-full bg-slate-600 hover:bg-slate-500 text-white font-bold text-lg shadow-lg transition transform active:scale-95">RESET</button>
+            </div>
+        </div>
+
+        <div id="timer-ui" class="hidden-tab flex-col items-center w-full max-w-xl">
+            <div class="flex space-x-4 mb-6">
+                <input id="timer-input-min" type="number" placeholder="Min" class="w-24 bg-slate-800 border border-slate-600 text-white text-center p-3 rounded-lg focus:outline-none focus:border-blue-500">
+                <input id="timer-input-sec" type="number" placeholder="Sec" class="w-24 bg-slate-800 border border-slate-600 text-white text-center p-3 rounded-lg focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div class="digit-font text-6xl md:text-8xl font-bold tracking-widest text-white mb-8 text-center bg-slate-800/50 p-8 rounded-2xl border border-slate-700 shadow-2xl w-full">
+                <span id="tm-min">00</span>:<span id="tm-sec">00</span>
+            </div>
+            
+            <div class="flex space-x-4">
+                <button onclick="startTimer()" class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full font-bold shadow-lg transition">Start Countdown</button>
+                <button onclick="resetTimer()" class="bg-slate-600 hover:bg-slate-500 text-white px-8 py-3 rounded-full font-bold shadow-lg transition">Reset</button>
+            </div>
+        </div>
+
+    </main>
+
+    <section id="features" class="bg-slate-800 py-16 px-4 border-t border-slate-700">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">Why Use TimeMaster?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition">
+                    <div class="text-blue-400 text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold mb-2">Precision Timing</h3>
+                    <p class="text-slate-400">Accurate to the millisecond. Perfect for sports, cooking, or productivity sprints.</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition">
+                    <div class="text-blue-400 text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-2">100% Responsive</h3>
+                    <p class="text-slate-400">Works seamlessly on your desktop, tablet, or mobile phone without installing an app.</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition">
+                    <div class="text-blue-400 text-4xl mb-4">🔒</div>
+                    <h3 class="text-xl font-bold mb-2">Privacy First</h3>
+                    <p class="text-slate-400">No data collection. Everything runs locally in your browser for maximum speed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <article id="about" class="max-w-4xl mx-auto py-16 px-4 text-slate-300 leading-relaxed">
+        <h1 class="text-3xl font-bold text-white mb-6">Mastering Time Management with Online Tools</h1>
+        <p class="mb-4">
+            In the modern digital world, an <strong>online stopwatch</strong> and <strong>countdown timer</strong> are essential tools for productivity. Whether you are using the Pomodoro technique to study, tracking your workout intervals, or simply boiling an egg, accuracy matters.
+        </p>
+        <p class="mb-4">
+            TimeMaster provides a clutter-free interface that helps you focus on the task at hand. Unlike physical stopwatches, our digital tool allows for instant resetting and lap tracking directly from your browser.
+        </p>
+    </article>
+
+    <footer class="bg-slate-950 py-8 text-center text-slate-500 text-sm border-t border-slate-800">
+        <p>&copy; 2025 TimeMaster. All rights reserved.</p>
+        <p class="mt-2">Built with HTML, Tailwind CSS & JavaScript</p>
+    </footer>
+
+    <script>
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tab) {
+            const swUI = document.getElementById('stopwatch-ui');
+            const tmUI = document.getElementById('timer-ui');
+            const btnSW = document.getElementById('btn-stopwatch');
+            const btnTM = document.getElementById('btn-timer');
+
+            if (tab === 'stopwatch') {
+                swUI.classList.remove('hidden-tab'); swUI.classList.add('active-tab');
+                tmUI.classList.remove('active-tab'); tmUI.classList.add('hidden-tab');
+                
+                // Style buttons
+                btnSW.classList.add('bg-blue-600', 'text-white', 'shadow-lg');
+                btnSW.classList.remove('text-slate-400');
+                btnTM.classList.remove('bg-blue-600', 'text-white', 'shadow-lg');
+                btnTM.classList.add('text-slate-400');
+            } else {
+                tmUI.classList.remove('hidden-tab'); tmUI.classList.add('active-tab');
+                swUI.classList.remove('active-tab'); swUI.classList.add('hidden-tab');
+
+                // Style buttons
+                btnTM.classList.add('bg-blue-600', 'text-white', 'shadow-lg');
+                btnTM.classList.remove('text-slate-400');
+                btnSW.classList.remove('bg-blue-600', 'text-white', 'shadow-lg');
+                btnSW.classList.add('text-slate-400');
+            }
+        }
+
+        // --- STOPWATCH LOGIC ---
+        let swInterval;
+        let swTime = 0; // Time in milliseconds
+
+        function updateStopwatchDisplay() {
+            // Calculate Min, Sec, Ms
+            let minutes = Math.floor(swTime / 6000);
+            let seconds = Math.floor((swTime % 6000) / 100);
+            let ms = swTime % 100;
+
+            document.getElementById('sw-min').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('sw-sec').innerText = seconds.toString().padStart(2, '0');
+            document.getElementById('sw-ms').innerText = ms.toString().padStart(2, '0');
+        }
+
+        function startStopwatch() {
+            clearInterval(swInterval); // Prevent multiple clicks
+            swInterval = setInterval(() => {
+                swTime++;
+                updateStopwatchDisplay();
+            }, 10); // Runs every 10ms
+        }
+
+        function stopStopwatch() {
+            clearInterval(swInterval);
+        }
+
+        function resetStopwatch() {
+            clearInterval(swInterval);
+            swTime = 0;
+            updateStopwatchDisplay();
+        }
+
+        // --- TIMER LOGIC ---
+        let tmInterval;
+        let totalSeconds = 0;
+
+        function updateTimerDisplay() {
+            let m = Math.floor(totalSeconds / 60);
+            let s = totalSeconds % 60;
+            document.getElementById('tm-min').innerText = m.toString().padStart(2, '0');
+            document.getElementById('tm-sec').innerText = s.toString().padStart(2, '0');
+        }
+
+        function startTimer() {
+            // Get values from inputs
+            const minInput = parseInt(document.getElementById('timer-input-min').value) || 0;
+            const secInput = parseInt(document.getElementById('timer-input-sec').value) || 0;
+
+            if (totalSeconds === 0) {
+                 totalSeconds = (minInput * 60) + secInput;
+            }
+
+            if (totalSeconds <= 0) return alert("Please enter a time!");
+
+            clearInterval(tmInterval);
+            tmInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(tmInterval);
+                    alert("Time is up!"); // Simple alert sound replacement
+                } else {
+                    totalSeconds--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(tmInterval);
+            totalSeconds = 0;
+            document.getElementById('timer-input-min').value = '';
+            document.getElementById('timer-input-sec').value = '';
+            updateTimerDisplay();
+        }
+    </script>
+    <script type='text/javascript' src='//saladattic.com/25/ae/1b/25ae1b3ffaeda1b59e4ebf65b06cdf03.js'></script>
+</body>
+</html>

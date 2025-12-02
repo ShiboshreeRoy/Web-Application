@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniStream Hub | Watch Free Anime & Discovery Platform</title>
+    <meta name="description" content="Discover and watch top anime. Track seasonal hits, search the MAL database, and build your watchlist. The ultimate anime portal built by Shiboshree Ry.">
+    <meta name="keywords" content="anime streaming, free anime, myanimelist api, jikan api, watch naruto, one piece live, anime tracker, shiboshree ry, anistream">
+    <meta name="author" content="Shiboshree Ry">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.anistreamhub.com/">
+    <meta property="og:title" content="AniStream Hub | Unlimited Anime Discovery">
+    <meta property="og:description" content="Stream trailers, find new seasons, and track your favorites.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/db2777/0f172a?text=AniStream+Hub">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#db2777', // Anime Pink
+                            purple: '#9333ea',
+                            dark: '#0f172a',
+                            panel: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Oswald', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #db2777; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 dark:bg-brand-dark dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300">
+<script type="text/javascript">
+	atOptions = {
+		'key' : '98b429e070641d47983462e8ace95429',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/98b429e070641d47983462e8ace95429/invoke.js"></script>
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-8 h-8 bg-gradient-to-br from-brand-pink to-brand-purple rounded flex items-center justify-center text-white font-bold text-lg">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <span class="font-display text-2xl tracking-wide uppercase hidden md:block">Ani<span class="text-brand-pink">Stream</span></span>
+                </div>
+
+                <!-- Central Search Bar -->
+                <div class="flex-1 max-w-xl mx-4">
+                    <div class="relative group">
+                        <input type="text" id="search-input" placeholder="Search anime (e.g. Naruto, One Piece)..." 
+                            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-full py-2 pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-brand-pink transition shadow-sm text-sm">
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <button onclick="performSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-pink text-white p-1.5 rounded-full hover:bg-pink-600 transition">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-3">
+                    <button onclick="loadRandom()" class="hidden md:flex items-center gap-2 text-xs font-bold text-brand-pink hover:text-white hover:bg-brand-pink px-3 py-1.5 rounded-full border border-brand-pink transition">
+                        <i class="fa-solid fa-shuffle"></i> Surprise Me
+                    </button>
+
+                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:text-brand-pink transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                    
+                    <button onclick="showWatchlist()" class="relative w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:text-brand-pink transition">
+                        <i class="fa-solid fa-heart"></i>
+                        <span id="watchlist-count" class="absolute -top-1 -right-1 w-4 h-4 bg-brand-pink text-white text-[10px] flex items-center justify-center rounded-full hidden">0</span>
+                    </button>
+
+                    <!-- User Profile -->
+                    <div class="relative group">
+                        <button class="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border-2 border-transparent hover:border-brand-pink transition">
+                            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" alt="User">
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-panel rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block fade-in">
+                            <div class="p-3 border-b border-slate-200 dark:border-slate-700">
+                                <p class="text-xs font-bold text-brand-pink uppercase">Member</p>
+                                <p class="text-sm truncate font-bold">Shiboshree Ry</p>
+                            </div>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION (Trending) -->
+    <header id="hero-section" class="relative h-[500px] w-full bg-black overflow-hidden group">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-brand-pink"></i>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow">
+        
+        <!-- SCHEDULE SECTION (New) -->
+        <section class="mb-12">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-display font-bold uppercase border-l-4 border-brand-purple pl-3">
+                    Airing <span id="current-day" class="text-brand-purple">Today</span>
+                </h2>
+                <span class="text-xs text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">Jikan Live Schedule</span>
+            </div>
+            <!-- Horizontal Scroll -->
+            <div id="schedule-grid" class="flex gap-4 overflow-x-auto pb-4 snap-x">
+                <div class="min-w-[200px] h-32 bg-white dark:bg-brand-panel rounded-xl flex items-center justify-center text-slate-400 border border-slate-200 dark:border-slate-700">
+                    <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Loading Schedule...
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+            <h2 class="text-2xl font-display font-bold uppercase border-l-4 border-brand-pink pl-3" id="section-title">Top Airing Now</h2>
+            <div class="flex gap-2 bg-white dark:bg-brand-panel p-1 rounded-full border border-slate-200 dark:border-slate-700">
+                <button onclick="loadCategory('now')" id="btn-now" class="px-4 py-1 rounded-full bg-brand-pink text-white text-sm font-bold transition shadow-md">Airing</button>
+                <button onclick="loadCategory('upcoming')" id="btn-upcoming" class="px-4 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-sm font-bold transition">Upcoming</button>
+                <button onclick="loadCategory('popular')" id="btn-popular" class="px-4 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-sm font-bold transition">All Time</button>
+            </div>
+        </div>
+
+        <!-- Anime Grid -->
+        <div id="anime-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Cards injected via JS -->
+        </div>
+
+        <!-- TOP CHARACTERS (New) -->
+        <section class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+            <h2 class="text-xl font-display font-bold uppercase mb-6">Fan Favorite Characters</h2>
+            <div id="char-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Chars injected -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PLAYER MODAL -->
+    <div id="player-modal" class="fixed inset-0 z-[70] bg-black/90 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-5xl bg-brand-dark rounded-2xl overflow-hidden shadow-2xl border border-slate-700 relative flex flex-col">
+            
+            <!-- Header -->
+            <div class="p-4 flex justify-between items-center bg-slate-900 border-b border-slate-800">
+                <h3 class="text-lg font-bold truncate max-w-md" id="player-title">Anime Title</h3>
+                <button onclick="closePlayer()" class="text-slate-400 hover:text-white transition text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Video/Trailer Container -->
+            <div class="relative aspect-video bg-black group">
+                <iframe id="video-frame" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                
+                <!-- Fake Streaming UI Overlay (Adds realism) -->
+                <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">
+                    <div class="flex justify-between items-center text-white">
+                        <div class="text-xs font-bold bg-brand-pink px-2 py-1 rounded">TRAILER MODE</div>
+                        <div class="flex gap-4 text-sm">
+                            <span><i class="fa-solid fa-gear"></i> 1080p</span>
+                            <span><i class="fa-solid fa-closed-captioning"></i> English</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info & Actions -->
+            <div class="p-6 grid md:grid-cols-3 gap-6 bg-brand-panel">
+                <div class="md:col-span-2">
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3" id="player-synopsis">Synopsis...</p>
+                    <div class="flex flex-wrap gap-2 mb-4" id="player-genres">
+                        <!-- Badges -->
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <button onclick="addToWatchlistCurrent()" id="btn-watchlist-modal" class="w-full py-3 rounded-lg bg-slate-700 hover:bg-slate-600 font-bold transition flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-heart"></i> Add to List
+                    </button>
+                    <a id="ext-link" href="#" target="_blank" class="w-full py-3 rounded-lg bg-brand-pink hover:bg-pink-600 font-bold transition flex items-center justify-center gap-2 text-white block text-center">
+                        <i class="fa-solid fa-up-right-from-square"></i> Official Stream
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-800 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-play text-brand-pink text-xl"></i>
+                    <span class="font-display text-lg uppercase">AniStream</span>
+                </div>
+                <p class="text-slate-500 mb-4 max-w-xs">
+                    The ultimate destination for anime fans. Data provided by Jikan API (MyAnimeList).
+                </p>
+                <p class="text-slate-400 text-xs">Developed by <strong class="text-brand-pink">Shiboshree Ry</strong></p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-slate-900 dark:text-white">Discover</h4>
+                <ul class="space-y-2 text-slate-500">
+                    <li><a href="#" class="hover:text-brand-pink">New Season</a></li>
+                    <li><a href="#" class="hover:text-brand-pink">Most Popular</a></li>
+                    <li><a href="#" class="hover:text-brand-pink">Movies</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-slate-900 dark:text-white">Legal</h4>
+                <ul class="space-y-2 text-slate-500">
+                    <li><a href="#" class="hover:text-brand-pink">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-brand-pink">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-brand-pink">DMCA</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- STATE & API ---
+        let currentAnime = null;
+        let watchlist = JSON.parse(localStorage.getItem('aniWatchlist') || '[]');
+        updateWatchlistCount();
+
+        // --- INIT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadHero();
+            loadSchedule();
+            loadCategory('now');
+            loadCharacters();
+        });
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- JIKAN API INTEGRATION ---
+        
+        // 1. Hero Section (Random Top Anime)
+        async function loadHero() {
+            try {
+                // Fetch top anime to display as hero
+                const res = await fetch('https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=5');
+                const data = await res.json();
+                // Pick a random one from the top 5 to keep it fresh
+                const anime = data.data[Math.floor(Math.random() * 5)]; 
+
+                const hero = document.getElementById('hero-section');
+                hero.innerHTML = `
+                    <div class="absolute inset-0 bg-cover bg-center transition duration-700 opacity-60" style="background-image: url('${anime.images.jpg.large_image_url}')"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-16 max-w-4xl fade-in">
+                        <span class="bg-brand-pink text-white text-xs font-bold px-3 py-1 rounded mb-4 inline-block">#1 TRENDING</span>
+                        <h1 class="text-4xl md:text-6xl text-white font-display uppercase font-bold mb-4 leading-none drop-shadow-lg">${anime.title_english || anime.title}</h1>
+                        <p class="text-slate-200 text-sm md:text-base line-clamp-3 mb-8 max-w-2xl drop-shadow-md">${anime.synopsis}</p>
+                        <div class="flex gap-4">
+                            <button onclick="openPlayer(${anime.mal_id})" class="bg-white text-brand-dark hover:bg-slate-200 px-8 py-3 rounded-full font-bold transition flex items-center gap-2 shadow-lg">
+                                <i class="fa-solid fa-play"></i> Watch Trailer
+                            </button>
+                            <button onclick="toggleWatchlist(${anime.mal_id}, '${anime.title.replace(/'/g, "")}', '${anime.images.jpg.image_url}')" class="bg-white/20 hover:bg-white/30 text-white border border-white/50 px-6 py-3 rounded-full font-bold transition backdrop-blur-sm">
+                                <i class="fa-solid fa-plus"></i> My List
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                console.error("Hero Load Failed", e);
+            }
+        }
+
+        // 2. Schedule Loader
+        async function loadSchedule() {
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const today = days[new Date().getDay()];
+            document.getElementById('current-day').innerText = today.charAt(0).toUpperCase() + today.slice(1);
+
+            const container = document.getElementById('schedule-grid');
+            
+            try {
+                const res = await fetch(`https://api.jikan.moe/v4/schedules?filter=${today}&limit=10`);
+                const data = await res.json();
+                
+                container.innerHTML = '';
+                data.data.forEach(anime => {
+                    const card = document.createElement('div');
+                    card.className = "min-w-[160px] cursor-pointer group fade-in";
+                    card.onclick = () => openPlayer(anime.mal_id);
+                    card.innerHTML = `
+                        <div class="relative h-32 rounded-xl overflow-hidden mb-2 shadow-sm border border-slate-200 dark:border-slate-700">
+                            <img src="${anime.images.jpg.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition"></div>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">${anime.title}</h4>
+                        <p class="text-[10px] text-brand-purple font-bold">${anime.broadcast.time || 'Today'}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (e) {
+                console.error("Schedule failed", e);
+            }
+        }
+
+        // 3. Grid Loader
+        async function loadCategory(type) {
+            const grid = document.getElementById('anime-grid');
+            grid.innerHTML = '<div class="col-span-full flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-brand-pink"></i></div>';
+            
+            // Update Active Tab UI
+            document.querySelectorAll('#btn-now, #btn-upcoming, #btn-popular').forEach(btn => {
+                btn.className = "px-4 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-sm font-bold transition";
+            });
+            document.getElementById(`btn-${type}`).className = "px-4 py-1 rounded-full bg-brand-pink text-white text-sm font-bold transition shadow-md";
+
+            let url = '';
+            if (type === 'now') url = 'https://api.jikan.moe/v4/seasons/now?limit=20';
+            else if (type === 'upcoming') url = 'https://api.jikan.moe/v4/seasons/upcoming?limit=20';
+            else if (type === 'popular') url = 'https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=20';
+
+            try {
+                // Add tiny delay to prevent rate limit overlap with hero/schedule
+                await new Promise(r => setTimeout(r, 500));
+                
+                const res = await fetch(url);
+                const data = await res.json();
+                renderGrid(data.data);
+            } catch (e) {
+                grid.innerHTML = '<div class="col-span-full text-center text-red-500">Failed to load content. API might be rate-limited. Wait a moment.</div>';
+            }
+        }
+
+        // 4. Character Loader
+        async function loadCharacters() {
+            const grid = document.getElementById('char-grid');
+            try {
+                const res = await fetch('https://api.jikan.moe/v4/top/characters?limit=12');
+                const data = await res.json();
+                
+                grid.innerHTML = data.data.map(char => `
+                    <div class="text-center group cursor-pointer fade-in">
+                        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-transparent group-hover:border-brand-pink transition mb-2">
+                            <img src="${char.images.jpg.image_url}" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-brand-pink transition">${char.name}</h4>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error("Char load failed", e);
+            }
+        }
+
+        // 5. Random Anime (Surprise Me)
+        async function loadRandom() {
+            const btn = document.querySelector('button[onclick="loadRandom()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+            
+            try {
+                const res = await fetch('https://api.jikan.moe/v4/random/anime');
+                const data = await res.json();
+                openPlayer(data.data.mal_id);
+            } catch (e) {
+                alert("Rate limit reached. Try again in a few seconds.");
+            } finally {
+                btn.innerHTML = originalText;
+            }
+        }
+
+        // Search Logic
+        async function performSearch() {
+            const query = document.getElementById('search-input').value;
+            if(!query) return;
+
+            const grid = document.getElementById('anime-grid');
+            document.getElementById('section-title').innerText = `Search: "${query}"`;
+            grid.innerHTML = '<div class="col-span-full flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-brand-pink"></i></div>';
+
+            try {
+                const res = await fetch(`https://api.jikan.moe/v4/anime?q=${query}&limit=20`);
+                const data = await res.json();
+                renderGrid(data.data);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Render Grid
+        function renderGrid(animeList) {
+            const grid = document.getElementById('anime-grid');
+            grid.innerHTML = '';
+
+            animeList.forEach(anime => {
+                const title = anime.title_english || anime.title;
+                const card = document.createElement('div');
+                card.className = "group relative cursor-pointer fade-in";
+                card.onclick = () => openPlayer(anime.mal_id);
+
+                card.innerHTML = `
+                    <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg">
+                        <img src="${anime.images.jpg.large_image_url}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110 group-hover:opacity-80">
+                        <div class="absolute top-2 right-2 bg-black/70 text-white text-xs font-bold px-2 py-1 rounded backdrop-blur-sm flex items-center gap-1">
+                            <i class="fa-solid fa-star text-yellow-400"></i> ${anime.score || 'N/A'}
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                            <div class="w-12 h-12 bg-brand-pink rounded-full flex items-center justify-center text-white text-xl shadow-xl transform scale-50 group-hover:scale-100 transition">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 truncate group-hover:text-brand-pink transition">${title}</h3>
+                    <p class="text-xs text-slate-500 mt-1">${anime.type} • ${anime.year || 'TBA'}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- PLAYER LOGIC ---
+        async function openPlayer(id) {
+            const modal = document.getElementById('player-modal');
+            modal.classList.remove('hidden');
+            
+            // Loading state
+            document.getElementById('video-frame').src = '';
+            document.getElementById('player-title').innerText = 'Loading...';
+
+            try {
+                const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`);
+                const data = await res.json();
+                const anime = data.data;
+                currentAnime = anime;
+
+                document.getElementById('player-title').innerText = anime.title_english || anime.title;
+                document.getElementById('player-synopsis').innerText = anime.synopsis;
+                
+                // Embed Trailer (YouTube)
+                if (anime.trailer.embed_url) {
+                    document.getElementById('video-frame').src = anime.trailer.embed_url + "&autoplay=1";
+                } else {
+                    // Fallback if no trailer
+                    document.getElementById('video-frame').src = ""; 
+                    alert("No trailer available for this title.");
+                }
+
+                // External Link
+                document.getElementById('ext-link').href = anime.url;
+
+                // Genres
+                const genreContainer = document.getElementById('player-genres');
+                genreContainer.innerHTML = anime.genres.map(g => 
+                    `<span class="text-xs border border-slate-600 px-2 py-1 rounded text-slate-300">${g.name}</span>`
+                ).join('');
+
+                // Check watchlist state
+                updateWatchlistBtn();
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function closePlayer() {
+            document.getElementById('player-modal').classList.add('hidden');
+            document.getElementById('video-frame').src = ''; // Stop video
+        }
+
+        // --- WATCHLIST LOGIC (LocalStorage) ---
+        function addToWatchlistCurrent() {
+            if(!currentAnime) return;
+            const title = currentAnime.title_english || currentAnime.title;
+            const img = currentAnime.images.jpg.image_url;
+            toggleWatchlist(currentAnime.mal_id, title, img);
+            updateWatchlistBtn();
+        }
+
+        function toggleWatchlist(id, title, img) {
+            const existingIndex = watchlist.findIndex(item => item.id === id);
+            
+            if (existingIndex > -1) {
+                watchlist.splice(existingIndex, 1);
+                alert("Removed from Watchlist");
+            } else {
+                watchlist.push({ id, title, img });
+                alert("Added to Watchlist");
+            }
+            
+            localStorage.setItem('aniWatchlist', JSON.stringify(watchlist));
+            updateWatchlistCount();
+        }
+
+        function updateWatchlistCount() {
+            const el = document.getElementById('watchlist-count');
+            el.innerText = watchlist.length;
+            el.classList.remove('hidden');
+        }
+
+        function updateWatchlistBtn() {
+            const btn = document.getElementById('btn-watchlist-modal');
+            const exists = watchlist.some(item => item.id === currentAnime.mal_id);
+            if (exists) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> In Watchlist';
+                btn.classList.replace('bg-slate-700', 'bg-green-600');
+            } else {
+                btn.innerHTML = '<i class="fa-regular fa-heart"></i> Add to List';
+                btn.classList.replace('bg-green-600', 'bg-slate-700');
+            }
+        }
+
+        function showWatchlist() {
+            if(watchlist.length === 0) return alert("Your watchlist is empty!");
+            
+            const grid = document.getElementById('anime-grid');
+            document.getElementById('section-title').innerText = "My Watchlist";
+            grid.innerHTML = '';
+
+            watchlist.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "group relative cursor-pointer fade-in";
+                card.onclick = () => openPlayer(item.id);
+                card.innerHTML = `
+                    <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3 shadow-lg">
+                        <img src="${item.img}" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 w-full p-2 bg-black/80 text-center">
+                            <span class="text-xs text-brand-pink font-bold">SAVED</span>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-sm leading-tight text-slate-800 dark:text-slate-100 truncate">${item.title}</h3>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/35/27/87/35278791d8dd243cd7606afc82b4e684.js'></script>
+</body>
+</html>

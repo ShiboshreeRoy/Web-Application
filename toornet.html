@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagnetHive | Fast P2P Torrent Index & Magnet Search</title>
+    <meta name="description" content="Search and download verified torrents. Movies, Games, Music, and Applications. High-speed magnet links with real-time seeder tracking. Built by Shiboshree Ry.">
+    <meta name="keywords" content="torrent search, magnet links, p2p, file sharing, yts api, torrent index, free download, shiboshree ry, magnethive">
+    <meta name="author" content="Shiboshree Ry">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.magnethive.com/">
+    <meta property="og:title" content="MagnetHive | Real-World Torrent Index">
+    <meta property="og:description" content="Access millions of verified torrents. The safest P2P community.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/10b981/0f172a?text=MagnetHive">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#10b981', // Torrent Green
+                            dark: '#0f172a',
+                            panel: '#1e293b',
+                            danger: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .pulse-green { animation: pulseGreen 2s infinite; }
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 dark:bg-brand-dark dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300">
+<script type="text/javascript">
+	atOptions = {
+		'key' : '6be640ddd763a73dd7e68e6a588e3a68',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/6be640ddd763a73dd7e68e6a588e3a68/invoke.js"></script>
+    <!-- VPN WARNING BANNER (Real World Feature) -->
+    <div id="vpn-warning" class="bg-brand-danger text-white text-xs md:text-sm font-bold py-2 px-4 text-center flex justify-between items-center relative z-[60]">
+        <div class="mx-auto flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation animate-bounce"></i>
+            <span>Warning: Your IP Address <span id="user-ip" class="underline font-mono bg-red-700 px-1 rounded">Loading...</span> is exposed! Use a VPN to stay anonymous.</span>
+        </div>
+        <button onclick="document.getElementById('vpn-warning').remove()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-8 h-8 bg-brand-green rounded flex items-center justify-center text-brand-dark font-bold text-lg">
+                        <i class="fa-solid fa-magnet"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight hidden md:block">Magnet<span class="text-brand-green">Hive</span></span>
+                </div>
+
+                <!-- Central Search Bar -->
+                <div class="flex-1 max-w-2xl mx-4">
+                    <div class="relative group">
+                        <input type="text" id="search-input" placeholder="Search torrents, hashes, or files..." 
+                            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-full py-2 pl-10 pr-12 focus:outline-none focus:ring-2 focus:ring-brand-green transition shadow-sm text-sm">
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <button onclick="performSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-green text-brand-dark p-1.5 rounded-full hover:bg-emerald-400 transition">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:text-brand-green transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                    
+                    <button onclick="openUploadModal()" class="hidden md:flex bg-brand-panel hover:bg-slate-700 text-brand-green border border-brand-green px-4 py-2 rounded-lg text-sm font-bold transition items-center gap-2">
+                        <i class="fa-solid fa-upload"></i> Upload
+                    </button>
+
+                    <!-- User Profile -->
+                    <div class="relative group">
+                        <button class="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600">
+                            <img src="https://api.dicebear.com/7.x/identicon/svg?seed=Tor" alt="User">
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-panel rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block fade-in">
+                            <div class="p-3 border-b border-slate-200 dark:border-slate-700">
+                                <p class="text-xs font-bold text-brand-green uppercase">Ratio: 2.45</p>
+                                <p class="text-sm truncate font-bold text-slate-700 dark:text-slate-200">Shiboshree Ry</p>
+                            </div>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">My Torrents</a>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Settings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="max-w-7xl mx-auto px-4 py-8 w-full flex-grow">
+        
+        <!-- Filters & Stats -->
+        <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold flex items-center gap-2">
+                    <span class="text-brand-green"><i class="fa-solid fa-fire"></i></span> Trending Torrents
+                </h1>
+                <p class="text-sm text-slate-500">Real-time index updated via YTS API</p>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-bold">
+                <button onclick="filterCategory('Movies')" id="btn-Movies" class="px-4 py-2 rounded-lg bg-brand-green text-brand-dark transition shadow-lg shadow-emerald-500/20">Movies</button>
+                <button onclick="filterCategory('Games')" id="btn-Games" class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-brand-green transition">Games</button>
+                <button onclick="filterCategory('Apps')" id="btn-Apps" class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-brand-green transition">Apps</button>
+                
+                <select id="quality-filter" onchange="performSearch()" class="px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-brand-green">
+                    <option value="All">All Quality</option>
+                    <option value="2160p">4K (2160p)</option>
+                    <option value="1080p">FHD (1080p)</option>
+                    <option value="720p">HD (720p)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- TORRENT LIST (Card View for Realism) -->
+        <div id="torrent-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Items injected via JS -->
+            <div class="col-span-full text-center py-20 text-slate-500">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-4 text-brand-green"></i>
+                <p>Connecting to P2P Network...</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center gap-2">
+            <button onclick="changePage(-1)" class="px-4 py-2 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:text-brand-green"><i class="fa-solid fa-chevron-left"></i></button>
+            <span id="page-num" class="px-4 py-2 font-mono font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Page 1</span>
+            <button onclick="changePage(1)" class="px-4 py-2 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:text-brand-green"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+    </main>
+
+    <!-- UPLOAD MODAL (Real World Simulation) -->
+    <div id="upload-modal" class="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden transform transition-all scale-100">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+                <h3 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-upload text-brand-green"></i> Upload Torrent</h3>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-brand-danger"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-8 text-center hover:border-brand-green hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer relative group">
+                    <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleFile(this)">
+                    <div id="upload-preview">
+                        <i class="fa-solid fa-file-arrow-up text-4xl text-slate-400 group-hover:text-brand-green transition mb-2"></i>
+                        <p class="font-bold">Drop .torrent file here</p>
+                        <p class="text-xs text-slate-500">or click to browse</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs font-bold uppercase text-slate-500 mb-1 block">Torrent Name</label>
+                        <input type="text" placeholder="e.g. Linux_Mint_22.iso" class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:border-brand-green outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-bold uppercase text-slate-500 mb-1 block">Category</label>
+                            <select class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none">
+                                <option>Applications</option>
+                                <option>Games</option>
+                                <option>Movies</option>
+                                <option>Music</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold uppercase text-slate-500 mb-1 block">Info Hash (Auto)</label>
+                            <input type="text" disabled placeholder="Generating..." class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg p-3 text-sm text-slate-500 cursor-not-allowed">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 bg-slate-50 dark:bg-slate-800 flex justify-between items-center">
+                <p class="text-xs text-slate-500">By uploading, you agree to the <a href="#" class="underline hover:text-brand-green">ToS</a>.</p>
+                <button class="bg-brand-green hover:bg-emerald-600 text-brand-dark px-6 py-2 rounded-lg font-bold transition shadow-lg shadow-emerald-500/20">
+                    Create Torrent
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-800 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8 text-sm">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-magnet text-brand-green text-xl"></i>
+                    <span class="font-bold text-lg">MagnetHive</span>
+                </div>
+                <p class="text-slate-500 mb-4 max-w-xs">
+                    The world's most resilient BitTorrent index. Zero logs, P2P architecture, and open source API integration.
+                </p>
+                <p class="text-slate-400 text-xs">Developed by <strong class="text-brand-green">Shiboshree Ry</strong></p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-slate-900 dark:text-white">Community</h4>
+                <ul class="space-y-2 text-slate-500">
+                    <li><a href="#" class="hover:text-brand-green">Upload Rules</a></li>
+                    <li><a href="#" class="hover:text-brand-green">Forums</a></li>
+                    <li><a href="#" class="hover:text-brand-green">Top 100</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-slate-900 dark:text-white">Legal</h4>
+                <ul class="space-y-2 text-slate-500">
+                    <li><a href="#" class="hover:text-brand-green">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-brand-green">DMCA</a></li>
+                    <li><a href="#" class="hover:text-brand-green">Api Docs</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. IP SIMULATION (Real World Privacy feature) ---
+        // Fetches simulated IP or just randomizes for demo if API blocked
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => document.getElementById('user-ip').innerText = data.ip)
+            .catch(() => document.getElementById('user-ip').innerText = "192.168.1.X");
+
+        // --- 2. THEME LOGIC ---
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- 3. YTS API INTEGRATION (The Core) ---
+        let currentPage = 1;
+        let currentQuery = '';
+        let activeCategory = 'Movies';
+
+        async function fetchTorrents() {
+            const grid = document.getElementById('torrent-grid');
+            const quality = document.getElementById('quality-filter').value;
+            
+            grid.innerHTML = `<div class="col-span-full flex flex-col items-center py-20 text-slate-500">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-4 text-brand-green"></i>
+                <p class="font-mono text-sm">Scanning DHT Nodes...</p>
+            </div>`;
+
+            // If not movies, simulate data because YTS is Movies only
+            if (activeCategory !== 'Movies') {
+                setTimeout(() => renderSimulatedTorrents(activeCategory), 500);
+                return;
+            }
+
+            // Real API Call with CORS PROXY to avoid browser errors
+            let ytsUrl = `https://yts.mx/api/v2/list_movies.json?page=${currentPage}&limit=12&sort_by=download_count`;
+            if (currentQuery) ytsUrl += `&query_term=${currentQuery}`;
+            if (quality !== 'All') ytsUrl += `&quality=${quality}`;
+
+            // Use AllOrigins Proxy
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(ytsUrl);
+
+            try {
+                // AbortController for timeout to handle hanging requests
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 sec timeout
+
+                const res = await fetch(proxyUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!res.ok) throw new Error("API Response not OK");
+
+                const data = await res.json();
+                
+                // YTS specific validation
+                if (!data || !data.data || !data.data.movies) {
+                    if (data.data && data.data.movie_count === 0) {
+                        grid.innerHTML = '<div class="col-span-full text-center py-20">No torrents found. Try a different term.</div>';
+                        return;
+                    }
+                    throw new Error("Empty Data");
+                }
+
+                grid.innerHTML = ''; // Clear loading
+                
+                data.data.movies.forEach(movie => {
+                    // Extract best torrent from list
+                    const torrent = movie.torrents[0];
+                    const magnetLink = `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURIComponent(movie.title)}&tr=udp://tracker.opentrackr.org:1337/announce`;
+                    
+                    // Color code health
+                    const ratio = torrent.seeds / (torrent.peers + 1);
+                    const healthColor = ratio > 5 ? 'text-green-500' : (ratio > 1 ? 'text-yellow-500' : 'text-red-500');
+                    const healthBar = ratio > 5 ? 'bg-green-500' : 'bg-yellow-500';
+
+                    const card = document.createElement('div');
+                    card.className = "bg-white dark:bg-brand-panel rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-brand-green transition group shadow-sm hover:shadow-xl fade-in flex flex-col";
+                    
+                    card.innerHTML = `
+                        <div class="relative h-48 overflow-hidden bg-black">
+                            <img src="${movie.background_image}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <div class="absolute top-2 left-2 bg-black/80 text-white text-xs font-bold px-2 py-1 rounded border border-white/10">
+                                ${movie.rating} ★
+                            </div>
+                            <div class="absolute top-2 right-2 bg-brand-green text-brand-dark text-xs font-bold px-2 py-1 rounded">
+                                ${torrent.quality}
+                            </div>
+                            <button onclick="copyToClipboard('${magnetLink}')" class="absolute bottom-2 right-2 bg-white text-brand-dark w-8 h-8 rounded-full flex items-center justify-center hover:bg-brand-green hover:text-white transition shadow-lg" title="Copy Magnet">
+                                <i class="fa-solid fa-magnet"></i>
+                            </button>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-1 leading-tight truncate text-slate-800 dark:text-slate-100" title="${movie.title_long}">${movie.title}</h3>
+                            <p class="text-xs text-slate-500 mb-3">${movie.year} • ${movie.genres ? movie.genres[0] : 'Unknown'} • ${torrent.size}</p>
+                            
+                            <div class="mt-auto pt-3 border-t border-slate-100 dark:border-slate-700">
+                                <div class="flex justify-between items-center text-xs font-mono mb-1">
+                                    <span class="${healthColor} font-bold"><i class="fa-solid fa-arrow-up"></i> ${torrent.seeds}</span>
+                                    <span class="text-brand-danger"><i class="fa-solid fa-arrow-down"></i> ${torrent.peers}</span>
+                                </div>
+                                <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                                    <div class="${healthBar} h-full" style="width: ${Math.min(ratio * 20, 100)}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } catch (err) {
+                console.warn("Live API Failed (likely ISP/CORS block even with proxy), switching to Demo Mode:", err);
+                renderSimulatedTorrents('Movies', true);
+            }
+        }
+
+        // --- 4. SIMULATED CATEGORIES & FALLBACK ---
+        function renderSimulatedTorrents(category, showWarning = false) {
+            const grid = document.getElementById('torrent-grid');
+            grid.innerHTML = '';
+            
+            // Show Warning if fallback was triggered by API failure
+            if (showWarning) {
+                grid.innerHTML = `<div class="col-span-full bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 text-center p-3 rounded-xl mb-4 text-sm font-bold border border-yellow-200 dark:border-yellow-700/50 fade-in">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Live API Connection Failed (ISP Block/CORS). Switching to Demo Mode.
+                </div>`;
+            }
+            
+            const mockData = Array.from({length: 8}).map((_, i) => ({
+                title: category === 'Movies' ? `Latest Movie 2025 - Release ${i+1}` : `${category} Pack 2025 - Release ${i+1}`,
+                size: (Math.random() * 50).toFixed(1) + ' GB',
+                seeds: Math.floor(Math.random() * 2000),
+                peers: Math.floor(Math.random() * 500)
+            }));
+
+            mockData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-brand-panel rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-brand-green transition fade-in";
+                
+                let iconClass = 'fa-file';
+                if(category === 'Games') iconClass = 'fa-gamepad';
+                if(category === 'Apps') iconClass = 'fa-compact-disc';
+                if(category === 'Movies') iconClass = 'fa-film';
+
+                card.innerHTML = `
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded flex items-center justify-center text-2xl text-slate-400">
+                            <i class="fa-solid ${iconClass}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold truncate text-slate-800 dark:text-slate-200">${item.title}</h4>
+                            <p class="text-xs text-slate-500 mb-2">${item.size} • Uploaded today</p>
+                            <div class="flex items-center gap-4 text-xs font-mono">
+                                <span class="text-green-500 font-bold">SE: ${item.seeds}</span>
+                                <span class="text-red-500">LE: ${item.peers}</span>
+                            </div>
+                        </div>
+                        <button class="text-slate-400 hover:text-brand-green"><i class="fa-solid fa-download"></i></button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- 5. SEARCH & PAGINATION LOGIC ---
+        function performSearch() {
+            currentQuery = document.getElementById('search-input').value;
+            currentPage = 1;
+            document.getElementById('page-num').innerText = `Page ${currentPage}`;
+            fetchTorrents();
+        }
+
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') performSearch();
+        });
+
+        function changePage(delta) {
+            if (currentPage + delta < 1) return;
+            currentPage += delta;
+            document.getElementById('page-num').innerText = `Page ${currentPage}`;
+            fetchTorrents();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterCategory(cat) {
+            activeCategory = cat;
+            // Update UI buttons
+            ['Movies', 'Games', 'Apps'].forEach(c => {
+                const btn = document.getElementById(`btn-${c}`);
+                if (c === cat) {
+                    btn.className = "px-4 py-2 rounded-lg bg-brand-green text-brand-dark transition shadow-lg shadow-emerald-500/20";
+                } else {
+                    btn.className = "px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-brand-green transition";
+                }
+            });
+            currentPage = 1;
+            fetchTorrents();
+        }
+
+        // --- 6. UTILS ---
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert("Magnet Link Copied to Clipboard!");
+        }
+
+        function openUploadModal() { document.getElementById('upload-modal').classList.remove('hidden'); }
+        function closeUploadModal() { document.getElementById('upload-modal').classList.add('hidden'); }
+        
+        function handleFile(input) {
+            if (input.files.length > 0) {
+                document.getElementById('upload-preview').innerHTML = `
+                    <i class="fa-solid fa-file-code text-4xl text-brand-green mb-2"></i>
+                    <p class="font-bold text-sm">${input.files[0].name}</p>
+                `;
+            }
+        }
+
+        // Init
+        fetchTorrents();
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/8e/5c/a0/8e5ca0bb298667d333e3777c03ddd838.js'></script>
+</body>
+</html>

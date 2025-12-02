@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCircle | Connect & Share Your World</title>
+    <meta name="description" content="The next-gen social platform. Share photos, connect with friends, and discover trending content. Real-time feed powered by open APIs. Built by Shiboshree Ry.">
+    <meta name="keywords" content="social media, photo sharing, connect friends, social network, feed, vibe circle, shiboshree ry, web3 social">
+    <meta name="author" content="Shiboshree Roy">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.vibecircle.com/">
+    <meta property="og:title" content="VibeCircle | Social Media Redefined">
+    <meta property="og:description" content="Join the conversation. Share your vibe.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/0f172a?text=VibeCircle">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#6366f1', // Indigo
+                            accent: '#ec4899', // Pink
+                            dark: '#0f172a',
+                            panel: '#1e293b',
+                            like: '#ef4444',
+                            twitter: '#1da1f2',
+                            google: '#db4437'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .font-display { font-family: 'Outfit', sans-serif; }
+        
+        /* Hide Scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Story Gradient Border */
+        .story-ring {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+            padding: 2px;
+            border-radius: 50%;
+        }
+
+        /* Heart Animation */
+        .heart-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Skeleton Shimmer */
+        .skeleton {
+            background: #1e293b;
+            background: linear-gradient(110deg, #1e293b 8%, #334155 18%, #1e293b 33%);
+            border-radius: 5px;
+            background-size: 200% 100%;
+            animation: 1.5s shine linear infinite;
+        }
+        @keyframes shine {
+            to { background-position-x: -200%; }
+        }
+        
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-brand-dark dark:text-slate-200 min-h-screen transition-colors duration-300">
+
+    <!-- NAVIGATION (Top) -->
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-9 h-9 bg-gradient-to-tr from-brand-primary to-brand-accent rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-tight hidden md:block">Vibe<span class="text-brand-primary">Circle</span></span>
+                </div>
+
+                <!-- Search -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search VibeCircle..." 
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-full py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-brand-primary transition shadow-inner">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition">
+                        <i class="fa-solid fa-moon dark:hidden text-slate-600"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <button class="relative w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition">
+                        <i class="fa-solid fa-bell text-slate-600 dark:text-slate-300"></i>
+                        <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-brand-like rounded-full border-2 border-white dark:border-brand-dark animate-pulse"></span>
+                    </button>
+                    
+                    <!-- Auth State -->
+                    <div id="nav-auth-section">
+                        <!-- Injected via JS -->
+                        <button onclick="openLoginModal()" class="bg-brand-primary hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-bold text-sm transition shadow-lg">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LAYOUT GRID -->
+    <div class="max-w-7xl mx-auto px-0 md:px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- LEFT SIDEBAR (Navigation) -->
+        <aside class="hidden md:block md:col-span-3 lg:col-span-2 sticky top-24 h-fit">
+            <div class="bg-white dark:bg-brand-panel rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 space-y-1">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-primary/10 text-brand-primary font-bold">
+                    <i class="fa-solid fa-house text-lg"></i> Feed
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-compass text-lg"></i> Explore
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-video text-lg"></i> Reels
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-bookmark text-lg"></i> Saved
+                </a>
+                <div class="h-px bg-slate-200 dark:bg-slate-700 my-2"></div>
+                <button onclick="createPostModal()" class="w-full bg-gradient-to-r from-brand-primary to-brand-accent hover:opacity-90 text-white font-bold py-3 rounded-xl shadow-lg transition transform hover:scale-[1.02]">
+                    <i class="fa-solid fa-pen-nib mr-2"></i> Post
+                </button>
+            </div>
+            
+            <div class="mt-6 text-xs text-slate-400 px-4 leading-relaxed">
+                <p>© 2025 VibeCircle Inc.</p>
+                <p>Developed by <strong class="text-brand-primary">Shiboshree Ry</strong></p>
+                <div class="flex gap-2 mt-2">
+                    <a href="#" class="hover:underline">Privacy</a> • <a href="#" class="hover:underline">Terms</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN FEED -->
+        <main class="col-span-1 md:col-span-9 lg:col-span-7 space-y-6">
+            
+            <!-- STORIES CAROUSEL -->
+            <div class="bg-white dark:bg-brand-panel md:rounded-2xl border-b md:border border-slate-200 dark:border-slate-800 p-4">
+                <div class="flex gap-4 overflow-x-auto no-scrollbar" id="stories-container">
+                    <!-- My Story -->
+                    <div class="flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group" onclick="createPostModal()">
+                        <div class="relative w-16 h-16">
+                            <img id="my-story-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" class="w-full h-full rounded-full border-2 border-white dark:border-brand-panel p-0.5">
+                            <div class="absolute bottom-0 right-0 w-5 h-5 bg-brand-primary rounded-full flex items-center justify-center text-white text-xs border-2 border-white dark:border-brand-panel">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                        </div>
+                        <span class="text-xs font-medium truncate w-full text-center">Add Story</span>
+                    </div>
+                    <!-- API Stories Injected Here -->
+                </div>
+            </div>
+
+            <!-- CREATE POST WIDGET -->
+            <div class="bg-white dark:bg-brand-panel md:rounded-2xl border-b md:border border-slate-200 dark:border-slate-800 p-4 hidden md:block">
+                <div class="flex gap-3">
+                    <img id="create-post-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <input onclick="createPostModal()" type="text" placeholder="What is happening?!" class="w-full bg-slate-100 dark:bg-slate-800 rounded-full px-4 py-3 text-sm focus:outline-none cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-3 px-2">
+                    <div class="flex gap-6 text-brand-primary">
+                        <button onclick="createPostModal()" class="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-primary transition"><i class="fa-solid fa-image text-green-500 text-lg"></i> Media</button>
+                        <button onclick="createPostModal()" class="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-primary transition"><i class="fa-solid fa-video text-brand-accent text-lg"></i> Live</button>
+                        <button onclick="createPostModal()" class="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-primary transition"><i class="fa-solid fa-calendar-days text-brand-primary text-lg"></i> Event</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSTS FEED -->
+            <div id="feed-container" class="space-y-6 pb-20">
+                <!-- SKELETON LOADER -->
+                <div class="bg-white dark:bg-brand-panel md:rounded-2xl border border-slate-200 dark:border-slate-800 p-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="skeleton w-10 h-10 rounded-full"></div>
+                        <div class="space-y-2">
+                            <div class="skeleton w-32 h-3 rounded"></div>
+                            <div class="skeleton w-20 h-2 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton w-full h-64 rounded-xl"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- RIGHT SIDEBAR (Widgets) -->
+        <aside class="hidden lg:block lg:col-span-3 sticky top-24 h-fit space-y-6">
+            
+            <!-- Trending -->
+            <div class="bg-white dark:bg-brand-panel rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5">
+                <h3 class="font-display font-bold text-lg mb-4">Trends for you</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-start cursor-pointer group">
+                        <div>
+                            <p class="text-xs text-slate-500">Technology • Trending</p>
+                            <p class="font-bold text-sm group-hover:text-brand-primary">#Web3Future</p>
+                        </div>
+                        <button class="text-slate-400 hover:text-brand-primary"><i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
+                    <div class="flex justify-between items-start cursor-pointer group">
+                        <div>
+                            <p class="text-xs text-slate-500">Music • Live</p>
+                            <p class="font-bold text-sm group-hover:text-brand-primary">The Weeknd Tour</p>
+                        </div>
+                        <button class="text-slate-400 hover:text-brand-primary"><i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
+                    <div class="flex justify-between items-start cursor-pointer group">
+                        <div>
+                            <p class="text-xs text-slate-500">Politics • Trending</p>
+                            <p class="font-bold text-sm group-hover:text-brand-primary">Election 2025</p>
+                        </div>
+                        <button class="text-slate-400 hover:text-brand-primary"><i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="bg-white dark:bg-brand-panel rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5">
+                <h3 class="font-display font-bold text-lg mb-4">Who to follow</h3>
+                <div id="suggestions-list" class="space-y-4">
+                    <!-- Injected by API -->
+                </div>
+            </div>
+
+        </aside>
+    </div>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'd13de9e06c928e5ad9bceea04ac7929e',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/d13de9e06c928e5ad9bceea04ac7929e/invoke.js"></script>
+    <!-- POST MODAL -->
+    <div id="post-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all scale-100">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Create Post</h3>
+                <button onclick="closePostModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:text-brand-like"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-4">
+                <div class="flex gap-3 mb-4">
+                    <img id="modal-avatar" src="" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <span id="modal-username" class="font-bold text-sm block">Guest</span>
+                        <div class="inline-flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-xs font-bold text-slate-500 cursor-pointer border border-slate-200 dark:border-slate-700">
+                            <i class="fa-solid fa-earth-americas"></i> Public <i class="fa-solid fa-caret-down"></i>
+                        </div>
+                    </div>
+                </div>
+                <textarea id="post-input" class="w-full bg-transparent resize-none h-32 focus:outline-none text-lg placeholder-slate-400" placeholder="What's happening?"></textarea>
+                
+                <!-- Media Preview -->
+                <div id="media-preview" class="hidden mb-2 rounded-xl overflow-hidden relative">
+                    <img id="preview-img" src="" class="w-full h-48 object-cover">
+                    <button onclick="clearMedia()" class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="border rounded-xl p-3 mt-2 flex justify-between items-center border-slate-200 dark:border-slate-700">
+                    <span class="text-sm font-bold text-slate-500">Add to your post</span>
+                    <div class="flex gap-4 text-xl">
+                        <label class="cursor-pointer text-green-500 hover:scale-110 transition"><i class="fa-solid fa-image"></i><input type="file" class="hidden" onchange="handleFile(this, 'image')"></label>
+                        <label class="cursor-pointer text-brand-accent hover:scale-110 transition"><i class="fa-solid fa-video"></i><input type="file" class="hidden" onchange="handleFile(this, 'video')"></label>
+                        <i class="fa-solid fa-location-dot text-brand-primary cursor-pointer hover:scale-110 transition"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+                <button onclick="submitPost()" class="w-full bg-brand-primary hover:bg-indigo-600 text-white font-bold py-3 rounded-xl transition shadow-lg disabled:opacity-50" id="post-submit-btn">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-sm rounded-2xl shadow-2xl p-8 text-center relative">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="w-16 h-16 bg-gradient-to-br from-brand-primary to-brand-accent rounded-2xl flex items-center justify-center text-4xl text-white mx-auto mb-6 shadow-lg">
+                <i class="fa-solid fa-shapes"></i>
+            </div>
+            <h2 class="text-3xl font-display font-bold mb-2">Welcome Back</h2>
+            <p class="text-slate-500 mb-8">Login to VibeCircle to connect, share, and discover.</p>
+            
+            <button onclick="loginWithGoogle()" class="w-full bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-3 shadow-sm mb-4">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+                <span>Continue with Google</span>
+            </button>
+            <button onclick="showToast('Facebook login coming soon', 'info')" class="w-full bg-[#1877F2] text-white hover:bg-blue-700 font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-3 shadow-sm">
+                <i class="fa-brands fa-facebook text-xl"></i>
+                <span>Continue with Facebook</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[120] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- MOBILE NAV BOTTOM -->
+    <div class="md:hidden fixed bottom-0 w-full bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-800 flex justify-around p-3 z-40 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <a href="#" class="text-brand-primary"><i class="fa-solid fa-house text-2xl"></i></a>
+        <a href="#" class="text-slate-400 hover:text-brand-primary"><i class="fa-solid fa-magnifying-glass text-2xl"></i></a>
+        <button onclick="createPostModal()" class="w-12 h-12 bg-gradient-to-r from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white -mt-8 border-4 border-slate-50 dark:border-brand-dark shadow-xl hover:scale-105 transition">
+            <i class="fa-solid fa-plus text-xl"></i>
+        </button>
+        <a href="#" class="text-slate-400 hover:text-brand-primary"><i class="fa-solid fa-video text-2xl"></i></a>
+        <button onclick="openLoginModal()" class="text-slate-400 hover:text-brand-primary">
+            <img id="mobile-nav-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" class="w-7 h-7 rounded-full border border-current">
+        </button>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. STATE & AUTH ---
+        let vibeUser = JSON.parse(localStorage.getItem('vibeUser'));
+        let mediaFile = null;
+        let mediaType = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            loadUsersAndPosts();
+            loadSuggestions();
+        });
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- 2. AUTHENTICATION ---
+        function updateAuthUI() {
+            const navAuth = document.getElementById('nav-auth-section');
+            const avatars = document.querySelectorAll('#my-story-avatar, #create-post-avatar, #mobile-nav-avatar');
+            
+            if (vibeUser) {
+                navAuth.innerHTML = `
+                    <div class="relative group cursor-pointer">
+                        <img src="${vibeUser.avatar}" class="w-9 h-9 rounded-full border-2 border-brand-primary">
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-panel rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block fade-in">
+                            <div class="p-3 border-b border-slate-200 dark:border-slate-700">
+                                <p class="text-sm font-bold truncate">${vibeUser.name}</p>
+                                <p class="text-xs text-slate-400">@${vibeUser.username}</p>
+                            </div>
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-slate-100 dark:hover:bg-slate-700">Logout</button>
+                        </div>
+                    </div>
+                `;
+                avatars.forEach(img => img.src = vibeUser.avatar);
+            } else {
+                navAuth.innerHTML = `<button onclick="openLoginModal()" class="bg-brand-primary hover:bg-indigo-600 text-white px-5 py-2 rounded-full font-bold text-sm transition shadow-lg">Login</button>`;
+                avatars.forEach(img => img.src = "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest");
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-modal').classList.add('flex');
+        }
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-modal').classList.remove('flex');
+        }
+
+        function loginWithGoogle() {
+            const btn = document.querySelector('#login-modal button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-slate-500"></i> Connecting...';
+            
+            setTimeout(() => {
+                vibeUser = {
+                    name: "Shiboshree Ry",
+                    username: "shiboshree_ry",
+                    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=SR",
+                    verified: true
+                };
+                localStorage.setItem('vibeUser', JSON.stringify(vibeUser));
+                closeLoginModal();
+                updateAuthUI();
+                showToast(`Welcome back, ${vibeUser.name}!`, 'success');
+                btn.innerHTML = originalHTML;
+            }, 1500);
+        }
+
+        function logout() {
+            localStorage.removeItem('vibeUser');
+            vibeUser = null;
+            updateAuthUI();
+            showToast('Logged out successfully', 'info');
+        }
+
+        // --- 3. FEED & CONTENT ---
+        async function loadUsersAndPosts() {
+            const feedContainer = document.getElementById('feed-container');
+            const storiesContainer = document.getElementById('stories-container');
+            
+            try {
+                // Fetch Users
+                const userRes = await fetch('https://randomuser.me/api/?results=10&nat=us,gb,fr');
+                const userData = await userRes.json();
+                const users = userData.results;
+
+                // Stories
+                users.forEach(user => {
+                    const story = document.createElement('div');
+                    story.className = 'flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group';
+                    story.innerHTML = `
+                        <div class="story-ring p-[2px] group-hover:scale-105 transition duration-300">
+                            <div class="bg-white dark:bg-brand-panel p-[2px] rounded-full">
+                                <img src="${user.picture.medium}" class="w-14 h-14 rounded-full object-cover">
+                            </div>
+                        </div>
+                        <span class="text-xs font-medium truncate w-full text-center">${user.name.first}</span>
+                    `;
+                    storiesContainer.appendChild(story);
+                });
+
+                // Posts
+                feedContainer.innerHTML = ''; 
+                
+                users.forEach((user, index) => {
+                    const isVideo = Math.random() > 0.7; // 30% chance of video
+                    const verified = Math.random() > 0.8 ? '<i class="fa-solid fa-circle-check text-blue-500 ml-1 text-xs"></i>' : '';
+                    const likes = Math.floor(Math.random() * 500) + 10;
+                    const comments = Math.floor(Math.random() * 50);
+                    const time = Math.floor(Math.random() * 12) + 1;
+                    
+                    // Content Source
+                    let contentHTML = '';
+                    if (isVideo) {
+                        contentHTML = `
+                            <video class="w-full object-cover max-h-[500px]" controls loop muted poster="https://picsum.photos/600/400?random=${index}">
+                                <source src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-1232-large.mp4" type="video/mp4">
+                            </video>`;
+                    } else {
+                        contentHTML = `<img src="https://picsum.photos/600/400?random=${index}" class="w-full object-cover max-h-[500px]" loading="lazy">`;
+                    }
+                    
+                    const post = document.createElement('div');
+                    post.className = 'bg-white dark:bg-brand-panel md:rounded-2xl border-b md:border border-slate-200 dark:border-slate-800 overflow-hidden fade-in';
+                    post.innerHTML = `
+                        <div class="p-4 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="relative cursor-pointer">
+                                    <div class="story-ring p-[1.5px] cursor-pointer">
+                                        <img src="${user.picture.thumbnail}" class="w-9 h-9 rounded-full bg-white p-[1px]">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm hover:underline cursor-pointer flex items-center">${user.name.first} ${user.name.last} ${verified}</h4>
+                                    <p class="text-xs text-slate-500">${user.location.city} • ${time}h</p>
+                                </div>
+                            </div>
+                            <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-solid fa-ellipsis"></i></button>
+                        </div>
+
+                        <div class="relative group cursor-pointer" ondblclick="animateLike(this)">
+                            ${contentHTML}
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-heart text-white text-7xl opacity-0 transition duration-300 transform scale-0 drop-shadow-lg" id="like-anim"></i>
+                            </div>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex gap-5 text-2xl">
+                                    <button onclick="toggleLike(this)" class="hover:text-slate-600 dark:hover:text-slate-300 transition text-slate-800 dark:text-white group">
+                                        <i class="fa-regular fa-heart group-hover:hidden"></i>
+                                        <i class="fa-solid fa-heart hidden text-brand-like heart-pop"></i>
+                                    </button>
+                                    <button class="hover:text-brand-primary transition text-slate-800 dark:text-white"><i class="fa-regular fa-comment"></i></button>
+                                    <button onclick="sharePost(this)" class="hover:text-brand-primary transition text-slate-800 dark:text-white"><i class="fa-regular fa-paper-plane"></i></button>
+                                </div>
+                                <button onclick="toggleSave(this)" class="hover:text-brand-primary transition text-slate-800 dark:text-white"><i class="fa-regular fa-bookmark"></i></button>
+                            </div>
+                            
+                            <p class="font-bold text-sm mb-2 text-slate-800 dark:text-slate-100"><span id="likes-count">${likes}</span> likes</p>
+                            
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mb-2 leading-relaxed">
+                                <span class="font-bold mr-1">${user.name.first}</span> 
+                                Exploring the new features of VibeCircle! 🚀 This platform is amazing. #vibes #social #web3
+                            </p>
+                            
+                            <p class="text-xs text-slate-400 cursor-pointer hover:underline">View all ${comments} comments</p>
+                        </div>
+                    `;
+                    feedContainer.appendChild(post);
+                });
+
+            } catch (error) {
+                console.error("API Error", error);
+            }
+        }
+
+        // Suggestions Widget
+        async function loadSuggestions() {
+            try {
+                const res = await fetch('https://randomuser.me/api/?results=5&nat=fr');
+                const data = await res.json();
+                const list = document.getElementById('suggestions-list');
+                
+                list.innerHTML = data.results.map(user => `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <img src="${user.picture.thumbnail}" class="w-10 h-10 rounded-full">
+                            <div>
+                                <h4 class="font-bold text-sm truncate w-24">${user.name.first} ${user.name.last}</h4>
+                                <p class="text-[10px] text-slate-500">Suggested for you</p>
+                            </div>
+                        </div>
+                        <button onclick="followUser(this)" class="text-xs font-bold text-brand-primary hover:text-white hover:bg-brand-primary px-3 py-1 rounded-full transition border border-brand-primary">Follow</button>
+                    </div>
+                `).join('');
+            } catch(e) {}
+        }
+
+        // --- 4. INTERACTIONS ---
+        function toggleLike(btn) {
+            const regular = btn.querySelector('.fa-regular');
+            const solid = btn.querySelector('.fa-solid');
+            const countEl = btn.parentElement.parentElement.nextElementSibling.querySelector('span');
+            let count = parseInt(countEl.innerText);
+
+            if (regular.classList.contains('hidden')) {
+                regular.classList.remove('hidden');
+                solid.classList.add('hidden');
+                countEl.innerText = count - 1;
+            } else {
+                regular.classList.add('hidden');
+                solid.classList.remove('hidden');
+                solid.classList.add('heart-pop');
+                countEl.innerText = count + 1;
+                // Vibrator API for mobile feel
+                if(navigator.vibrate) navigator.vibrate(50);
+            }
+        }
+
+        function animateLike(container) {
+            const icon = container.querySelector('#like-anim');
+            const btn = container.parentElement.querySelector('button[onclick="toggleLike(this)"]');
+            
+            icon.classList.remove('opacity-0', 'scale-0');
+            icon.classList.add('opacity-100', 'scale-125');
+            
+            setTimeout(() => {
+                icon.classList.remove('opacity-100', 'scale-125');
+                icon.classList.add('opacity-0', 'scale-0');
+            }, 800);
+
+            const solid = btn.querySelector('.fa-solid');
+            if (solid.classList.contains('hidden')) toggleLike(btn);
+        }
+
+        function toggleSave(btn) {
+            const icon = btn.querySelector('i');
+            if(icon.classList.contains('fa-regular')) {
+                icon.classList.replace('fa-regular', 'fa-solid');
+                showToast('Post saved', 'success');
+            } else {
+                icon.classList.replace('fa-solid', 'fa-regular');
+            }
+        }
+
+        function followUser(btn) {
+            if(btn.innerText === "Follow") {
+                btn.innerText = "Following";
+                btn.classList.add('bg-slate-200', 'text-slate-600', 'border-slate-200', 'dark:bg-slate-700', 'dark:text-slate-300', 'dark:border-slate-700');
+                btn.classList.remove('text-brand-primary', 'border-brand-primary', 'hover:bg-brand-primary', 'hover:text-white');
+            } else {
+                btn.innerText = "Follow";
+                btn.classList.remove('bg-slate-200', 'text-slate-600', 'border-slate-200', 'dark:bg-slate-700', 'dark:text-slate-300', 'dark:border-slate-700');
+                btn.classList.add('text-brand-primary', 'border-brand-primary', 'hover:bg-brand-primary', 'hover:text-white');
+            }
+        }
+
+        async function sharePost(btn) {
+            const data = {
+                title: 'Check out this post on VibeCircle',
+                text: 'Amazing content!',
+                url: window.location.href
+            };
+            if (navigator.share) {
+                try { await navigator.share(data); } catch (err) {}
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                showToast('Link copied to clipboard!', 'info');
+            }
+        }
+
+        // --- 5. POST CREATION ---
+        function createPostModal() {
+            if (!vibeUser) return showToast('Please login to post', 'warning');
+            
+            // Setup Modal User Info
+            document.getElementById('modal-avatar').src = vibeUser.avatar;
+            document.getElementById('modal-username').innerText = vibeUser.name;
+            
+            document.getElementById('post-modal').classList.remove('hidden');
+            document.getElementById('post-modal').classList.add('flex');
+        }
+        function closePostModal() {
+            document.getElementById('post-modal').classList.add('hidden');
+            document.getElementById('post-modal').classList.remove('flex');
+            clearMedia();
+        }
+
+        function handleFile(input, type) {
+            if(input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    mediaFile = e.target.result;
+                    mediaType = type;
+                    document.getElementById('preview-img').src = mediaFile; // Use video tag logic for real implementation
+                    document.getElementById('media-preview').classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function clearMedia() {
+            mediaFile = null;
+            mediaType = null;
+            document.getElementById('media-preview').classList.add('hidden');
+            document.querySelectorAll('input[type="file"]').forEach(i => i.value = '');
+        }
+
+        function submitPost() {
+            const text = document.getElementById('post-input').value;
+            if(!text && !mediaFile) return;
+            
+            // Create New Post Element
+            const newPost = document.createElement('div');
+            newPost.className = 'bg-white dark:bg-brand-panel md:rounded-2xl border-b md:border border-slate-200 dark:border-slate-800 overflow-hidden fade-in border-l-4 border-l-brand-primary'; // Highlight new post
+            
+            let mediaHTML = '';
+            if(mediaFile) {
+                mediaHTML = `<img src="${mediaFile}" class="w-full object-cover max-h-[500px]">`;
+            }
+
+            const verifiedBadge = vibeUser.verified ? '<i class="fa-solid fa-circle-check text-blue-500 ml-1 text-xs"></i>' : '';
+
+            newPost.innerHTML = `
+                <div class="p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="relative cursor-pointer">
+                            <div class="story-ring p-[1.5px]">
+                                <img src="${vibeUser.avatar}" class="w-9 h-9 rounded-full bg-white p-[1px]">
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm flex items-center">${vibeUser.name} ${verifiedBadge}</h4>
+                            <p class="text-xs text-slate-500">Just now</p>
+                        </div>
+                    </div>
+                    <button><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                ${mediaHTML}
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex gap-5 text-2xl">
+                            <button onclick="toggleLike(this)" class="hover:text-slate-600 dark:hover:text-slate-300 transition text-slate-800 dark:text-white group">
+                                <i class="fa-regular fa-heart group-hover:hidden"></i>
+                                <i class="fa-solid fa-heart hidden text-brand-like heart-pop"></i>
+                            </button>
+                            <button><i class="fa-regular fa-comment"></i></button>
+                            <button><i class="fa-regular fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <p class="font-bold text-sm mb-2 text-slate-800 dark:text-slate-100"><span>0</span> likes</p>
+                    <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                        <span class="font-bold mr-1">${vibeUser.name}</span> ${text}
+                    </p>
+                </div>
+            `;
+
+            const feed = document.getElementById('feed-container');
+            feed.insertBefore(newPost, feed.firstChild);
+
+            closePostModal();
+            showToast('Posted Successfully!', 'success');
+            document.getElementById('post-input').value = '';
+        }
+
+        // --- 6. TOAST NOTIFICATION ---
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let colors = 'bg-slate-800 border-slate-600 text-white';
+            let icon = 'fa-info-circle';
+            
+            if(type === 'success') { colors = 'bg-brand-panel border-green-500 text-white'; icon = 'fa-circle-check text-green-500'; }
+            if(type === 'warning') { colors = 'bg-brand-panel border-yellow-500 text-white'; icon = 'fa-triangle-exclamation text-yellow-500'; }
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-lg border shadow-xl backdrop-blur-md pointer-events-auto fade-in ${colors} min-w-[250px]`;
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span class="text-sm font-bold">${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/d9/40/10/d94010e92f58d90102cbdef3f5f4b31a.js'></script>
+</body>
+</html>

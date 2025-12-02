@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelvetRooms Pro | Premium Social Creator Platform</title>
+    <meta name="description" content="Connect with top creators, watch live streams, and unlock exclusive content. The ultimate social platform for adults. Built by Shiboshree Ry.">
+    <meta name="keywords" content="social platform, content subscription, creator economy, live streaming, fan club, premium content, shiboshree ry, velvetrooms">
+    <meta name="author" content="Shiboshree Ry">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.velvetrooms.pro/">
+    <meta property="og:title" content="VelvetRooms Pro | Exclusive Content">
+    <meta property="og:description" content="Join the community. Unlock the experience.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/be123c/0f172a?text=VelvetRooms">
+<meta name="author" content="Shiboshree Roy Full Stack Developer & Software Engineer">
+  
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#be123c', // Crimson
+                            dark: '#0f172a', // Slate 900
+                            panel: '#1e293b', // Slate 800
+                            gold: '#fbbf24', // Amber
+                            success: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .font-display { font-family: 'Outfit', sans-serif; }
+        
+        /* Custom Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Live Ring Animation */
+        .live-ring { position: relative; }
+        .live-ring::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #be123c, #fbbf24);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        /* Blur Effect for Premium Content */
+        .premium-blur {
+            filter: blur(12px);
+            transition: filter 0.5s ease;
+        }
+        .unlocked .premium-blur { filter: blur(0); }
+
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-brand-dark dark:text-slate-200 min-h-screen transition-colors duration-300">
+<script type="text/javascript">
+	atOptions = {
+		'key' : '9e78ff7e7d4be63c2873cb78047ff938',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/9e78ff7e7d4be63c2873cb78047ff938/invoke.js"></script>
+    <!-- TOP NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-9 h-9 bg-brand-red rounded-lg flex items-center justify-center text-white text-lg shadow-lg shadow-red-900/20">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-tight hidden md:block">Velvet<span class="text-brand-red">Rooms</span></span>
+                </div>
+
+                <!-- Search -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search creators, tags..." 
+                            class="w-full bg-slate-100 dark:bg-slate-800/50 border border-transparent focus:border-brand-red rounded-full py-2.5 pl-10 pr-4 focus:outline-none transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition">
+                        <i class="fa-solid fa-moon dark:hidden text-slate-600"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    
+                    <!-- Wallet Display (If Logged In) -->
+                    <div id="wallet-display" class="hidden md:flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full cursor-pointer hover:bg-brand-gold/10 transition border border-transparent hover:border-brand-gold" onclick="openWalletModal()">
+                        <i class="fa-solid fa-wallet text-brand-gold"></i>
+                        <span class="text-xs font-bold font-mono" id="wallet-balance">0.00 CR</span>
+                    </div>
+
+                    <!-- Auth State -->
+                    <div id="nav-auth-section">
+                        <!-- Injected by JS -->
+                        <button onclick="openLoginModal()" class="bg-brand-red hover:bg-red-700 text-white px-5 py-2 rounded-full font-bold text-sm transition shadow-lg flex items-center gap-2">
+                            <i class="fa-brands fa-google"></i> Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-0 md:px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- LEFT SIDEBAR -->
+        <aside class="hidden md:block md:col-span-3 lg:col-span-2 sticky top-24 h-fit">
+            <div class="space-y-1">
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-red text-white font-bold shadow-lg shadow-red-900/20">
+                    <i class="fa-solid fa-house text-lg w-6"></i> Home
+                </a>
+                <a href="#" onclick="openMessagesModal()" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-regular fa-comment-dots text-lg w-6"></i> Messages <span class="bg-brand-red text-[10px] text-white px-1.5 py-0.5 rounded-full ml-auto">3</span>
+                </a>
+                <a href="#" onclick="openWalletModal()" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-wallet text-lg w-6"></i> Wallet
+                </a>
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium">
+                    <i class="fa-solid fa-star text-lg w-6"></i> Favorites
+                </a>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="px-4 text-xs font-bold uppercase text-slate-500 mb-4">Subscriptions</h3>
+                <div id="sidebar-subs" class="space-y-2">
+                    <!-- Injected -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN FEED -->
+        <main class="col-span-1 md:col-span-9 lg:col-span-7 space-y-6">
+            
+            <!-- STORIES -->
+            <div class="bg-white dark:bg-brand-panel md:rounded-2xl border-b md:border border-slate-200 dark:border-slate-800 p-4 relative">
+                <div class="flex gap-4 overflow-x-auto no-scrollbar" id="stories-container">
+                    <!-- Add Story -->
+                    <div class="flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group">
+                        <div class="relative w-16 h-16">
+                            <img id="my-avatar-story" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" class="w-full h-full rounded-full border-2 border-white dark:border-brand-panel opacity-50">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fa-solid fa-plus text-brand-red text-2xl"></i>
+                            </div>
+                        </div>
+                        <span class="text-xs font-medium truncate w-full text-center">Add Story</span>
+                    </div>
+                    <!-- API Stories -->
+                </div>
+            </div>
+
+            <!-- FEED POSTS -->
+            <div id="feed-container" class="space-y-6 pb-20">
+                <!-- Skeleton Loader -->
+                <div class="bg-white dark:bg-brand-panel md:rounded-2xl border border-slate-200 dark:border-slate-800 p-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-700 animate-pulse"></div>
+                        <div class="w-32 h-4 bg-slate-700 rounded animate-pulse"></div>
+                    </div>
+                    <div class="w-full h-96 bg-slate-800 rounded-xl animate-pulse"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- RIGHT SIDEBAR (Live & Suggested) -->
+        <aside class="hidden lg:block lg:col-span-3 sticky top-24 h-fit space-y-6">
+            
+            <!-- Live Now -->
+            <div class="bg-white dark:bg-brand-panel rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-display font-bold text-lg">Live Now</h3>
+                    <span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded animate-pulse">LIVE</span>
+                </div>
+                <div id="live-list" class="space-y-4">
+                    <!-- Injected -->
+                </div>
+            </div>
+
+            <!-- Suggested Creators -->
+            <div class="bg-white dark:bg-brand-panel rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5">
+                <h3 class="font-display font-bold text-lg mb-4">Recommended</h3>
+                <div id="suggested-list" class="space-y-4">
+                    <!-- Injected -->
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- MESSAGES MODAL (Advanced) -->
+    <div id="messages-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-4xl h-[80vh] rounded-2xl shadow-2xl flex overflow-hidden border border-slate-700">
+            
+            <!-- Contact List -->
+            <div class="w-1/3 border-r border-slate-200 dark:border-slate-700 flex flex-col bg-slate-50 dark:bg-slate-900/50">
+                <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                    <h3 class="font-bold text-lg">Messages</h3>
+                    <button onclick="closeMessagesModal()" class="md:hidden"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="contact-list" class="flex-1 overflow-y-auto">
+                    <!-- Contacts Injected -->
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="flex-1 flex flex-col relative">
+                <button onclick="closeMessagesModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white z-10 hidden md:block"><i class="fa-solid fa-xmark text-xl"></i></button>
+                
+                <!-- Chat Header -->
+                <div id="chat-header" class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center gap-3 bg-white dark:bg-brand-panel">
+                    <div class="w-10 h-10 rounded-full bg-slate-700 animate-pulse"></div>
+                    <div>
+                        <div class="h-4 w-32 bg-slate-700 rounded animate-pulse mb-1"></div>
+                        <div class="h-3 w-20 bg-slate-700 rounded animate-pulse"></div>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-100 dark:bg-[#0b1120]">
+                    <div class="text-center text-slate-500 text-sm mt-10">Select a conversation to start chatting</div>
+                </div>
+
+                <!-- Input -->
+                <div class="p-4 bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-700 flex gap-2">
+                    <button class="text-brand-red hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full"><i class="fa-solid fa-dollar-sign"></i></button>
+                    <button class="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full"><i class="fa-regular fa-image"></i></button>
+                    <input type="text" placeholder="Type a message..." class="flex-1 bg-slate-100 dark:bg-slate-800 border-none rounded-full px-4 focus:ring-1 focus:ring-brand-red">
+                    <button class="text-brand-red hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WALLET MODAL -->
+    <div id="wallet-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-md rounded-2xl shadow-2xl p-6 relative border border-brand-gold">
+            <button onclick="closeWalletModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="text-center mb-8">
+                <p class="text-slate-400 uppercase text-xs font-bold tracking-wider mb-2">Total Balance</p>
+                <h2 class="text-4xl font-display font-bold text-white flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-wallet text-brand-gold"></i> <span id="modal-balance">0.00</span> <span class="text-lg text-slate-500">CR</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <button class="bg-brand-red hover:bg-red-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-plus"></i> Add Funds
+                </button>
+                <button class="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-building-columns"></i> Withdraw
+                </button>
+            </div>
+
+            <h3 class="font-bold text-sm mb-3 text-slate-400">Recent Transactions</h3>
+            <div class="space-y-3 max-h-48 overflow-y-auto pr-2">
+                <div class="flex justify-between items-center p-3 bg-slate-800 rounded-lg border border-slate-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-red-900/50 text-red-500 flex items-center justify-center text-xs"><i class="fa-solid fa-heart"></i></div>
+                        <div>
+                            <p class="text-sm font-bold">Tip to @alice</p>
+                            <p class="text-[10px] text-slate-500">2 hours ago</p>
+                        </div>
+                    </div>
+                    <span class="text-red-400 font-bold text-sm">-500 CR</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-slate-800 rounded-lg border border-slate-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-green-900/50 text-green-500 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down"></i></div>
+                        <div>
+                            <p class="text-sm font-bold">Deposit</p>
+                            <p class="text-[10px] text-slate-500">1 day ago</p>
+                        </div>
+                    </div>
+                    <span class="text-green-400 font-bold text-sm">+2000 CR</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE STREAM PREVIEW MODAL -->
+    <div id="live-modal" class="fixed inset-0 z-[110] bg-black hidden flex flex-col">
+        <div class="flex-1 relative bg-slate-900 flex items-center justify-center">
+            <!-- Simulated Stream -->
+            <video id="live-video" class="w-full h-full object-contain" loop muted autoplay>
+                <source src="" type="video/mp4">
+            </video>
+            
+            <!-- Overlay UI -->
+            <div class="absolute top-4 left-4 flex items-center gap-3">
+                <button onclick="closeLiveModal()" class="w-10 h-10 bg-black/50 hover:bg-black/80 rounded-full text-white flex items-center justify-center backdrop-blur-md"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="flex items-center gap-2 bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-md">
+                    <img id="live-avatar" src="" class="w-8 h-8 rounded-full border border-white">
+                    <div>
+                        <p class="text-xs font-bold text-white" id="live-username">Username</p>
+                        <p class="text-[10px] text-red-500 font-bold flex items-center gap-1"><span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span> LIVE</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Overlay -->
+            <div class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black via-black/50 to-transparent p-4 flex flex-col justify-end">
+                <div id="live-chat-feed" class="space-y-2 mb-4 overflow-y-auto max-h-40 mask-image-gradient">
+                    <!-- Chats injected -->
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Say hello..." class="flex-1 bg-black/50 border border-white/20 rounded-full px-4 text-sm text-white focus:outline-none focus:border-brand-red backdrop-blur-md">
+                    <button class="w-10 h-10 bg-brand-red rounded-full text-white flex items-center justify-center shadow-lg animate-bounce"><i class="fa-solid fa-heart"></i></button>
+                    <button class="w-10 h-10 bg-brand-gold rounded-full text-black flex items-center justify-center shadow-lg"><i class="fa-solid fa-gift"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL (Google) -->
+    <div id="login-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-sm rounded-2xl shadow-2xl p-8 text-center relative overflow-hidden border border-slate-700">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="w-16 h-16 bg-brand-red/10 text-brand-red rounded-full flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-red-500/20">
+                <i class="fa-solid fa-gem"></i>
+            </div>
+            <h2 class="text-3xl font-display font-bold mb-2">Unlock All Access</h2>
+            <p class="text-slate-500 mb-8 text-sm">Login to subscribe to creators, chat, and view exclusive content.</p>
+            
+            <button onclick="loginWithGoogle()" id="google-btn" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-600 font-bold py-3.5 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-3">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+                <span>Continue with Google</span>
+            </button>
+            
+            <div class="mt-6 flex items-center justify-center gap-4 text-xs text-slate-500">
+                <span>18+ Only</span> • <span>Secure Login</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIP MODAL -->
+    <div id="tip-modal" class="fixed inset-0 z-[90] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-xs rounded-2xl shadow-2xl p-6 text-center relative border border-brand-gold">
+            <button onclick="closeTipModal()" class="absolute top-2 right-2 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="font-bold text-lg mb-4 text-brand-gold">Send Tip</h3>
+            <div class="grid grid-cols-3 gap-2 mb-4">
+                <button onclick="processTip(5)" class="py-2 bg-slate-700 hover:bg-brand-gold hover:text-black rounded-lg font-bold transition">$5</button>
+                <button onclick="processTip(10)" class="py-2 bg-slate-700 hover:bg-brand-gold hover:text-black rounded-lg font-bold transition">$10</button>
+                <button onclick="processTip(20)" class="py-2 bg-slate-700 hover:bg-brand-gold hover:text-black rounded-lg font-bold transition">$20</button>
+            </div>
+            <p class="text-xs text-slate-500">Supports credit card & crypto.</p>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[120] flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- MOBILE NAV -->
+    <div class="md:hidden fixed bottom-0 w-full bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-800 flex justify-around p-3 z-40 pb-6 shadow-2xl">
+        <a href="#" class="text-brand-red"><i class="fa-solid fa-house text-2xl"></i></a>
+        <a href="#" class="text-slate-400 hover:text-brand-red"><i class="fa-solid fa-compass text-2xl"></i></a>
+        <button class="w-12 h-12 bg-brand-red rounded-full flex items-center justify-center text-white -mt-8 border-4 border-brand-dark shadow-xl hover:scale-105 transition">
+            <i class="fa-solid fa-plus text-xl"></i>
+        </button>
+        <a href="#" onclick="openMessagesModal()" class="text-slate-400 hover:text-brand-red"><i class="fa-regular fa-comment text-2xl"></i></a>
+        <button onclick="openLoginModal()" class="text-slate-400 hover:text-brand-red">
+            <img id="mobile-nav-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" class="w-7 h-7 rounded-full border border-current">
+        </button>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. STATE & AUTH ---
+        let user = JSON.parse(localStorage.getItem('velvetUser'));
+        let walletBalance = parseFloat(localStorage.getItem('velvetBalance') || '250.00');
+        let creatorsData = [];
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            updateWalletUI();
+            fetchContent();
+        });
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- 2. AUTHENTICATION ---
+        function updateAuthUI() {
+            const navAuth = document.getElementById('nav-auth-section');
+            const avatars = document.querySelectorAll('#my-avatar-story, #mobile-nav-avatar');
+            const walletDisplay = document.getElementById('wallet-display');
+            
+            if (user) {
+                walletDisplay.classList.remove('hidden');
+                walletDisplay.classList.add('flex');
+                
+                navAuth.innerHTML = `
+                    <div class="relative group cursor-pointer">
+                        <img src="${user.avatar}" class="w-9 h-9 rounded-full border-2 border-brand-red">
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-panel rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block fade-in">
+                            <div class="p-3 border-b border-slate-200 dark:border-slate-700">
+                                <p class="text-sm font-bold truncate">${user.name}</p>
+                                <p class="text-xs text-slate-400 font-mono">ID: 882910</p>
+                            </div>
+                            <button onclick="openWalletModal()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Wallet</button>
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-slate-100 dark:hover:bg-slate-700">Logout</button>
+                        </div>
+                    </div>
+                `;
+                avatars.forEach(img => {
+                    img.src = user.avatar;
+                    img.classList.remove('opacity-50');
+                });
+            } else {
+                walletDisplay.classList.add('hidden');
+                navAuth.innerHTML = `
+                    <button onclick="openLoginModal()" class="bg-brand-red hover:bg-red-700 text-white px-5 py-2 rounded-full font-bold text-sm transition shadow-lg flex items-center gap-2">
+                        <i class="fa-brands fa-google"></i> Login
+                    </button>`;
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-modal').classList.add('flex');
+        }
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-modal').classList.remove('flex');
+        }
+
+        function loginWithGoogle() {
+            const btn = document.getElementById('google-btn');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-slate-500"></i> Connecting...';
+            
+            setTimeout(() => {
+                user = {
+                    name: "Shiboshree Ry",
+                    email: "dev@velvet.pro",
+                    avatar: "https://api.dicebear.com/7.x/initials/svg?seed=SR",
+                    isPremium: true
+                };
+                localStorage.setItem('velvetUser', JSON.stringify(user));
+                closeLoginModal();
+                updateAuthUI();
+                showToast(`Welcome back, ${user.name}!`, 'success');
+                // Reload feed to unlock content
+                fetchContent();
+            }, 1500);
+        }
+
+        function logout() {
+            localStorage.removeItem('velvetUser');
+            user = null;
+            updateAuthUI();
+            showToast('Logged out successfully', 'info');
+            window.location.reload();
+        }
+
+        // --- 3. DATA ENGINE (RandomUser + Picsum) ---
+        async function fetchContent() {
+            const feed = document.getElementById('feed-container');
+            const stories = document.getElementById('stories-container');
+            const liveList = document.getElementById('live-list');
+            const suggested = document.getElementById('suggested-list');
+            const sidebarSubs = document.getElementById('sidebar-subs');
+            const contactList = document.getElementById('contact-list');
+
+            try {
+                const res = await fetch('https://randomuser.me/api/?results=15&nat=us,gb,fr,au');
+                const data = await res.json();
+                creatorsData = data.results;
+
+                // 1. Stories
+                creatorsData.slice(0, 6).forEach(c => {
+                    const el = document.createElement('div');
+                    el.className = 'flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group';
+                    el.innerHTML = `
+                        <div class="live-ring p-[2px] group-hover:scale-105 transition duration-300">
+                            <div class="bg-white dark:bg-brand-panel p-[2px] rounded-full">
+                                <img src="${c.picture.medium}" class="w-14 h-14 rounded-full object-cover">
+                            </div>
+                        </div>
+                        <span class="text-xs font-medium truncate w-full text-center">${c.name.first}</span>
+                    `;
+                    stories.appendChild(el);
+                });
+
+                // 2. Feed Posts
+                feed.innerHTML = '';
+                creatorsData.slice(0, 10).forEach((c, i) => {
+                    const isLocked = !user && i % 3 === 0; // Lock every 3rd post if not logged in
+                    const isVideo = i % 4 === 0; // Some videos
+                    
+                    let contentHTML = '';
+                    if (isLocked) {
+                        contentHTML = `
+                            <div class="relative w-full h-[500px] bg-slate-800 overflow-hidden group cursor-pointer" onclick="openLoginModal()">
+                                <img src="https://picsum.photos/600/800?random=${i}" class="w-full h-full object-cover premium-blur opacity-50">
+                                <div class="absolute inset-0 flex flex-col items-center justify-center z-10 p-6 text-center">
+                                    <div class="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-3xl mb-4 border border-white/20">
+                                        <i class="fa-solid fa-lock text-white"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-white mb-2">Subscribe to Unlock</h3>
+                                    <p class="text-sm text-slate-300 mb-6">Join ${c.name.first}'s exclusive club to see this post.</p>
+                                    <button class="bg-brand-red hover:bg-red-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transition">Unlock Post</button>
+                                </div>
+                            </div>
+                        `;
+                    } else if (isVideo) {
+                        contentHTML = `
+                            <video class="w-full object-cover max-h-[600px]" controls loop muted poster="https://picsum.photos/600/800?random=${i}">
+                                <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-posing-in-neon-light-1303-large.mp4" type="video/mp4">
+                            </video>
+                        `;
+                    } else {
+                        contentHTML = `<img src="https://picsum.photos/600/800?random=${i}" class="w-full object-cover max-h-[600px]" loading="lazy">`;
+                    }
+
+                    const post = document.createElement('div');
+                    post.className = 'bg-white dark:bg-brand-panel md:rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden fade-in';
+                    post.innerHTML = `
+                        <div class="p-4 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="relative cursor-pointer">
+                                    <img src="${c.picture.thumbnail}" class="w-10 h-10 rounded-full border border-slate-700">
+                                    <div class="absolute -bottom-1 -right-1 bg-brand-red text-white text-[8px] px-1 rounded-sm border border-brand-panel font-bold">PRO</div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm hover:underline cursor-pointer flex items-center">${c.name.first} ${c.name.last} <i class="fa-solid fa-circle-check text-brand-red ml-1 text-xs"></i></h4>
+                                    <p class="text-xs text-slate-500">${c.location.city}</p>
+                                </div>
+                            </div>
+                            <button class="text-slate-400 hover:text-white"><i class="fa-solid fa-ellipsis"></i></button>
+                        </div>
+
+                        ${contentHTML}
+
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex gap-5 text-2xl">
+                                    <button class="hover:text-brand-red transition"><i class="fa-regular fa-heart"></i></button>
+                                    <button class="hover:text-brand-red transition"><i class="fa-regular fa-comment"></i></button>
+                                    <button class="hover:text-brand-red transition" onclick="openTipModal()"><i class="fa-solid fa-dollar-sign border-2 border-current rounded-full w-6 h-6 flex items-center justify-center text-sm"></i></button>
+                                </div>
+                                <button class="hover:text-brand-red transition"><i class="fa-regular fa-bookmark"></i></button>
+                            </div>
+                            <p class="font-bold text-sm mb-2">${Math.floor(Math.random()*2000)} likes</p>
+                            <p class="text-sm text-slate-300"><span class="font-bold mr-1 text-white">${c.name.first}</span> Exclusive behind the scenes! 📸✨ #model #lifestyle</p>
+                        </div>
+                    `;
+                    feed.appendChild(post);
+                });
+
+                // 3. Live List
+                liveList.innerHTML = creatorsData.slice(10, 13).map((c, idx) => `
+                    <div class="flex items-center gap-3 group cursor-pointer" onclick="openLiveModal('${c.name.first}', '${c.picture.medium}', ${idx})">
+                        <div class="relative">
+                            <img src="${c.picture.thumbnail}" class="w-10 h-10 rounded-full border-2 border-brand-red">
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-brand-success rounded-full border-2 border-brand-panel"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-sm truncate group-hover:text-brand-red transition">${c.name.first} ${c.name.last}</h4>
+                            <p class="text-xs text-brand-red font-bold animate-pulse">Live Now • ${Math.floor(Math.random()*5000)} watching</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                // 4. Populate Messages Contact List
+                contactList.innerHTML = creatorsData.slice(0, 8).map(c => `
+                    <div class="flex items-center gap-3 p-4 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer border-b border-slate-200 dark:border-slate-800" onclick="loadChat('${c.name.first}', '${c.picture.thumbnail}')">
+                        <div class="relative">
+                            <img src="${c.picture.thumbnail}" class="w-10 h-10 rounded-full">
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-white dark:border-brand-panel"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline">
+                                <h4 class="font-bold text-sm truncate">${c.name.first}</h4>
+                                <span class="text-[10px] text-slate-500">10m</span>
+                            </div>
+                            <p class="text-xs text-slate-500 truncate">Hey! Thanks for the sub ❤️</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                // 5. Sidebar Subs
+                sidebarSubs.innerHTML = creatorsData.slice(0, 4).map(c => `
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                        <div class="relative">
+                            <img src="${c.picture.thumbnail}" class="w-8 h-8 rounded-full">
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-brand-red rounded-full"></span>
+                        </div>
+                        <span class="text-sm font-medium truncate">${c.name.first} ${c.name.last}</span>
+                    </a>
+                `).join('');
+
+            } catch (e) { console.error(e); }
+        }
+
+        // --- 4. MESSAGING SYSTEM ---
+        function openMessagesModal() {
+            if(!user) return openLoginModal();
+            document.getElementById('messages-modal').classList.remove('hidden');
+            document.getElementById('messages-modal').classList.add('flex');
+        }
+        function closeMessagesModal() {
+            document.getElementById('messages-modal').classList.add('hidden');
+            document.getElementById('messages-modal').classList.remove('flex');
+        }
+
+        function loadChat(name, avatar) {
+            // Simulate loading a chat
+            const header = document.getElementById('chat-header');
+            const msgs = document.getElementById('chat-messages');
+            
+            header.innerHTML = `
+                <div class="relative">
+                    <img src="${avatar}" class="w-10 h-10 rounded-full">
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-white dark:border-brand-panel"></span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm">${name}</h4>
+                    <p class="text-xs text-green-500">Online</p>
+                </div>
+                <button class="ml-auto text-slate-400 hover:text-white"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+            `;
+
+            // Fake Chat History
+            msgs.innerHTML = `
+                <div class="flex gap-3">
+                    <img src="${avatar}" class="w-8 h-8 rounded-full self-end">
+                    <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl rounded-bl-none text-sm shadow-sm max-w-[70%]">
+                        Hey ${user.name}! Welcome to my VIP club! 🥰
+                    </div>
+                </div>
+                <div class="flex gap-3 flex-row-reverse">
+                    <div class="bg-brand-red text-white p-3 rounded-2xl rounded-br-none text-sm shadow-sm max-w-[70%]">
+                        Thanks! Excited to be here.
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <img src="${avatar}" class="w-8 h-8 rounded-full self-end">
+                    <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl rounded-bl-none text-sm shadow-sm max-w-[70%] border border-brand-gold/30 relative overflow-hidden group cursor-pointer">
+                        <div class="filter blur-md group-hover:blur-sm transition">
+                            <img src="https://picsum.photos/200/200" class="rounded-lg mb-2">
+                        </div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40">
+                            <i class="fa-solid fa-lock text-brand-gold text-2xl mb-1"></i>
+                            <span class="text-xs font-bold text-white uppercase">Unlock for 50 CR</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 5. WALLET SYSTEM ---
+        function openWalletModal() {
+            if(!user) return openLoginModal();
+            updateWalletUI();
+            document.getElementById('wallet-modal').classList.remove('hidden');
+            document.getElementById('wallet-modal').classList.add('flex');
+        }
+        function closeWalletModal() {
+            document.getElementById('wallet-modal').classList.add('hidden');
+            document.getElementById('wallet-modal').classList.remove('flex');
+        }
+        function updateWalletUI() {
+            document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2) + " CR";
+            document.getElementById('modal-balance').innerText = walletBalance.toFixed(2);
+        }
+
+        // --- 6. TIPPING LOGIC ---
+        function openTipModal() {
+            if(!user) return openLoginModal();
+            document.getElementById('tip-modal').classList.remove('hidden');
+            document.getElementById('tip-modal').classList.add('flex');
+        }
+        function closeTipModal() {
+            document.getElementById('tip-modal').classList.add('hidden');
+            document.getElementById('tip-modal').classList.remove('flex');
+        }
+        function processTip(amount) {
+            if(walletBalance >= amount) {
+                walletBalance -= amount;
+                localStorage.setItem('velvetBalance', walletBalance);
+                updateWalletUI();
+                closeTipModal();
+                showToast(`Tip of ${amount} CR sent! 💖`, 'success');
+            } else {
+                showToast("Insufficient Funds!", 'error');
+            }
+        }
+
+        // --- 7. LIVE MODAL ---
+        function openLiveModal(name, avatar, idx) {
+            if(!user) return openLoginModal();
+            const modal = document.getElementById('live-modal');
+            const video = document.getElementById('live-video');
+            
+            document.getElementById('live-username').innerText = name;
+            document.getElementById('live-avatar').src = avatar;
+            
+            // Set a different mixkit video for each live stream
+            const videos = [
+                "https://assets.mixkit.co/videos/preview/mixkit-woman-applying-lipstick-1219-large.mp4",
+                "https://assets.mixkit.co/videos/preview/mixkit-girl-dancing-in-a-party-with-neon-lights-42589-large.mp4",
+                "https://assets.mixkit.co/videos/preview/mixkit-young-woman-recording-a-video-blog-on-the-beach-42337-large.mp4"
+            ];
+            video.src = videos[idx % videos.length];
+            
+            modal.classList.remove('hidden');
+            
+            // Start fake chat
+            startLiveChat();
+        }
+        
+        function closeLiveModal() {
+            document.getElementById('live-modal').classList.add('hidden');
+            document.getElementById('live-video').pause();
+            clearInterval(chatInterval);
+        }
+
+        let chatInterval;
+        function startLiveChat() {
+            const feed = document.getElementById('live-chat-feed');
+            feed.innerHTML = '';
+            const msgs = ["Hi!", "Gorgeous!", "Love this", "😍😍😍", "Notice me!"];
+            
+            chatInterval = setInterval(() => {
+                const msg = msgs[Math.floor(Math.random() * msgs.length)];
+                const el = document.createElement('div');
+                el.className = "text-sm text-white drop-shadow-md fade-in";
+                el.innerHTML = `<span class="font-bold text-brand-gold">User${Math.floor(Math.random()*100)}:</span> ${msg}`;
+                feed.appendChild(el);
+                feed.scrollTop = feed.scrollHeight;
+            }, 1500);
+        }
+
+        // --- 8. TOAST ---
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let colors = 'bg-slate-800 border-slate-600 text-white';
+            let icon = 'fa-info-circle';
+            
+            if(type === 'success') { colors = 'bg-brand-panel border-brand-red text-white'; icon = 'fa-heart text-brand-red'; }
+            if(type === 'error') { colors = 'bg-brand-panel border-red-500 text-white'; icon = 'fa-triangle-exclamation text-red-500'; }
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-lg border shadow-xl backdrop-blur-md pointer-events-auto fade-in ${colors} min-w-[250px]`;
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span class="text-sm font-bold">${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/1a/3d/a9/1a3da9261f26779598621cd46214c5b9.js'></script>
+</body>
+</html>

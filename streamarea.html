@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamArena | Live Sports Streaming & Highlights Platform</title>
+    <meta name="description" content="Watch live sports, upload highlights, and track real-time scores for NBA, NFL, and Soccer. The ultimate sports community built by Shiboshree Ry.">
+    <meta name="keywords" content="sports streaming, live scores, nba stream, soccer highlights, upload sports video, shiboshree ry, streamarena">
+    <meta name="author" content="Shiboshree Ry">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://streamarena.netlify.app">
+    <meta property="og:title" content="StreamArena | Live Sports & Scores">
+    <meta property="og:description" content="Real-time scores and HD streaming for sports fans. Built for the real world.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/1e293b/ef4444?text=StreamArena+Live">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ef4444',
+                            dark: '#0f172a',
+                            panel: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Teko:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-teko { font-family: 'Teko', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+
+        /* Animations */
+        .live-pulse { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Poll Bar Animation */
+        .poll-fill { transition: width 1s ease-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-brand-dark dark:text-white min-h-screen flex flex-col transition-colors duration-300">
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'c1f9bd552501fc2f9d0be29d318b365f',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/c1f9bd552501fc2f9d0be29d318b365f/invoke.js"></script>
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 bg-white/90 dark:bg-brand-dark/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 bg-brand-red rounded flex items-center justify-center text-white font-bold">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <span class="font-teko text-3xl tracking-wide uppercase">StreamArena</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#live" class="font-bold hover:text-brand-red transition">Live Scores</a>
+                    <a href="#news" class="font-bold hover:text-brand-red transition">Trending News</a>
+                    <a href="#community" class="font-bold hover:text-brand-red transition">Community</a>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-4">
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:text-brand-red transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+
+                    <!-- Upload Button -->
+                    <button onclick="openUploadModal()" class="hidden md:flex bg-brand-red hover:bg-red-600 text-white px-4 py-2 rounded-full font-bold transition items-center gap-2 shadow-lg shadow-red-500/20">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                    </button>
+
+                    <!-- User Profile (Simulated) -->
+                    <div class="relative group">
+                        <button id="user-btn" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border-2 border-transparent hover:border-brand-red transition">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
+                        </button>
+                        <!-- Dropdown -->
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-panel rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block fade-in">
+                            <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+                                <p class="text-sm font-bold" id="user-name-display">Guest User</p>
+                                <button onclick="changeUsername()" class="text-xs text-brand-red hover:underline">Change Name</button>
+                            </div>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">My Channel</a>
+                            <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">Settings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO / LIVE MATCH SECTION -->
+    <section id="live" class="pt-24 pb-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-red-500 rounded-full live-pulse"></span>
+                    <h2 class="text-xl font-bold uppercase tracking-wider">Live Now</h2>
+                </div>
+                <!-- Advanced Share Button -->
+                <button onclick="shareStream()" class="text-sm font-bold text-slate-400 hover:text-brand-red flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes"></i> Share Stream
+                </button>
+            </div>
+
+            <!-- Video Player & Chat Grid -->
+            <div class="grid lg:grid-cols-3 gap-6 h-[600px] lg:h-[500px]">
+                <!-- Main Player -->
+                <div class="lg:col-span-2 bg-black rounded-2xl overflow-hidden relative group">
+                    <video id="main-video" class="w-full h-full object-cover opacity-90" poster="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1000&auto=format&fit=crop" loop muted autoplay playsinline>
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-soccer-player-preparing-to-kick-the-ball-45788-large.mp4" type="video/mp4">
+                    </video>
+                    
+                    <!-- Advanced Controls Overlay -->
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-6 opacity-0 group-hover:opacity-100 transition duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded uppercase mr-2">Live</span>
+                                <span class="text-white font-bold">Premier League: Liverpool vs Man City</span>
+                            </div>
+                            <!-- PiP Button -->
+                            <button onclick="togglePiP()" class="text-white hover:text-brand-red" title="Picture in Picture">
+                                <i class="fa-solid fa-expand"></i>
+                            </button>
+                        </div>
+                        <h1 class="text-3xl font-teko text-white uppercase leading-none">Match Day Live Stream</h1>
+                    </div>
+                </div>
+
+                <!-- Live Chat & Polls -->
+                <div class="bg-white dark:bg-brand-panel rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col overflow-hidden">
+                    <div class="p-4 border-b border-slate-200 dark:border-slate-700 font-bold flex justify-between">
+                        <span>Stream Chat</span>
+                        <span class="text-xs text-slate-500 flex items-center gap-1"><i class="fa-solid fa-user"></i> 12.4k</span>
+                    </div>
+
+                    <!-- LIVE POLL WIDGET -->
+                    <div id="live-poll" class="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                        <p class="text-xs font-bold uppercase text-slate-500 mb-2">Who will win?</p>
+                        <div class="space-y-2">
+                            <button onclick="vote('team1')" class="w-full relative h-8 bg-slate-200 dark:bg-slate-700 rounded overflow-hidden">
+                                <div id="bar-team1" class="absolute top-0 left-0 h-full bg-blue-600 poll-fill" style="width: 50%"></div>
+                                <div class="absolute inset-0 flex justify-between items-center px-3 text-xs font-bold z-10">
+                                    <span>Liverpool</span>
+                                    <span id="pct-team1">50%</span>
+                                </div>
+                            </button>
+                            <button onclick="vote('team2')" class="w-full relative h-8 bg-slate-200 dark:bg-slate-700 rounded overflow-hidden">
+                                <div id="bar-team2" class="absolute top-0 left-0 h-full bg-brand-red poll-fill" style="width: 50%"></div>
+                                <div class="absolute inset-0 flex justify-between items-center px-3 text-xs font-bold z-10">
+                                    <span>Man City</span>
+                                    <span id="pct-team2">50%</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
+                        <!-- Chat messages injected by JS -->
+                    </div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-800">
+                        <form onsubmit="sendChat(event)" class="flex gap-2">
+                            <input type="text" id="chat-input" placeholder="Say something..." class="flex-1 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-red">
+                            <button type="submit" class="text-brand-red hover:text-white hover:bg-brand-red p-2 rounded-lg transition"><i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REAL API SCOREBOARD -->
+    <section class="py-12 bg-slate-100 dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold">Live Scoreboard</h2>
+                    <p class="text-slate-500 text-sm">Real-time data powered by ESPN Public API</p>
+                </div>
+                <div class="flex gap-2 bg-white dark:bg-brand-panel p-1 rounded-full border border-slate-200 dark:border-slate-700">
+                    <button onclick="switchSport('soccer')" id="btn-soccer" class="px-4 py-1 rounded-full bg-brand-red text-white text-sm font-bold transition shadow">Soccer</button>
+                    <button onclick="switchSport('basketball')" id="btn-basketball" class="px-4 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-sm font-bold transition">NBA</button>
+                    <button onclick="switchSport('football')" id="btn-football" class="px-4 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-sm font-bold transition">NFL</button>
+                </div>
+            </div>
+            
+            <!-- Horizontal Scroll Container -->
+            <div id="scores-container" class="flex gap-4 overflow-x-auto pb-4 snap-x">
+                <div class="min-w-[300px] h-32 bg-white dark:bg-brand-panel rounded-xl flex items-center justify-center text-slate-400 border border-slate-200 dark:border-slate-700">
+                    <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Loading Live Data...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REAL NEWS SECTION -->
+    <section id="news" class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 border-l-4 border-brand-red pl-4">Trending Headlines</h2>
+            <div id="news-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- News items injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- UPLOAD MODAL (Hidden) -->
+    <div id="upload-modal" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-panel w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all scale-100">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold">Upload Highlights</h3>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-8 text-center hover:border-brand-red hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-brand-red mb-3"></i>
+                    <p class="font-bold">Click to Upload Video</p>
+                    <p class="text-xs text-slate-500">MP4, MKV (Max 2GB)</p>
+                    <input type="file" id="file-input" class="hidden" accept="video/*">
+                </div>
+
+                <div id="upload-progress" class="hidden space-y-2">
+                    <div class="flex justify-between text-xs font-bold">
+                        <span>Uploading...</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                        <div id="progress-bar" class="bg-brand-red h-2 rounded-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-slate-500">Video Title</label>
+                    <input type="text" placeholder="e.g. Best Goals 2025" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-brand-red">
+                </div>
+            </div>
+
+            <div class="p-6 bg-slate-50 dark:bg-slate-800 flex justify-end">
+                <button onclick="startUpload()" class="bg-brand-red hover:bg-red-600 text-white px-6 py-2 rounded-lg font-bold transition">Publish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <div class="w-6 h-6 bg-brand-red rounded flex items-center justify-center text-white text-xs font-bold">
+                    <i class="fa-solid fa-play"></i>
+                </div>
+                <span class="font-teko text-2xl uppercase">StreamArena</span>
+            </div>
+            <p class="text-slate-500 text-sm mb-6">
+                The leading platform for sports streaming and live data. <br>
+                Developed by <strong class="text-brand-red">Shiboshree Ry</strong>
+            </p>
+            <div class="flex justify-center gap-6 text-xl text-slate-400">
+                <a href="#" class="hover:text-brand-red"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-brand-red"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-brand-red"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. THEME & USER LOGIC ---
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        const storedUser = localStorage.getItem('streamUser') || 'Guest User';
+        document.getElementById('user-name-display').innerText = storedUser;
+
+        function changeUsername() {
+            const newName = prompt("Enter your developer username:", storedUser);
+            if(newName) {
+                localStorage.setItem('streamUser', newName);
+                document.getElementById('user-name-display').innerText = newName;
+                addChatMessage("System", `Welcome back, ${newName}!`, true);
+            }
+        }
+
+        // --- 2. ADVANCED VIDEO FEATURES ---
+        async function togglePiP() {
+            const video = document.getElementById('main-video');
+            try {
+                if (video !== document.pictureInPictureElement) {
+                    await video.requestPictureInPicture();
+                } else {
+                    await document.exitPictureInPicture();
+                }
+            } catch (error) {
+                alert("PiP not supported or failed: " + error);
+            }
+        }
+
+        async function shareStream() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Watch Live: Liverpool vs Man City',
+                        text: 'Join me on StreamArena for the live match!',
+                        url: window.location.href,
+                    });
+                } catch (err) {
+                    console.log('Share canceled');
+                }
+            } else {
+                alert("Sharing not supported on this browser.");
+            }
+        }
+
+        // --- 3. LIVE CHAT & POLLS ---
+        const chatBox = document.getElementById('chat-box');
+        
+        // Poll Logic
+        let votes1 = 50;
+        let votes2 = 50;
+        
+        function vote(team) {
+            // Simulate dynamic voting
+            if(team === 'team1') { votes1 += 5; votes2 -= 5; }
+            else { votes2 += 5; votes1 -= 5; }
+            
+            // Limit bounds
+            if(votes1 > 90) votes1 = 90; 
+            if(votes2 > 90) votes2 = 90;
+            if(votes1 < 10) votes1 = 10;
+            if(votes2 < 10) votes2 = 10;
+
+            document.getElementById('bar-team1').style.width = votes1 + '%';
+            document.getElementById('pct-team1').innerText = votes1 + '%';
+            document.getElementById('bar-team2').style.width = votes2 + '%';
+            document.getElementById('pct-team2').innerText = votes2 + '%';
+        }
+
+        function addChatMessage(user, msg, isSystem = false) {
+            const div = document.createElement('div');
+            div.className = "fade-in";
+            div.innerHTML = isSystem 
+                ? `<span class="text-xs text-brand-red font-bold uppercase block my-2 text-center border-y border-slate-100 dark:border-slate-700 py-1 bg-slate-50 dark:bg-slate-800">${msg}</span>`
+                : `<div class="mb-1"><span class="font-bold text-slate-500 text-xs mr-2">${user}:</span><span class="text-slate-800 dark:text-slate-200">${msg}</span></div>`;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendChat(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const msg = input.value;
+            if(msg) {
+                const currentUser = localStorage.getItem('streamUser') || 'Me';
+                addChatMessage(currentUser, msg);
+                input.value = '';
+            }
+        }
+
+        // Auto-chat bot simulation
+        const randomMessages = ["Goal!!", "What a play", "Defense is weak", "Go City!", "YNWA"];
+        setInterval(() => {
+            const rUser = "User" + Math.floor(Math.random() * 1000);
+            const rMsg = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+            addChatMessage(rUser, rMsg);
+        }, 8000);
+
+
+        // --- 4. REAL API INTEGRATION (ESPN) ---
+        let currentSport = 'soccer';
+
+        function switchSport(sport) {
+            currentSport = sport;
+            
+            // Update Buttons
+            document.querySelectorAll('#scores-container').parentNode.querySelectorAll('button').forEach(btn => {
+                btn.className = "px-4 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-sm font-bold transition";
+            });
+            document.getElementById(`btn-${sport}`).className = "px-4 py-1 rounded-full bg-brand-red text-white text-sm font-bold transition shadow";
+
+            loadScores(sport);
+            loadNews(sport);
+        }
+
+        async function loadScores(sport) {
+            const container = document.getElementById('scores-container');
+            container.innerHTML = '<div class="text-slate-500 p-4">Fetching live data...</div>';
+
+            let endpoint = '';
+            if(sport === 'soccer') endpoint = 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard';
+            if(sport === 'basketball') endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
+            if(sport === 'football') endpoint = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+
+            try {
+                const res = await fetch(endpoint);
+                const data = await res.json();
+                const events = data.events || [];
+
+                container.innerHTML = ''; 
+
+                if(events.length === 0) {
+                    container.innerHTML = '<div class="text-slate-500 p-4">No live games found. Showing recent results...</div>';
+                }
+
+                events.forEach(event => {
+                    const comp = event.competitions[0];
+                    const team1 = comp.competitors[0];
+                    const team2 = comp.competitors[1];
+                    const status = event.status.type.shortDetail; 
+
+                    const card = document.createElement('div');
+                    card.className = "min-w-[280px] bg-white dark:bg-brand-panel p-4 rounded-xl border border-slate-200 dark:border-slate-700 snap-center shadow-sm hover:border-brand-red transition cursor-pointer";
+                    
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center mb-2 text-xs font-bold text-slate-400 uppercase">
+                            <span>${status}</span>
+                            <span class="text-brand-red">ESPN Live</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <img src="${team1.team.logo}" class="w-8 h-8 object-contain">
+                                    <span class="font-bold text-sm">${team1.team.abbreviation}</span>
+                                </div>
+                                <span class="font-bold text-2xl font-teko">${team1.score}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <img src="${team2.team.logo}" class="w-8 h-8 object-contain">
+                                    <span class="font-bold text-sm">${team2.team.abbreviation}</span>
+                                </div>
+                                <span class="font-bold text-2xl font-teko">${team2.score}</span>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch (err) {
+                container.innerHTML = '<div class="text-red-500 p-4">Failed to load scores. API may be rate limited.</div>';
+                console.error(err);
+            }
+        }
+
+        // --- 5. REAL NEWS INTEGRATION ---
+        async function loadNews(sport) {
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '<div class="col-span-4 text-center text-slate-500">Loading top headlines...</div>';
+
+            let endpoint = '';
+            if(sport === 'soccer') endpoint = 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/news';
+            if(sport === 'basketball') endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news';
+            if(sport === 'football') endpoint = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/news';
+
+            try {
+                const res = await fetch(endpoint);
+                const data = await res.json();
+                const articles = data.articles || [];
+
+                grid.innerHTML = '';
+
+                articles.slice(0, 4).forEach(article => {
+                    const img = article.images.length > 0 ? article.images[0].url : 'https://via.placeholder.com/400x200?text=No+Image';
+                    
+                    const card = document.createElement('a');
+                    card.href = article.links.web.href;
+                    card.target = "_blank";
+                    card.className = "group block bg-white dark:bg-brand-panel rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition";
+                    
+                    card.innerHTML = `
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute bottom-2 left-2 bg-brand-red text-white text-xs font-bold px-2 py-1 rounded">News</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2 group-hover:text-brand-red transition line-clamp-2">${article.headline}</h3>
+                            <p class="text-sm text-slate-500 line-clamp-2">${article.description}</p>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } catch (err) {
+                grid.innerHTML = '<div class="text-slate-500">Could not load news at this time.</div>';
+            }
+        }
+
+        // --- 6. UPLOAD MODAL LOGIC ---
+        function openUploadModal() { document.getElementById('upload-modal').classList.remove('hidden'); }
+        function closeUploadModal() { document.getElementById('upload-modal').classList.add('hidden'); }
+
+        document.getElementById('drop-zone').addEventListener('click', () => document.getElementById('file-input').click());
+
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            if(e.target.files.length > 0) {
+                document.querySelector('#drop-zone p').innerText = e.target.files[0].name;
+                document.querySelector('#drop-zone i').classList.replace('fa-cloud-arrow-up', 'fa-video');
+            }
+        });
+
+        function startUpload() {
+            const progressArea = document.getElementById('upload-progress');
+            const bar = document.getElementById('progress-bar');
+            const pct = document.getElementById('progress-percent');
+            
+            progressArea.classList.remove('hidden');
+            let width = 0;
+            const interval = setInterval(() => {
+                if(width >= 100) {
+                    clearInterval(interval);
+                    alert("Upload Complete! Video is processing.");
+                    closeUploadModal();
+                    width = 0;
+                    progressArea.classList.add('hidden');
+                } else {
+                    width += 5;
+                    bar.style.width = width + '%';
+                    pct.innerText = width + '%';
+                }
+            }, 100);
+        }
+
+        // Initialize App
+        loadScores('soccer');
+        loadNews('soccer');
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/89/84/85/898485ef825d844e6e169e4398d89602.js'></script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoFlow | Premium Web3 Testnet Faucet</title>
+    <meta name="description" content="Claim free Sepolia ETH, Mumbai MATIC, and Goerli ETH. Reliable Web3 faucet with real-time market data. Built by Shiboshree Ry.">
+    <meta name="keywords" content="crypto faucet, sepolia eth, web3, metamask connect, free testnet tokens, crypto dashboard, shiboshree ry, cryptoflow">
+    <meta name="author" content="Shiboshree Roy Full Stack Developer & Software Engineer">
+  
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.cryptoflow.io/">
+    <meta property="og:title" content="CryptoFlow | Web3 Faucet & Dashboard">
+    <meta property="og:description" content="Connect MetaMask and claim testnet tokens instantly.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/0f172a?text=CryptoFlow">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#6366f1', // Indigo
+                            accent: '#8b5cf6', // Violet
+                            dark: '#0f172a',
+                            panel: '#1e293b',
+                            success: '#10b981',
+                            warning: '#f59e0b',
+                            danger: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'slide-in': 'slideIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px -5px rgba(99, 102, 241, 0.5)' },
+                            '50%': { boxShadow: '0 0 30px -5px rgba(139, 92, 246, 0.6)' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-200 min-h-screen flex flex-col relative overflow-x-hidden">
+<script type='text/javascript' src='//saladattic.com/9d/e8/9e/9de89ee3d6f2b5cf2964a45c61e96bc6.js'></script>
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="fixed top-24 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Background Elements -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-primary/20 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-accent/20 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 glass-panel border-b-0 border-b-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-accent rounded-xl flex items-center justify-center text-white text-xl shadow-lg animate-pulse-glow">
+                        <i class="fa-solid fa-faucet-drip"></i>
+                    </div>
+                    <div class="hidden md:block">
+                        <span class="font-bold text-xl tracking-tight text-white block leading-none">Crypto<span class="text-brand-primary">Flow</span></span>
+                        <span class="text-[10px] text-slate-400 font-mono">TESTNET FAUCET</span>
+                    </div>
+                </div>
+
+                <!-- Live Ticker & Gas -->
+                <div class="hidden lg:flex items-center gap-6 px-6 py-2 bg-slate-800/50 rounded-full border border-slate-700/50">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-brands fa-ethereum text-slate-400"></i>
+                        <span class="text-xs font-mono font-bold" id="price-eth">Loading...</span>
+                    </div>
+                    <div class="w-px h-4 bg-slate-700"></div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-gas-pump text-slate-400"></i>
+                        <span class="text-xs font-mono font-bold text-brand-warning" id="gas-price">18 Gwei</span>
+                    </div>
+                </div>
+
+                <!-- Wallet Connect -->
+                <div class="flex items-center gap-4">
+                    <!-- Network Switcher -->
+                    <div class="relative group hidden sm:block">
+                        <button class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold py-2 px-4 rounded-lg border border-slate-700 transition">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            <span id="current-network">Sepolia</span>
+                            <i class="fa-solid fa-chevron-down ml-1"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-40 bg-brand-panel rounded-lg shadow-xl border border-slate-700 hidden group-hover:block z-50">
+                            <button onclick="switchNetwork('Sepolia')" class="block w-full text-left px-4 py-2 text-xs hover:bg-slate-700 rounded-t-lg">Sepolia ETH</button>
+                            <button onclick="switchNetwork('Mumbai')" class="block w-full text-left px-4 py-2 text-xs hover:bg-slate-700">Mumbai MATIC</button>
+                            <button onclick="switchNetwork('Goerli')" class="block w-full text-left px-4 py-2 text-xs hover:bg-slate-700 rounded-b-lg">Goerli ETH</button>
+                        </div>
+                    </div>
+
+                    <button id="connect-btn" onclick="connectWallet()" class="bg-gradient-to-r from-brand-primary to-brand-accent hover:opacity-90 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-lg flex items-center gap-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-5 h-5">
+                        <span>Connect Wallet</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow grid lg:grid-cols-2 gap-12 items-start">
+        
+        <!-- Left Column: Faucet Engine -->
+        <div class="space-y-8">
+            <div class="glass-panel p-1 rounded-2xl">
+                <div class="bg-slate-900/80 rounded-xl p-8 backdrop-blur-xl">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">Claim <span class="text-gradient">Testnet Tokens</span></h1>
+                    <p class="text-slate-400 mb-8">Select your asset and receive funds every 24 hours. Fast, reliable, and secure.</p>
+
+                    <!-- Input Form -->
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Token Selector -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-2">Asset</label>
+                                <select id="token-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 font-mono text-sm focus:outline-none focus:border-brand-primary text-white appearance-none cursor-pointer">
+                                    <option value="ETH">ETH (0.5)</option>
+                                    <option value="USDC">USDC (100)</option>
+                                    <option value="LINK">LINK (10)</option>
+                                </select>
+                            </div>
+                            <!-- Network (Visual) -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-2">Network</label>
+                                <div class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 font-mono text-sm text-slate-400 cursor-not-allowed">
+                                    <i class="fa-solid fa-network-wired mr-2"></i><span id="form-network">Sepolia</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-2">Wallet Address</label>
+                            <div class="relative">
+                                <input type="text" id="wallet-input" placeholder="0x..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 pl-12 font-mono text-sm focus:outline-none focus:border-brand-primary transition text-white">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Captcha (Simulation) -->
+                        <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3 border border-slate-700 cursor-pointer hover:bg-slate-700/50 transition" onclick="toggleCaptcha(this)">
+                            <div class="w-6 h-6 border-2 border-slate-500 rounded flex items-center justify-center" id="captcha-box">
+                                <i class="fa-solid fa-check text-brand-success hidden"></i>
+                            </div>
+                            <span class="text-sm font-medium">I am not a robot</span>
+                            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" class="w-8 h-8 ml-auto opacity-50">
+                        </div>
+
+                        <button id="claim-btn" onclick="claimTokens()" class="w-full bg-brand-primary hover:bg-indigo-600 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                            <span>Send Me ETH</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                        <div id="status-msg" class="hidden text-center text-sm font-bold p-3 rounded-lg bg-slate-800 border border-slate-700"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-4">
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <p class="text-xs text-slate-400 uppercase font-bold mb-1">Pool Balance</p>
+                    <p class="text-xl font-mono text-brand-success">1,420 ETH</p>
+                </div>
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <p class="text-xs text-slate-400 uppercase font-bold mb-1">Users</p>
+                    <p class="text-xl font-mono text-white">42.5k</p>
+                </div>
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <p class="text-xs text-slate-400 uppercase font-bold mb-1">Gas Avg</p>
+                    <p class="text-xl font-mono text-brand-warning">18 Gwei</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Recent Activity & Info -->
+        <div class="space-y-6">
+            
+            <!-- Referral Program (New) -->
+            <div class="bg-gradient-to-br from-indigo-900/80 to-purple-900/80 border border-indigo-500/30 p-6 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i class="fa-solid fa-users text-6xl"></i>
+                </div>
+                <h3 class="font-bold text-white mb-2 text-lg">🚀 Boost Your Limits</h3>
+                <p class="text-sm text-slate-300 mb-4">
+                    Invite developers and earn <strong>extra claim quota</strong> for every active referral.
+                </p>
+                <div class="flex gap-2">
+                    <input type="text" id="referral-link" value="Connect wallet to see link" readonly class="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-xs font-mono text-slate-300 focus:outline-none">
+                    <button onclick="copyReferral()" class="bg-white text-brand-dark px-4 py-2 rounded-lg font-bold text-xs hover:bg-slate-200 transition">Copy</button>
+                </div>
+            </div>
+
+            <!-- Latest Transactions -->
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <div class="p-4 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
+                    <h3 class="font-bold text-white"><i class="fa-solid fa-list-ul mr-2 text-brand-accent"></i> Recent Claims</h3>
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                </div>
+                <div id="tx-list" class="divide-y divide-slate-700/50 max-h-[400px] overflow-y-auto">
+                    <!-- Transactions Injected via JS -->
+                    <div class="p-8 text-center text-slate-500 text-sm">
+                        <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Syncing blockchain data...
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
+            <p>&copy; 2025 CryptoFlow. Built for the Decentralized Web.</p>
+            <div class="flex justify-center gap-4 mt-4">
+                <a href="#" class="hover:text-white">Terms</a>
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Etherscan</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. STATE & CONFIG ---
+        let currentAccount = null;
+        let isCaptchaSolved = false;
+        const COOLDOWN_HOURS = 24;
+        
+        // Init
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchPrices();
+            loadTransactions();
+            checkCooldown();
+            startGasTracker();
+            
+            // Check if MetaMask is already connected
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                handleAccountsChanged([window.ethereum.selectedAddress]);
+            }
+        });
+
+        // --- 2. WALLET CONNECTION (MetaMask Real Logic) ---
+        async function connectWallet() {
+            const btn = document.getElementById('connect-btn');
+            
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    handleAccountsChanged(accounts);
+                    showToast('Wallet Connected Successfully!', 'success');
+                } catch (error) {
+                    console.error(error);
+                    btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Failed';
+                    showToast('Connection Failed. Try again.', 'error');
+                    setTimeout(() => resetConnectBtn(), 2000);
+                }
+            } else {
+                showToast('MetaMask not installed!', 'error');
+                btn.innerHTML = 'Install MetaMask';
+            }
+        }
+
+        function handleAccountsChanged(accounts) {
+            if (accounts.length === 0) {
+                console.log('Please connect to MetaMask.');
+                resetConnectBtn();
+            } else {
+                currentAccount = accounts[0];
+                const shortAddr = `${currentAccount.substring(0, 6)}...${currentAccount.substring(currentAccount.length - 4)}`;
+                
+                // Update Button
+                const btn = document.getElementById('connect-btn');
+                btn.innerHTML = `<span class="w-2 h-2 bg-green-400 rounded-full"></span> ${shortAddr}`;
+                btn.classList.replace('bg-gradient-to-r', 'bg-slate-800');
+                btn.classList.add('border', 'border-slate-700');
+                
+                // Auto-fill input
+                document.getElementById('wallet-input').value = currentAccount;
+                
+                // Update Referral Link
+                document.getElementById('referral-link').value = `https://cryptoflow.io?ref=${currentAccount}`;
+            }
+        }
+
+        function resetConnectBtn() {
+            const btn = document.getElementById('connect-btn');
+            btn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-5 h-5"> <span>Connect Wallet</span>';
+        }
+
+        // --- 3. API & SIMULATIONS ---
+        async function fetchPrices() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum,bitcoin&vs_currencies=usd&include_24hr_change=true');
+                const data = await res.json();
+                updateTicker('eth', data.ethereum);
+                // updateTicker('btc', data.bitcoin); // Optional
+            } catch (e) {
+                console.log("API Rate Limit or Error", e);
+            }
+        }
+
+        function updateTicker(id, data) {
+            const el = document.getElementById(`price-${id}`);
+            const change = data.usd_24h_change.toFixed(2);
+            const color = change >= 0 ? 'text-green-400' : 'text-red-400';
+            const icon = change >= 0 ? 'fa-caret-up' : 'fa-caret-down';
+            el.innerHTML = `$${data.usd.toLocaleString()} <span class="${color} ml-1 text-[10px]"><i class="fa-solid ${icon}"></i> ${Math.abs(change)}%</span>`;
+        }
+
+        function startGasTracker() {
+            setInterval(() => {
+                // Simulate Gas Fluctuation (15-30 Gwei)
+                const gas = Math.floor(Math.random() * (30 - 15 + 1) + 15);
+                const el = document.getElementById('gas-price');
+                el.innerText = `${gas} Gwei`;
+                el.className = `text-xs font-mono font-bold ${gas > 25 ? 'text-brand-danger' : gas > 20 ? 'text-brand-warning' : 'text-brand-success'}`;
+            }, 5000);
+        }
+
+        // --- 4. FAUCET LOGIC ---
+        // Update Button Text based on Selection
+        document.getElementById('token-select').addEventListener('change', (e) => {
+            const btn = document.getElementById('claim-btn');
+            const token = e.target.value;
+            btn.innerHTML = `<span>Send Me ${token}</span> <i class="fa-solid fa-arrow-right"></i>`;
+        });
+
+        function toggleCaptcha(el) {
+            const box = el.querySelector('#captcha-box');
+            const icon = box.querySelector('i');
+            
+            box.classList.add('bg-brand-success', 'border-brand-success');
+            icon.classList.remove('hidden');
+            isCaptchaSolved = true;
+        }
+
+        function claimTokens() {
+            const input = document.getElementById('wallet-input');
+            const status = document.getElementById('status-msg');
+            const btn = document.getElementById('claim-btn');
+            const token = document.getElementById('token-select').value;
+            let amount = '0.5 ETH';
+            if(token === 'USDC') amount = '100 USDC';
+            if(token === 'LINK') amount = '10 LINK';
+
+            if (!input.value.startsWith('0x') || input.value.length < 42) {
+                return showToast("Invalid Ethereum Address", 'error');
+            }
+            if (!isCaptchaSolved) {
+                return showToast("Please complete the captcha.", 'warning');
+            }
+
+            // Lock UI
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing Transaction...';
+            status.classList.remove('hidden');
+            status.className = "text-center text-sm font-bold p-3 rounded-lg bg-yellow-500/20 text-yellow-200 border border-yellow-500/30 block";
+            status.innerHTML = "Interacting with Smart Contract...";
+
+            // Simulate Blockchain Delay
+            setTimeout(() => {
+                // Success
+                const txHash = '0x' + Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+                
+                status.className = "text-center text-sm font-bold p-3 rounded-lg bg-green-500/20 text-green-200 border border-green-500/30 block";
+                status.innerHTML = `Success! Transaction Hash: <a href="#" class="underline font-mono">${txHash.substring(0, 10)}...</a>`;
+                
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Claimed';
+                
+                showToast(`Successfully sent ${amount} to your wallet!`, 'success');
+
+                // Save Cooldown
+                const cooldownData = {
+                    address: input.value,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('cryptoFlowCooldown', JSON.stringify(cooldownData));
+                
+                // Add to History UI
+                addTransactionToUI(txHash, input.value, amount);
+
+            }, 3000);
+        }
+
+        function checkCooldown() {
+            const data = JSON.parse(localStorage.getItem('cryptoFlowCooldown'));
+            if (!data) return;
+
+            const diff = Date.now() - data.timestamp;
+            const hoursLeft = COOLDOWN_HOURS - (diff / (1000 * 60 * 60));
+
+            if (hoursLeft > 0) {
+                const btn = document.getElementById('claim-btn');
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-clock"></i> Cooldown: ${Math.ceil(hoursLeft)}h remaining`;
+                btn.classList.add('bg-slate-700', 'text-slate-400');
+                btn.classList.remove('bg-brand-primary');
+            }
+        }
+
+        // --- 5. UI UTILS ---
+        function switchNetwork(net) {
+            document.getElementById('current-network').innerText = net;
+            document.getElementById('form-network').innerText = net;
+            showToast(`Switched network to ${net}`, 'info');
+        }
+
+        function loadTransactions() {
+            const container = document.getElementById('tx-list');
+            const mockTx = [
+                { hash: '0x3a...1b2c', age: '2 mins ago', amount: '0.5 ETH' },
+                { hash: '0x8f...9e21', age: '5 mins ago', amount: '100 USDC' },
+                { hash: '0x1d...4a5b', age: '12 mins ago', amount: '0.5 ETH' }
+            ];
+            
+            container.innerHTML = mockTx.map(tx => `
+                <div class="p-4 flex justify-between items-center text-sm hover:bg-slate-800/30 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center text-green-400">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                        <div>
+                            <p class="font-mono text-slate-300 font-bold">${tx.hash}</p>
+                            <p class="text-xs text-slate-500">${tx.age}</p>
+                        </div>
+                    </div>
+                    <span class="font-bold text-white bg-slate-700 px-2 py-1 rounded text-xs">${tx.amount}</span>
+                </div>
+            `).join('');
+        }
+
+        function addTransactionToUI(hash, address, amount) {
+            const container = document.getElementById('tx-list');
+            const html = `
+                <div class="p-4 flex justify-between items-center text-sm bg-brand-success/10 border-l-2 border-brand-success animate-pulse">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div>
+                            <p class="font-mono text-slate-300 font-bold">${hash.substring(0, 10)}...</p>
+                            <p class="text-xs text-green-400">Just now</p>
+                        </div>
+                    </div>
+                    <span class="font-bold text-white bg-slate-700 px-2 py-1 rounded text-xs">${amount}</span>
+                </div>
+            `;
+            container.insertAdjacentHTML('afterbegin', html);
+        }
+
+        function copyReferral() {
+            const input = document.getElementById('referral-link');
+            if(input.value.includes('Connect')) return showToast('Please connect wallet first', 'warning');
+            
+            input.select();
+            navigator.clipboard.writeText(input.value);
+            showToast('Referral link copied!', 'success');
+        }
+
+        // Toast System
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let colors = 'bg-slate-800 border-slate-600 text-white';
+            let icon = 'fa-info-circle';
+            
+            if(type === 'success') { colors = 'bg-green-900/90 border-green-500 text-white'; icon = 'fa-check-circle'; }
+            if(type === 'error') { colors = 'bg-red-900/90 border-red-500 text-white'; icon = 'fa-circle-exclamation'; }
+            if(type === 'warning') { colors = 'bg-yellow-900/90 border-yellow-500 text-white'; icon = 'fa-triangle-exclamation'; }
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-lg border shadow-xl backdrop-blur-md pointer-events-auto animate-slide-in ${colors}`;
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span class="text-sm font-bold">${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            // Auto remove
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/b6/42/fc/b642fcff049a4896624b8b494f65338d.js'></script>
+</body>
+</html>

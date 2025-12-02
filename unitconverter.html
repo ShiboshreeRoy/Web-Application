@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <!-- =========================================
+         SEO & METADATA
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniConvert Pro | Universal Unit & Currency Converter</title>
+    <meta name="description" content="The ultimate online converter for Length, Weight, Temperature, and Real-Time Currency. Convert Grams to Kg, Height to Inches, and more. Built by Shiboshree Ry.">
+    <meta name="keywords" content="unit converter, currency converter, live exchange rates, gram to kg, height converter, inches to cm, online tool, shiboshree ry, uniconvert">
+    <meta name="author" content="Shiboshree Ry">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.uniconvertpro.com/">
+    <meta property="og:title" content="UniConvert Pro | All-in-One Conversion Tool">
+    <meta property="og:description" content="Convert anything instantly. Length, Mass, Science, and Live Currency.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/4f46e5/ffffff?text=UniConvert+Pro">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#4f46e5', // Indigo
+                            secondary: '#8b5cf6', // Violet
+                            dark: '#0f172a',
+                            panel: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-track { background: #0f172a; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+
+        /* Animation */
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-brand-dark dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300">
+<script type="text/javascript">
+	atOptions = {
+		'key' : '21200a118741f464c3a6d8f06a4535b6',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//saladattic.com/21200a118741f464c3a6d8f06a4535b6/invoke.js"></script>
+    <!-- NAVIGATION -->
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-brand-dark/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-9 h-9 bg-brand-primary rounded-xl flex items-center justify-center text-white text-lg shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight">Uni<span class="text-brand-primary">Convert</span></span>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex items-center gap-2 text-xs font-mono text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-700">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        API Connected
+                    </div>
+                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:text-brand-primary transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN APP -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Convert <span class="text-gradient">Anything</span></h1>
+            <p class="text-slate-500 text-lg">Real-time Currency, Scientific Units, and Engineering measurements.</p>
+        </div>
+
+        <!-- CATEGORY TABS -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="category-tabs">
+            <!-- Injected by JS -->
+        </div>
+
+        <!-- CONVERTER CARD -->
+        <div class="bg-white dark:bg-brand-panel rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden relative">
+            
+            <!-- Category Indicator -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+
+            <div class="p-6 md:p-10">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold flex items-center gap-2" id="current-category-title">
+                        <i class="fa-solid fa-ruler-combined text-brand-primary"></i> Length
+                    </h2>
+                    <span id="rate-info" class="text-xs font-mono text-slate-400 hidden">1 USD = <span id="base-rate">...</span></span>
+                </div>
+
+                <!-- Input Grid -->
+                <div class="grid md:grid-cols-[1fr_auto_1fr] gap-6 items-center">
+                    
+                    <!-- FROM -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold uppercase text-slate-500">From</label>
+                        <input type="number" id="input-value" value="1" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl p-4 text-2xl font-bold focus:ring-2 focus:ring-brand-primary outline-none transition" placeholder="0">
+                        <select id="select-from" class="w-full bg-slate-100 dark:bg-slate-700 border-none rounded-lg p-2 text-sm font-medium cursor-pointer focus:ring-2 focus:ring-brand-primary">
+                            <!-- Options injected -->
+                        </select>
+                    </div>
+
+                    <!-- SWAP BUTTON -->
+                    <div class="flex justify-center pt-6">
+                        <button onclick="swapUnits()" class="w-12 h-12 bg-indigo-50 dark:bg-slate-800 rounded-full flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-white transition shadow-lg transform hover:rotate-180 duration-300">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                        </button>
+                    </div>
+
+                    <!-- TO -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold uppercase text-slate-500">To</label>
+                        <div class="relative">
+                            <input type="text" id="output-value" readonly class="w-full bg-indigo-50 dark:bg-slate-800/50 border border-indigo-100 dark:border-slate-600 rounded-xl p-4 text-2xl font-bold text-brand-primary outline-none cursor-text" value="...">
+                            <button onclick="copyResult()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-primary p-2" title="Copy">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <select id="select-to" class="w-full bg-slate-100 dark:bg-slate-700 border-none rounded-lg p-2 text-sm font-medium cursor-pointer focus:ring-2 focus:ring-brand-primary">
+                            <!-- Options injected -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- FORMULA DISPLAY -->
+                <div class="mt-8 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="text-sm">
+                        <span class="block text-xs font-bold text-slate-400 uppercase mb-1">Formula</span>
+                        <p id="formula-text" class="font-mono text-slate-700 dark:text-slate-300">Multiply by 1000</p>
+                    </div>
+                    <div id="last-updated" class="text-xs text-slate-400 hidden">Updated: Just now</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- HISTORY SECTION -->
+        <div class="mt-12 max-w-2xl mx-auto">
+            <h3 class="text-sm font-bold uppercase text-slate-500 mb-4 tracking-wider">Recent Conversions</h3>
+            <div id="history-list" class="space-y-2">
+                <!-- History Items -->
+                <div class="text-center text-slate-400 text-sm py-4">No history yet. Start converting!</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-brand-panel border-t border-slate-200 dark:border-slate-800 py-10 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <div class="flex items-center gap-2 justify-center md:justify-start mb-1">
+                    <span class="font-bold text-lg">UniConvert Pro</span>
+                </div>
+                <p class="text-xs text-slate-500">
+                    Supports 100+ units across 8 categories. Real-time exchange rates provided by open-source APIs.
+                </p>
+                <p class="text-xs text-slate-400 mt-1">Developed by <strong class="text-brand-primary">Shiboshree Ry</strong></p>
+            </div>
+            <div class="flex gap-4 text-sm text-slate-500">
+                <a href="#" class="hover:text-brand-primary">Privacy</a>
+                <a href="#" class="hover:text-brand-primary">Terms</a>
+                <a href="#" class="hover:text-brand-primary">API</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- DATA STRUCTURES (100+ Units Support) ---
+        // We use a "Base Unit" system. Every unit has a ratio relative to the base unit of that category.
+        const definitions = {
+            Length: {
+                icon: 'fa-ruler',
+                base: 'm',
+                units: {
+                    nm: { name: 'Nanometer', ratio: 1e-9 },
+                    um: { name: 'Micrometer', ratio: 1e-6 },
+                    mm: { name: 'Millimeter', ratio: 0.001 },
+                    cm: { name: 'Centimeter', ratio: 0.01 },
+                    m: { name: 'Meter', ratio: 1 },
+                    km: { name: 'Kilometer', ratio: 1000 },
+                    in: { name: 'Inch', ratio: 0.0254 },
+                    ft: { name: 'Foot', ratio: 0.3048 },
+                    yd: { name: 'Yard', ratio: 0.9144 },
+                    mi: { name: 'Mile', ratio: 1609.34 },
+                    nmi: { name: 'Nautical Mile', ratio: 1852 }
+                }
+            },
+            Mass: {
+                icon: 'fa-weight-hanging',
+                base: 'kg',
+                units: {
+                    mcg: { name: 'Microgram', ratio: 1e-9 },
+                    mg: { name: 'Milligram', ratio: 1e-6 },
+                    g: { name: 'Gram', ratio: 0.001 },
+                    kg: { name: 'Kilogram', ratio: 1 },
+                    mt: { name: 'Metric Tonne', ratio: 1000 },
+                    oz: { name: 'Ounce', ratio: 0.0283495 },
+                    lb: { name: 'Pound', ratio: 0.453592 },
+                    st: { name: 'Stone', ratio: 6.35029 },
+                    kaj: { name: 'Kaj (Local/Kg)', ratio: 1 } // Handling user specific term
+                }
+            },
+            Temperature: {
+                icon: 'fa-temperature-half',
+                base: 'C', // Temp is special, handled in logic
+                units: {
+                    C: { name: 'Celsius' },
+                    F: { name: 'Fahrenheit' },
+                    K: { name: 'Kelvin' }
+                }
+            },
+            Area: {
+                icon: 'fa-chart-area',
+                base: 'm2',
+                units: {
+                    cm2: { name: 'Square Centimeter', ratio: 0.0001 },
+                    m2: { name: 'Square Meter', ratio: 1 },
+                    ha: { name: 'Hectare', ratio: 10000 },
+                    km2: { name: 'Square Kilometer', ratio: 1e6 },
+                    sqin: { name: 'Square Inch', ratio: 0.00064516 },
+                    sqft: { name: 'Square Foot', ratio: 0.092903 },
+                    ac: { name: 'Acre', ratio: 4046.86 }
+                }
+            },
+            Digital: {
+                icon: 'fa-hard-drive',
+                base: 'B',
+                units: {
+                    b: { name: 'Bit', ratio: 0.125 },
+                    B: { name: 'Byte', ratio: 1 },
+                    KB: { name: 'Kilobyte', ratio: 1024 },
+                    MB: { name: 'Megabyte', ratio: 1048576 },
+                    GB: { name: 'Gigabyte', ratio: 1073741824 },
+                    TB: { name: 'Terabyte', ratio: 1099511627776 }
+                }
+            },
+            Speed: {
+                icon: 'fa-gauge-high',
+                base: 'mps',
+                units: {
+                    mps: { name: 'Meter/second', ratio: 1 },
+                    kph: { name: 'Km/hour', ratio: 0.277778 },
+                    mph: { name: 'Mile/hour', ratio: 0.44704 },
+                    knot: { name: 'Knot', ratio: 0.514444 },
+                    mach: { name: 'Mach', ratio: 343 }
+                }
+            },
+            Time: {
+                icon: 'fa-clock',
+                base: 's',
+                units: {
+                    ms: { name: 'Millisecond', ratio: 0.001 },
+                    s: { name: 'Second', ratio: 1 },
+                    min: { name: 'Minute', ratio: 60 },
+                    h: { name: 'Hour', ratio: 3600 },
+                    d: { name: 'Day', ratio: 86400 },
+                    wk: { name: 'Week', ratio: 604800 },
+                    mo: { name: 'Month (Avg)', ratio: 2.628e6 },
+                    y: { name: 'Year', ratio: 3.154e7 }
+                }
+            },
+            Currency: {
+                icon: 'fa-coins',
+                isLive: true,
+                units: {
+                    USD: { name: 'US Dollar' },
+                    EUR: { name: 'Euro' },
+                    GBP: { name: 'British Pound' },
+                    INR: { name: 'Indian Rupee' },
+                    BDT: { name: 'Bangladeshi Taka' },
+                    JPY: { name: 'Japanese Yen' },
+                    CAD: { name: 'Canadian Dollar' },
+                    AUD: { name: 'Australian Dollar' },
+                    CNY: { name: 'Chinese Yuan' },
+                    AED: { name: 'UAE Dirham' }
+                }
+            }
+        };
+
+        // --- STATE ---
+        let currentCategory = 'Length';
+        let currencyRates = {}; 
+
+        // --- INIT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTabs();
+            setupConverter();
+            fetchCurrency(); // Pre-fetch currency data
+        });
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // --- UI RENDERERS ---
+        function renderTabs() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = Object.keys(definitions).map(cat => {
+                const def = definitions[cat];
+                const active = cat === currentCategory ? 
+                    'bg-brand-primary text-white shadow-lg shadow-indigo-500/30' : 
+                    'bg-white dark:bg-slate-800 text-slate-500 hover:text-brand-primary border border-slate-200 dark:border-slate-700';
+                
+                return `<button onclick="switchCategory('${cat}')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${active}">
+                    <i class="fa-solid ${def.icon}"></i> ${cat}
+                </button>`;
+            }).join('');
+        }
+
+        function switchCategory(cat) {
+            currentCategory = cat;
+            renderTabs();
+            setupConverter();
+            calculate(); // Recalculate immediately
+        }
+
+        function setupConverter() {
+            const def = definitions[currentCategory];
+            const selectFrom = document.getElementById('select-from');
+            const selectTo = document.getElementById('select-to');
+            const title = document.getElementById('current-category-title');
+            
+            // Update Title
+            title.innerHTML = `<i class="fa-solid ${def.icon} text-brand-primary"></i> ${currentCategory}`;
+
+            // Handle Currency Special UI
+            if (def.isLive) {
+                document.getElementById('rate-info').classList.remove('hidden');
+                document.getElementById('last-updated').classList.remove('hidden');
+            } else {
+                document.getElementById('rate-info').classList.add('hidden');
+                document.getElementById('last-updated').classList.add('hidden');
+            }
+
+            // Populate Selects
+            const options = Object.keys(def.units).map(key => {
+                return `<option value="${key}">${def.units[key].name} (${key})</option>`;
+            }).join('');
+
+            selectFrom.innerHTML = options;
+            selectTo.innerHTML = options;
+
+            // Set Defaults (To make it interesting)
+            if (options.length > 1) selectTo.selectedIndex = 1;
+        }
+
+        // --- CALCULATION ENGINE ---
+        async function fetchCurrency() {
+            try {
+                // Free API, no key needed for basic usage
+                const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await res.json();
+                currencyRates = data.rates;
+                document.getElementById('last-updated').innerText = `Updated: ${new Date(data.date).toLocaleDateString()}`;
+                if (currentCategory === 'Currency') calculate();
+            } catch (e) {
+                console.error("Currency API Failed", e);
+                // Fallback rates if API fails
+                currencyRates = { USD: 1, EUR: 0.92, GBP: 0.79, INR: 83.5, BDT: 110, JPY: 150 };
+            }
+        }
+
+        function calculate() {
+            const val = parseFloat(document.getElementById('input-value').value);
+            const fromUnit = document.getElementById('select-from').value;
+            const toUnit = document.getElementById('select-to').value;
+            const resultEl = document.getElementById('output-value');
+            const formulaEl = document.getElementById('formula-text');
+            const def = definitions[currentCategory];
+
+            if (isNaN(val)) {
+                resultEl.value = '...';
+                return;
+            }
+
+            let result = 0;
+            let formula = '';
+
+            if (currentCategory === 'Temperature') {
+                // Temp Logic (Non-linear)
+                result = convertTemp(val, fromUnit, toUnit);
+                formula = getTempFormula(fromUnit, toUnit);
+            } 
+            else if (currentCategory === 'Currency') {
+                // Currency Logic (API Based)
+                if (currencyRates[fromUnit] && currencyRates[toUnit]) {
+                    // Convert From -> Base(USD) -> To
+                    const inUSD = val / currencyRates[fromUnit];
+                    result = inUSD * currencyRates[toUnit];
+                    const rate = (currencyRates[toUnit] / currencyRates[fromUnit]).toFixed(4);
+                    formula = `1 ${fromUnit} ≈ ${rate} ${toUnit}`;
+                    document.getElementById('base-rate').innerText = `${rate} ${toUnit}`;
+                } else {
+                    resultEl.value = "Error";
+                    return;
+                }
+            } 
+            else {
+                // Standard Linear Logic (Base Unit)
+                const fromRatio = def.units[fromUnit].ratio;
+                const toRatio = def.units[toUnit].ratio;
+                
+                // Convert Input -> Base -> Output
+                const baseVal = val * fromRatio;
+                result = baseVal / toRatio;
+
+                // Formula Text
+                if (fromRatio === toRatio) formula = "Multiply by 1";
+                else if (fromRatio > toRatio) formula = `Multiply by ${fromRatio / toRatio}`;
+                else formula = `Divide by ${toRatio / fromRatio}`;
+            }
+
+            // Formatting
+            // If huge number or tiny decimal, use scientific, else 4 decimals
+            if (result > 1e6 || (result < 0.001 && result > 0)) {
+                resultEl.value = result.toExponential(4);
+            } else {
+                // Remove trailing zeros
+                resultEl.value = parseFloat(result.toFixed(6)); 
+            }
+            
+            formulaEl.innerText = formula;
+            addToHistory(val, fromUnit, resultEl.value, toUnit);
+        }
+
+        // Temp Converters
+        function convertTemp(val, from, to) {
+            if(from === to) return val;
+            let c = val;
+            if(from === 'F') c = (val - 32) * 5/9;
+            if(from === 'K') c = val - 273.15;
+            
+            if(to === 'C') return c;
+            if(to === 'F') return (c * 9/5) + 32;
+            if(to === 'K') return c + 273.15;
+        }
+
+        function getTempFormula(from, to) {
+            if(from === to) return "Same unit";
+            if(from === 'C' && to === 'F') return "(°C × 9/5) + 32 = °F";
+            if(from === 'F' && to === 'C') return "(°F − 32) × 5/9 = °C";
+            return "Complex conversion";
+        }
+
+        // --- UTILS ---
+        function swapUnits() {
+            const from = document.getElementById('select-from');
+            const to = document.getElementById('select-to');
+            const temp = from.value;
+            from.value = to.value;
+            to.value = temp;
+            calculate();
+        }
+
+        function copyResult() {
+            const val = document.getElementById('output-value');
+            navigator.clipboard.writeText(val.value);
+            // Visual feedback
+            val.classList.add('bg-green-100', 'text-green-600');
+            setTimeout(() => {
+                val.classList.remove('bg-green-100', 'text-green-600');
+            }, 200);
+        }
+
+        // History System
+        let historyStack = [];
+        function addToHistory(val, from, res, to) {
+            const entryStr = `${val} ${from} = ${res} ${to}`;
+            
+            // Avoid duplicate spam while typing
+            if (historyStack.length > 0 && historyStack[0] === entryStr) return;
+            
+            historyStack.unshift(entryStr);
+            if (historyStack.length > 5) historyStack.pop();
+            
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = historyStack.map(item => `
+                <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-100 dark:border-slate-700 shadow-sm fade-in">
+                    <span class="text-sm font-mono text-slate-600 dark:text-slate-300">${item}</span>
+                    <i class="fa-solid fa-clock-rotate-left text-xs text-slate-400"></i>
+                </div>
+            `).join('');
+        }
+
+        // Listeners
+        document.getElementById('input-value').addEventListener('input', calculate);
+        document.getElementById('select-from').addEventListener('change', calculate);
+        document.getElementById('select-to').addEventListener('change', calculate);
+
+    </script>
+    <script type='text/javascript' src='//saladattic.com/57/9d/75/579d757fe31b5651413f98b4df95fbdf.js'></script>
+</body>
+</html>

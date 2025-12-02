@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================
+         SEO & METADATA (Advanced)
+         ========================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SonicConvert | Professional Video to MP3 Converter & Audio Extractor</title>
+    <meta name="description" content="Convert video files or URLs to high-quality MP3 (320kbps). Edit ID3 tags, trim audio, and download instantly. The fastest free online audio converter built by [Your Name].">
+    <meta name="keywords" content="mp3 converter, video to audio, youtube to mp3, audio extractor, 320kbps mp3, online converter, free mp3 tool">
+    <meta name="author" content="Shiboshree Ry , full Stack Web developer And Software Engineer ">
+    <meta name="application-name" content="SonicConvert">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.sonicconvert.com/">
+    <meta property="og:title" content="SonicConvert | High Fidelity Audio Extraction">
+    <meta property="og:description" content="Extract crystal clear audio from any video source. Features include Metadata editing and Bitrate control.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/ffffff?text=SonicConvert+Pro">
+
+    <!-- Schema.org Markup for Software Application -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SonicConvert",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+        }
+        .animate-progress {
+            transition: width 0.5s ease-in-out;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+<script type='text/javascript' src='//saladattic.com/da/56/f7/da56f70c9ebc6416c12a34a853a23dd4.js'></script>
+    <!-- NAVIGATION -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Brand -->
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-wave-square"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">SonicConvert</span>
+                </div>
+
+                <!-- Developer Credit -->
+                <div class="hidden md:flex items-center gap-4 text-sm text-slate-500">
+                    <span>Current Version: <strong>v2.4.0</strong></span>
+                    <span class="w-px h-4 bg-slate-300"></span>
+                    <span>Built by <a href="#" class="text-indigo-600 font-bold hover:underline">Shiboshree Ry</a></span>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button class="text-slate-500 hover:text-indigo-600 transition"><i class="fa-solid fa-moon"></i></button>
+                    <a href="#pro" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-crown text-yellow-400"></i> Go Pro
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONVERTER SECTION -->
+    <main class="flex-grow relative overflow-hidden">
+        <!-- Background Decor -->
+        <div class="absolute top-0 left-0 w-full h-96 gradient-bg -skew-y-3 transform origin-top-left scale-110 z-0"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-4 py-16">
+            
+            <!-- Headline -->
+            <div class="text-center text-white mb-10">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 shadow-sm">Convert Anything to Audio</h1>
+                <p class="text-lg md:text-xl text-indigo-100 max-w-2xl mx-auto">
+                    The advanced tool for creators. Extract audio from videos, edit tags, and download in 320kbps.
+                </p>
+            </div>
+
+            <!-- THE CONVERTER CARD -->
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+                
+                <!-- Engine Tabs -->
+                <div class="flex border-b border-slate-100">
+                    <button onclick="switchTab('url')" id="tab-url" class="flex-1 py-4 text-center font-bold text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50 transition-colors">
+                        <i class="fa-solid fa-link mr-2"></i> Paste URL
+                    </button>
+                    <button onclick="switchTab('file')" id="tab-file" class="flex-1 py-4 text-center font-bold text-slate-500 hover:text-slate-700 transition-colors">
+                        <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Upload File
+                    </button>
+                </div>
+
+                <div class="p-8">
+                    <!-- URL INPUT MODE -->
+                    <div id="mode-url" class="space-y-6">
+                        <div class="relative">
+                            <input type="url" id="url-input" placeholder="Paste YouTube, SoundCloud, or Vimeo link..." 
+                                class="w-full pl-12 pr-4 py-5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all text-lg outline-none">
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">
+                                <i class="fa-brands fa-youtube"></i>
+                            </div>
+                            <button onclick="fetchMetadata()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition">
+                                Load
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FILE UPLOAD MODE -->
+                    <div id="mode-file" class="hidden">
+                        <div class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 p-10 text-center hover:bg-indigo-50 hover:border-indigo-400 transition cursor-pointer group" onclick="document.getElementById('file-upload').click()">
+                            <input type="file" id="file-upload" class="hidden" accept="video/*,audio/*">
+                            <div class="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform text-indigo-500 text-2xl">
+                                <i class="fa-solid fa-file-arrow-up"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-700 mb-1">Click to browse or Drag file here</h3>
+                            <p class="text-sm text-slate-400">MP4, MOV, MKV, AVI (Max 500MB)</p>
+                        </div>
+                    </div>
+
+                    <!-- ADVANCED OPTIONS (Accordion) -->
+                    <div id="advanced-options" class="mt-8 pt-6 border-t border-slate-100 hidden opacity-0 transition-opacity duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-sliders"></i> Conversion Settings
+                            </h3>
+                            <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-bold">PRO FEATURE</span>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Left: Format & Quality -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-500 mb-2">Audio Quality (Bitrate)</label>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <button class="quality-btn py-2 border rounded-lg text-sm font-bold text-slate-600 hover:border-indigo-500" onclick="selectQuality(this, '128')">128k</button>
+                                        <button class="quality-btn py-2 border rounded-lg text-sm font-bold text-slate-600 hover:border-indigo-500" onclick="selectQuality(this, '192')">192k</button>
+                                        <button class="quality-btn py-2 border border-indigo-600 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold" onclick="selectQuality(this, '320')">320k HQ</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-500 mb-2">Time Trim (Optional)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" placeholder="00:00" class="w-full p-2 border rounded-lg text-center text-sm">
+                                        <span class="text-slate-300 self-center">-</span>
+                                        <input type="text" placeholder="End" class="w-full p-2 border rounded-lg text-center text-sm">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Metadata (ID3) -->
+                            <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">ID3 Metadata Editor</p>
+                                <input type="text" id="meta-title" placeholder="Song Title" class="w-full p-2 bg-white border border-slate-200 rounded text-sm focus:border-indigo-500 outline-none">
+                                <input type="text" id="meta-artist" placeholder="Artist Name" class="w-full p-2 bg-white border border-slate-200 rounded text-sm focus:border-indigo-500 outline-none">
+                                <input type="text" id="meta-album" placeholder="Album" class="w-full p-2 bg-white border border-slate-200 rounded text-sm focus:border-indigo-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="mt-8">
+                            <button onclick="startConversion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-bold py-4 rounded-xl shadow-xl shadow-indigo-500/30 transition transform hover:scale-[1.01] flex items-center justify-center gap-3">
+                                <span>Convert Now</span>
+                                <i class="fa-solid fa-bolt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PROGRESS UI (Overlay) -->
+                    <div id="progress-ui" class="hidden mt-8 text-center space-y-4">
+                        <div class="w-16 h-16 mx-auto bg-indigo-50 rounded-full flex items-center justify-center relative">
+                            <i class="fa-solid fa-gear fa-spin text-2xl text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800" id="progress-text">Initializing...</h3>
+                        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-pink-500 h-full w-0 animate-progress"></div>
+                        </div>
+                        <p class="text-xs text-slate-400">Processing media on secure server...</p>
+                    </div>
+
+                    <!-- RESULT UI (Success) -->
+                    <div id="result-ui" class="hidden mt-8 bg-green-50 border border-green-100 rounded-xl p-6 text-center animate-pulse-once">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-1">Conversion Complete!</h3>
+                        <p class="text-sm text-slate-500 mb-4" id="result-filename">song_title.mp3 (4.2 MB)</p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                            <button onclick="triggerDownload()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold shadow-lg shadow-green-500/30 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-download"></i> Download MP3
+                            </button>
+                            <button class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-6 py-2 rounded-lg font-medium transition">
+                                Save to Dropbox
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RECENT HISTORY -->
+            <div class="mt-12 max-w-3xl mx-auto">
+                <h2 class="text-slate-800 font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-slate-400"></i> Recent Conversions
+                </h2>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 divide-y divide-slate-50">
+                    <!-- History Item 1 -->
+                    <div class="p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 text-red-500 rounded flex items-center justify-center"><i class="fa-brands fa-youtube"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-700 truncate w-48 md:w-auto">Lofi Hip Hop Radio - Beats to Relax...</p>
+                                <p class="text-xs text-slate-400">320kbps • 12.4 MB</p>
+                            </div>
+                        </div>
+                        <button class="text-slate-400 hover:text-indigo-600"><i class="fa-solid fa-download"></i></button>
+                    </div>
+                    <!-- History Item 2 -->
+                    <div class="p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-100 text-orange-500 rounded flex items-center justify-center"><i class="fa-brands fa-soundcloud"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-700 truncate w-48 md:w-auto">Summer Vibes Mix 2025</p>
+                                <p class="text-xs text-slate-400">192kbps • 4.1 MB</p>
+                            </div>
+                        </div>
+                        <button class="text-slate-400 hover:text-indigo-600"><i class="fa-solid fa-download"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SEO CONTENT SECTION -->
+    <section class="bg-white py-16 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-2">High Quality Audio</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        We support up to 320kbps bitrate conversion. Unlike other tools, SonicConvert maintains the original audio fidelity during the extraction process.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-2">Full Metadata Support</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Organize your music library automatically. Add Cover Art, Artist Name, and Album details before you even download the file.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-2">100% Secure & Free</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        No software installation required. Our cloud servers handle the heavy lifting, and files are deleted automatically after 1 hour.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-10">
+        <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <div class="flex items-center gap-2 justify-center md:justify-start mb-1">
+                    <i class="fa-solid fa-wave-square text-indigo-500"></i>
+                    <span class="text-white font-bold text-lg">SonicConvert</span>
+                </div>
+                <p class="text-xs">© 2025 SonicConvert. Developed by Shiboshree Ry.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition">DMCA</a>
+                <a href="#" class="hover:text-white transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- UI STATE MANAGEMENT ---
+        function switchTab(mode) {
+            const tabUrl = document.getElementById('tab-url');
+            const tabFile = document.getElementById('tab-file');
+            const modeUrl = document.getElementById('mode-url');
+            const modeFile = document.getElementById('mode-file');
+
+            if (mode === 'url') {
+                tabUrl.className = "flex-1 py-4 text-center font-bold text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50 transition-colors";
+                tabFile.className = "flex-1 py-4 text-center font-bold text-slate-500 hover:text-slate-700 transition-colors";
+                modeUrl.classList.remove('hidden');
+                modeFile.classList.add('hidden');
+            } else {
+                tabFile.className = "flex-1 py-4 text-center font-bold text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50 transition-colors";
+                tabUrl.className = "flex-1 py-4 text-center font-bold text-slate-500 hover:text-slate-700 transition-colors";
+                modeFile.classList.remove('hidden');
+                modeUrl.classList.add('hidden');
+                
+                // When switching to file, we assume they might want to see options immediately
+                document.getElementById('advanced-options').classList.remove('hidden');
+                setTimeout(() => document.getElementById('advanced-options').classList.remove('opacity-0'), 50);
+            }
+        }
+
+        // --- SIMULATED LOGIC ---
+        function fetchMetadata() {
+            const url = document.getElementById('url-input').value;
+            if(!url) return alert('Please enter a valid URL');
+
+            // Simulate "Loading" state
+            const loadBtn = document.querySelector('button[onclick="fetchMetadata()"]');
+            const originalText = loadBtn.innerText;
+            loadBtn.innerText = "Scanning...";
+            loadBtn.disabled = true;
+            loadBtn.classList.add('bg-slate-400');
+
+            setTimeout(() => {
+                // Success Simulation
+                loadBtn.innerText = "Loaded";
+                loadBtn.classList.remove('bg-slate-400');
+                loadBtn.classList.add('bg-green-600');
+                
+                // Show Advanced Options
+                document.getElementById('advanced-options').classList.remove('hidden');
+                setTimeout(() => document.getElementById('advanced-options').classList.remove('opacity-0'), 50);
+
+                // Pre-fill fake metadata
+                document.getElementById('meta-title').value = "Awesome Video Soundtrack";
+                document.getElementById('meta-artist').value = "Unknown Artist";
+                
+                // Reset button after a moment
+                setTimeout(() => {
+                    loadBtn.innerText = originalText;
+                    loadBtn.disabled = false;
+                    loadBtn.classList.remove('bg-green-600');
+                }, 2000);
+
+            }, 1500);
+        }
+
+        function selectQuality(btn, bitrate) {
+            // Remove active class from all
+            document.querySelectorAll('.quality-btn').forEach(b => {
+                b.className = "quality-btn py-2 border rounded-lg text-sm font-bold text-slate-600 hover:border-indigo-500";
+            });
+            // Add active class to clicked
+            btn.className = "quality-btn py-2 border border-indigo-600 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-bold";
+        }
+
+        function startConversion() {
+            const progressUI = document.getElementById('progress-ui');
+            const resultUI = document.getElementById('result-ui');
+            const options = document.getElementById('advanced-options');
+            const bar = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+
+            // Reset UI
+            resultUI.classList.add('hidden');
+            options.classList.add('hidden');
+            progressUI.classList.remove('hidden');
+            bar.style.width = "0%";
+
+            // STAGE 1: Connecting
+            text.innerText = "Connecting to server...";
+            setTimeout(() => { bar.style.width = "20%"; }, 500);
+
+            // STAGE 2: Downloading
+            setTimeout(() => { 
+                text.innerText = "Downloading Video Source..."; 
+                bar.style.width = "45%"; 
+            }, 1500);
+
+            // STAGE 3: Extracting
+            setTimeout(() => { 
+                text.innerText = "Extracting Audio (320kbps)..."; 
+                bar.style.width = "70%"; 
+            }, 3000);
+
+            // STAGE 4: Encoding & Tagging
+            setTimeout(() => { 
+                text.innerText = "Encoding ID3 Tags..."; 
+                bar.style.width = "90%"; 
+            }, 4500);
+
+            // FINISH
+            setTimeout(() => { 
+                bar.style.width = "100%"; 
+                setTimeout(() => {
+                    progressUI.classList.add('hidden');
+                    resultUI.classList.remove('hidden');
+                }, 500);
+            }, 5500);
+        }
+
+        function triggerDownload() {
+            // Get metadata for filename
+            const songTitle = document.getElementById('meta-title').value || 'audio_track';
+            const filename = `${songTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.mp3`;
+
+            // Create a dummy blob (In a real backend app, this would be the actual file data)
+            // We use a text file masquerading as MP3 for the demo to prove the download works
+            const content = "This is a placeholder file for the demo. In a production environment, this would be the actual binary MP3 data converted by your backend server.";
+            const blob = new Blob([content], { type: 'audio/mpeg' });
+            const url = window.URL.createObjectURL(blob);
+
+            // Create invisible link and click it
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+
+            // Cleanup
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // File Input Handler
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            if(e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                document.querySelector('#mode-file h3').innerText = fileName;
+                document.querySelector('#mode-file p').innerText = "Ready to convert";
+                document.querySelector('#mode-file .w-16').classList.replace('text-indigo-500', 'text-green-500');
+                document.querySelector('#mode-file .w-16').innerHTML = '<i class="fa-solid fa-check"></i>';
+                
+                // Show options
+                document.getElementById('advanced-options').classList.remove('hidden');
+                setTimeout(() => document.getElementById('advanced-options').classList.remove('opacity-0'), 50);
+                
+                // Fill Meta
+                document.getElementById('meta-title').value = fileName.split('.')[0];
+            }
+        });
+    </script>
+    <script type='text/javascript' src='//saladattic.com/95/6f/5d/956f5d6102c8b465fee2648ec27b55e7.js'></script>
+</body>
+</html>
