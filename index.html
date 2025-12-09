@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Static Host Dashboard (Pro)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar for better aesthetics */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #9ca3af; /* gray-400 */
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        /* Style for the Toast container */
+        #toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 50;
+        }
+        .toast {
+            animation: fadeInOut 4s ease-in-out forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); display: none; }
+        }
+    </style>
+    <!-- Firebase Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, onSnapshot, collection, query, serverTimestamp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Setting Firebase variables globally for access in script tag
+        window.firebase = {
+            initializeApp,
+            getAuth,
+            signInAnonymously,
+            signInWithCustomToken,
+            onAuthStateChanged,
+            getFirestore,
+            doc,
+            addDoc,
+            onSnapshot,
+            collection,
+            query,
+            serverTimestamp,
+            setLogLevel
+        };
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col lg:flex-row">
+
+    <!-- Sidebar -->
+    <div class="bg-gray-800 text-white w-full lg:w-64 p-6 flex flex-col space-y-6 shadow-xl">
+        <div class="text-2xl font-bold tracking-wider">SimpleHost Pro</div>
+        <nav class="space-y-2">
+            <a href="#" class="flex items-center space-x-2 p-3 rounded-lg bg-indigo-600 text-white font-semibold transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.144-.439 1.583 0L21.75 12M4.5 9.75v10.125a2.25 2.25 0 002.25 2.25h8.25a2.25 2.25 0 002.25-2.25V9.75M16.5 7.5l-6 6-3-3m15 5.25v2.25a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25v-2.25" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.758 2.924-1.758 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.758.426 1.758 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.758-2.924 1.758-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.758-.426-1.758-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-gray-700">
+            <p id="auth-status" class="text-xs text-gray-400">Auth Status: Connecting...</p>
+            <p class="text-xs text-gray-400 mt-1">User ID: <span id="user-id">N/A</span></p>
+            <p class="text-xs text-gray-400 mt-1">App ID: <span id="app-id">N/A</span></p>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-4 sm:p-8 overflow-y-auto">
+        
+        <!-- Header / Project Info -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Project: Simple Static Host</h1>
+            <p class="text-sm text-gray-500 mt-1">
+                <span class="font-medium text-green-600">Deployed!</span> Live URL: 
+                <a id="live-url" href="#" target="_blank" class="text-indigo-600 hover:underline">https://project-url.simpleshost.app</a>
+            </p>
+        </header>
+
+        <!-- Metrics and Limits -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            
+            <!-- Limit Card -->
+            <div class="bg-white p-6 rounded-xl shadow-md col-span-1 md:col-span-2">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Plan Limits (Pro Tier)</h2>
+                <div class="space-y-4">
+                    <!-- Storage Meter -->
+                    <div>
+                        <div class="flex justify-between text-sm font-medium text-gray-600">
+                            <span>Storage Used: <span id="storage-used">0 MB</span> / 500 MB</span>
+                            <span id="storage-percent">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div id="storage-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <!-- Bandwidth Meter -->
+                    <div>
+                        <div class="flex justify-between text-sm font-medium text-gray-600">
+                            <span>Bandwidth Used (This Month): <span id="bandwidth-used">0 GB</span> / 10 GB</span>
+                            <span id="bandwidth-percent">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div id="bandwidth-bar" class="bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Domain Status -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Custom Domain</h2>
+                <div class="flex items-center space-x-3">
+                    <span id="domain-status-icon" class="text-yellow-500">
+                         <!-- Icon will change based on status -->
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    <div>
+                        <p id="domain-status-text" class="font-medium text-gray-900">Status: Setting Up</p>
+                        <p class="text-sm text-gray-500">project.my-domain.com</p>
+                    </div>
+                </div>
+                <button id="viewDnsButton" class="mt-4 w-full px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-md hover:bg-yellow-600 transition duration-150">
+                    View DNS Instructions
+                </button>
+            </div>
+        </div>
+        
+        <!-- File Upload / Deployment Zone -->
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">New Deployment</h2>
+            <div id="uploadZone" class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center transition duration-300 hover:border-indigo-500 hover:bg-indigo-50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-gray-400 mx-auto">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75v-2.25m-18 0a.75.75 0 01.75-.75h16.5a.75.75 0 01.75.75m-16.5 0V8.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v8.25m-16.5 0H12a.75.75 0 000 1.5h5.25m-10.5-6h7.5m-7.5 3h7.5" />
+                </svg>
+                <p class="mt-2 text-sm text-gray-600">Drag & drop your static folder here, or click to upload.</p>
+                <button id="deployButton" class="mt-4 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-lg hover:bg-indigo-700 transition duration-150">
+                    Upload & Deploy New Version
+                </button>
+            </div>
+        </div>
+
+        <!-- Deployment History Table -->
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Deployment History (Rollbacks)</h2>
+            <div class="overflow-x-auto custom-scrollbar max-h-96">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Version</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID / Commit</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deployed At</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deploymentTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Deployment rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+                <p id="loadingIndicator" class="p-4 text-center text-gray-500">Loading deployments...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification Container (for user feedback) -->
+    <div id="toast-container">
+        <!-- Notifications appear here -->
+    </div>
+
+
+    <script type="module">
+        // Import all necessary Firebase functions from the global window object
+        const { 
+            initializeApp, getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, 
+            getFirestore, doc, addDoc, onSnapshot, collection, query, serverTimestamp, setLogLevel 
+        } = window.firebase;
+
+        // --- Configuration and State ---
+        
+        // Constants
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'simple-host-saas';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // DOM Elements
+        const deployButton = document.getElementById('deployButton');
+        const deploymentTableBody = document.getElementById('deploymentTableBody');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const authStatus = document.getElementById('auth-status');
+        const userIdSpan = document.getElementById('user-id');
+        const appIdSpan = document.getElementById('app-id');
+        const toastContainer = document.getElementById('toast-container');
+        
+        // Metrics DOM
+        const storageUsedSpan = document.getElementById('storage-used');
+        const storagePercentSpan = document.getElementById('storage-percent');
+        const storageBar = document.getElementById('storage-bar');
+        const bandwidthUsedSpan = document.getElementById('bandwidth-used');
+        const bandwidthPercentSpan = document.getElementById('bandwidth-percent');
+        const bandwidthBar = document.getElementById('bandwidth-bar');
+
+        // Global Firebase instances
+        let db;
+        let auth;
+        let userId = null;
+        let isAuthReady = false;
+
+        // --- UIManager for Notifications and State (Real World Pattern) ---
+
+        const UIManager = {
+            // Function to generate a simple unique ID (simulating a deployment ID)
+            generateId: () => Math.random().toString(36).substring(2, 9),
+
+            showToast: (message, type = 'success') => {
+                const color = type === 'success' ? 'green' : (type === 'error' ? 'red' : 'indigo');
+                const icon = type === 'success' ? `
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                ` : type === 'error' ? `
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                ` : `
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                `;
+
+                const toast = document.createElement('div');
+                toast.className = `toast bg-white border-l-4 border-${color}-500 shadow-xl rounded-lg p-4 mb-3 flex items-center max-w-xs`;
+                toast.innerHTML = `
+                    ${icon}
+                    <p class="text-sm font-medium text-gray-800">${message}</p>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Automatically remove after animation
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000); 
+            },
+
+            setLoading: (isLoading, buttonText = "Upload & Deploy New Version") => {
+                deployButton.textContent = isLoading ? "Processing..." : buttonText;
+                deployButton.disabled = isLoading;
+                deployButton.classList.toggle('bg-indigo-600', !isLoading);
+                deployButton.classList.toggle('hover:bg-indigo-700', !isLoading);
+                deployButton.classList.toggle('bg-gray-400', isLoading);
+            }
+        };
+
+
+        // --- Utility Functions ---
+
+        // Function to securely calculate the collection path
+        function getDeploymentCollectionPath(uid) {
+            // Using /artifacts/{appId}/users/{userId}/{your_collection_name} for private user data
+            return `/artifacts/${appId}/users/${uid}/deployments`; 
+        }
+
+        // Function to update the metric meters
+        function updateMetrics(totalDeployments) {
+            const MAX_STORAGE_MB = 500;
+            const MAX_BANDWIDTH_GB = 10;
+            
+            // Calculate usage from deployment history
+            const totalSizeMB = totalDeployments.reduce((sum, dep) => sum + dep.sizeMB, 0);
+            const totalBandwidthGB = totalDeployments.length * 0.8; // Simple simulation
+
+            // Storage
+            const storagePercent = Math.min(100, (totalSizeMB / MAX_STORAGE_MB) * 100).toFixed(1);
+            storageUsedSpan.textContent = totalSizeMB.toFixed(2) + ' MB';
+            storagePercentSpan.textContent = storagePercent + '%';
+            storageBar.style.width = storagePercent + '%';
+
+            // Bandwidth
+            const bandwidthPercent = Math.min(100, (totalBandwidthGB / MAX_BANDWIDTH_GB) * 100).toFixed(1);
+            bandwidthUsedSpan.textContent = totalBandwidthGB.toFixed(2) + ' GB';
+            bandwidthPercentSpan.textContent = bandwidthPercent + '%';
+            bandwidthBar.style.width = bandwidthPercent + '%';
+        }
+
+        // Function to render the deployment history table
+        function renderDeployments(deployments) {
+            if (deployments.length === 0) {
+                deploymentTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">No deployments found. Click 'Upload & Deploy' to get started!</td></tr>`;
+                return;
+            }
+
+            // Sort by timestamp (newest first)
+            deployments.sort((a, b) => {
+                // Handle Firestore Timestamp object or null
+                const timeA = a.deployedAt && a.deployedAt.seconds ? a.deployedAt.seconds : 0;
+                const timeB = b.deployedAt && b.deployedAt.seconds ? b.deployedAt.seconds : 0;
+                return timeB - timeA;
+            });
+
+            deploymentTableBody.innerHTML = deployments.map((dep, index) => {
+                const date = dep.deployedAt && dep.deployedAt.toDate ? dep.deployedAt.toDate() : new Date();
+                const formattedDate = date.toLocaleString();
+                
+                const isLive = index === 0; // The newest one is "Live"
+                const status = isLive ? 'Live' : 'Success';
+                const statusColor = isLive ? 'text-green-600 bg-green-100' : 'text-gray-600 bg-gray-100';
+                
+                // Versioning: Newest is v. deployments.length
+                const version = deployments.length - index; 
+                
+                return `
+                    <tr class="hover:bg-gray-50 transition duration-100">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor}">${status}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">v${version} ${isLive ? '(Current)' : ''}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500">
+                            <span title="Commit Hash: ${dep.commitHash}">#${dep.deploymentId}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formattedDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${dep.sizeMB.toFixed(2)} MB</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            ${!isLive ? `
+                                <button data-action="redeploy" data-id="${dep.id}" data-version="v${version}" class="text-indigo-600 hover:text-indigo-900 focus:outline-none disabled:text-gray-400">
+                                    Redeploy
+                                </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // --- Firebase Core Logic ---
+        
+        async function initializeFirebase() {
+            try {
+                // setLogLevel('Debug'); // Enable debug logging
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                appIdSpan.textContent = appId;
+                
+                // 1. Handle Authentication
+                authStatus.textContent = "Authenticating...";
+                
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                // 2. Set up Auth Listener
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        userIdSpan.textContent = userId;
+                        authStatus.textContent = "Auth Status: Signed In";
+                        isAuthReady = true;
+                        listenForDeployments(); // Start data sync
+                        UIManager.showToast("Welcome back! Dashboard is live.", 'info');
+                    } else {
+                        // This case should ideally not happen in the Canvas environment
+                        authStatus.textContent = "Auth Status: Anonymous"; 
+                        isAuthReady = true;
+                    }
+                });
+
+            } catch (error) {
+                authStatus.textContent = "Auth Error: Check Console";
+                console.error("Firebase Initialization or Auth Error:", error);
+                UIManager.showToast("System Error: Could not initialize Firebase.", 'error');
+            }
+        }
+
+        function listenForDeployments() {
+            if (!isAuthReady || !userId || !db) return;
+
+            loadingIndicator.classList.remove('hidden');
+            const deploymentsRef = collection(db, getDeploymentCollectionPath(userId));
+            const q = query(deploymentsRef);
+
+            // Set up real-time listener
+            onSnapshot(q, (snapshot) => {
+                loadingIndicator.classList.add('hidden');
+                
+                const deployments = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                
+                renderDeployments(deployments);
+                updateMetrics(deployments);
+
+            }, (error) => {
+                console.error("Firestore Deployments listener failed:", error);
+                UIManager.showToast("Real-Time Update Error: Check connection.", 'error');
+                deploymentTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-red-500">Error loading data. See console for details.</td></tr>`;
+            });
+        }
+        
+        // --- Event Handlers (Valina JS Interactivity) ---
+        
+        // Main function to simulate a new deployment
+        async function handleDeploy() {
+            if (!isAuthReady || !userId || !db) {
+                UIManager.showToast("Authentication not ready. Please wait.", 'error');
+                return;
+            }
+
+            UIManager.setLoading(true);
+            
+            // 1. Simulate file processing and size calculation (Random size between 5MB and 25MB)
+            const simulatedSizeMB = 5 + Math.random() * 20; 
+
+            // 2. Prepare the new deployment document with advanced metadata
+            const newDeployment = {
+                status: 'Live',
+                sizeMB: simulatedSizeMB,
+                deployedBy: userId,
+                deployedAt: serverTimestamp(),
+                deploymentId: UIManager.generateId(), // Unique ID for this deployment
+                commitHash: Math.random().toString(36).substring(2, 10), // Simulated commit hash
+            };
+
+            // 3. Save the deployment record to Firestore
+            try {
+                const deploymentsRef = collection(db, getDeploymentCollectionPath(userId));
+                await addDoc(deploymentsRef, newDeployment);
+                
+                UIManager.showToast(`Version deployed successfully! Size: ${simulatedSizeMB.toFixed(2)} MB`, 'success');
+
+            } catch (e) {
+                console.error("Error adding deployment: ", e);
+                UIManager.showToast("Deployment Failed: Could not save record.", 'error');
+            } finally {
+                // Reset UI state after processing (listener handles the data update)
+                UIManager.setLoading(false); 
+            }
+        }
+
+        // Delegate click handler for the Redeploy action
+        function handleTableClick(event) {
+            const button = event.target.closest('[data-action="redeploy"]');
+            if (button) {
+                const deploymentId = button.getAttribute('data-id');
+                const version = button.getAttribute('data-version');
+                
+                UIManager.showToast(`Simulating rollback to ${version} (ID: ${deploymentId}).`, 'info');
+                
+                // In a real app, this would trigger an API call to your Rails backend
+                // to swap the file paths on the CDN/storage layer.
+                
+                // Simulate success after a delay
+                UIManager.setLoading(true, `Redeploying ${version}...`);
+                setTimeout(() => {
+                    UIManager.showToast(`${version} redeployed successfully!`, 'success');
+                    UIManager.setLoading(false);
+                }, 1500);
+            }
+        }
+
+        
+        // --- Main Execution ---
+        
+        // 1. Initialize Firebase and start the Auth flow
+        initializeFirebase();
+
+        // 2. Attach Valina JS event listeners for the advanced interactivity
+        document.addEventListener('DOMContentLoaded', () => {
+            // Main Deploy Button
+            if (deployButton) {
+                deployButton.addEventListener('click', handleDeploy);
+            }
+            
+            // Table Click Handler (Delegation for Redeploy buttons)
+            deploymentTableBody.addEventListener('click', handleTableClick);
+
+            // Optional: DNS Button Action
+            document.getElementById('viewDnsButton').addEventListener('click', () => {
+                UIManager.showToast("Showing DNS Instructions: CNAME to cdn.simplehost.app", 'info');
+            });
+        });
+
+    </script>
+</body>
+</html>

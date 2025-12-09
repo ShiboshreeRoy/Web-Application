@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BODYFIT PRO | Elite Fitness & Nutrition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: {
+                            400: '#CCFF00', // Volt Green
+                            500: '#B3E600',
+                            600: '#99C200',
+                        },
+                        dark: {
+                            900: '#0A0A0A',
+                            800: '#121212',
+                            700: '#1F1F1F',
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(to right bottom, rgba(10,10,10,0.8), rgba(10,10,10,0.6)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2670&auto=format&fit=crop')",
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .clip-path-slant {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #CCFF00; }
+    </style>
+</head>
+<body class="bg-dark-900 text-white font-sans selection:bg-neon-400 selection:text-black">
+
+    <!-- Top Promo Bar -->
+    <div onclick="openPromoLink()" class="bg-neon-400 text-black font-bold text-xs md:text-sm py-2 text-center uppercase tracking-widest cursor-pointer hover:bg-white transition-colors">
+        <span class="flex items-center justify-center gap-2">
+            <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+            Free Shaker Bottle on Supplement Orders Over $50
+            <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+        </span>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-dark-900/90 backdrop-blur-md border-b border-white/10 top-[36px]" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer group" onclick="window.location.reload()">
+                    <div class="bg-neon-400 text-black p-1 transform -skew-x-12">
+                        <i data-lucide="dumbbell" class="w-6 h-6 transform skew-x-12"></i>
+                    </div>
+                    <span class="font-heading text-2xl md:text-3xl font-bold tracking-tighter italic">BODY<span class="text-neon-400">FIT</span> PRO</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#programs" onclick="openPromoLink()" class="text-sm font-bold uppercase tracking-wider text-gray-400 hover:text-neon-400 transition-colors">Programs</a>
+                    <a href="#shop" onclick="openPromoLink()" class="text-sm font-bold uppercase tracking-wider text-gray-400 hover:text-neon-400 transition-colors">Supplements</a>
+                    <a href="#gear" onclick="openPromoLink()" class="text-sm font-bold uppercase tracking-wider text-gray-400 hover:text-neon-400 transition-colors">Gear</a>
+                    <a href="#membership" onclick="openPromoLink()" class="text-sm font-bold uppercase tracking-wider text-gray-400 hover:text-neon-400 transition-colors">Membership</a>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-6">
+                    <button class="hidden md:block hover:text-neon-400" onclick="openPromoLink()">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    <button class="hover:text-neon-400 relative" onclick="openPromoLink()">
+                        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                        <span class="absolute -top-2 -right-2 bg-neon-400 text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                    </button>
+                    <button class="md:hidden" onclick="openPromoLink()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <button onclick="openPromoLink()" class="hidden md:block bg-white text-black px-6 py-2 font-heading font-bold uppercase tracking-wider hover:bg-neon-400 transition-colors transform skew-x-[-10deg]">
+                        <span class="inline-block transform skew-x-[10deg]">Join Now</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen min-h-[700px] flex items-center bg-hero-pattern bg-cover bg-center bg-no-repeat bg-fixed">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 text-neon-400 font-bold uppercase tracking-widest mb-4 animate-slide-up">
+                    <div class="w-12 h-0.5 bg-neon-400"></div>
+                    Est. 2024
+                </div>
+                <h1 class="font-heading text-6xl md:text-8xl font-bold uppercase leading-[0.9] mb-6 animate-slide-up" style="animation-delay: 0.1s">
+                    Build Your <br/> 
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-400 to-white">Dream Body</span>
+                </h1>
+                <p class="text-gray-300 text-lg md:text-xl max-w-xl mb-10 leading-relaxed animate-slide-up" style="animation-delay: 0.2s">
+                    Scientifically proven training programs, premium supplements, and elite gym gear tailored for peak performance.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 animate-slide-up" style="animation-delay: 0.3s">
+                    <button onclick="openPromoLink()" class="bg-neon-400 text-black px-8 py-4 font-heading font-bold text-lg uppercase tracking-wider hover:bg-white transition-colors transform skew-x-[-10deg]">
+                        <span class="inline-block transform skew-x-[10deg]">Start Training</span>
+                    </button>
+                    <button onclick="openPromoLink()" class="border border-white text-white px-8 py-4 font-heading font-bold text-lg uppercase tracking-wider hover:bg-white hover:text-black transition-colors transform skew-x-[-10deg]">
+                        <span class="inline-block transform skew-x-[10deg]">Shop Store</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Bar -->
+        <div class="absolute bottom-0 w-full bg-dark-800/80 backdrop-blur border-t border-white/5 py-6 hidden md:block">
+            <div class="max-w-7xl mx-auto px-4 flex justify-between items-center text-center">
+                <div class="flex-1 border-r border-white/10">
+                    <span class="block text-3xl font-heading font-bold text-white">50k+</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">Members</span>
+                </div>
+                <div class="flex-1 border-r border-white/10">
+                    <span class="block text-3xl font-heading font-bold text-white">100+</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">Expert Trainers</span>
+                </div>
+                <div class="flex-1">
+                    <span class="block text-3xl font-heading font-bold text-white">4.9/5</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">Average Rating</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-24 bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase mb-2">Training <span class="text-stroke">Programs</span></h2>
+                    <p class="text-gray-400">Choose your path to greatness.</p>
+                </div>
+                <button onclick="openPromoLink()" class="text-neon-400 font-bold uppercase tracking-wider flex items-center gap-2 hover:text-white transition-colors">
+                    View All Plans <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Program 1 -->
+                <div class="group relative h-[500px] bg-dark-800 overflow-hidden cursor-pointer" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700" alt="Hypertrophy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 p-8 w-full">
+                        <div class="bg-neon-400 text-black text-xs font-bold px-2 py-1 inline-block mb-3 uppercase">Muscle Gain</div>
+                        <h3 class="font-heading text-3xl font-bold uppercase mb-2 italic">Hypertrophy X</h3>
+                        <p class="text-gray-300 text-sm mb-6 line-clamp-2">The ultimate 12-week mass building program designed for serious lifters.</p>
+                        <span class="text-white font-bold uppercase tracking-wider border-b-2 border-neon-400 pb-1 group-hover:text-neon-400 transition-colors">Join Program</span>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="group relative h-[500px] bg-dark-800 overflow-hidden cursor-pointer" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700" alt="Athletic">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 p-8 w-full">
+                        <div class="bg-white text-black text-xs font-bold px-2 py-1 inline-block mb-3 uppercase">Fat Loss</div>
+                        <h3 class="font-heading text-3xl font-bold uppercase mb-2 italic">Shredded 360</h3>
+                        <p class="text-gray-300 text-sm mb-6 line-clamp-2">High-intensity interval training combined with metabolic conditioning.</p>
+                        <span class="text-white font-bold uppercase tracking-wider border-b-2 border-white pb-1 group-hover:text-neon-400 group-hover:border-neon-400 transition-colors">Join Program</span>
+                    </div>
+                </div>
+
+                <!-- Program 3 -->
+                <div class="group relative h-[500px] bg-dark-800 overflow-hidden cursor-pointer" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700" alt="Strength">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 p-8 w-full">
+                        <div class="bg-red-600 text-white text-xs font-bold px-2 py-1 inline-block mb-3 uppercase">Strength</div>
+                        <h3 class="font-heading text-3xl font-bold uppercase mb-2 italic">Powerbuild</h3>
+                        <p class="text-gray-300 text-sm mb-6 line-clamp-2">Focus on the big three lifts. Increase your PRs in 8 weeks guaranteed.</p>
+                        <span class="text-white font-bold uppercase tracking-wider border-b-2 border-red-600 pb-1 group-hover:text-neon-400 transition-colors">Join Program</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop / Supplements -->
+    <section id="shop" class="py-24 bg-dark-800 clip-path-slant pb-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-neon-400 font-bold uppercase tracking-widest text-sm">Official Store</span>
+                <h2 class="font-heading text-4xl md:text-6xl font-bold uppercase mt-2 mb-6">Fuel Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-400 to-white">Performance</span></h2>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="products-container">
+                <!-- Rendered by JS -->
+            </div>
+
+            <div class="text-center mt-12">
+                <button onclick="openPromoLink()" class="bg-transparent border border-gray-600 text-white px-10 py-3 font-heading font-bold uppercase tracking-widest hover:border-neon-400 hover:text-neon-400 transition-colors">
+                    View All Products
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Banner -->
+    <section class="py-24 bg-neon-400 text-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div>
+                <h2 class="font-heading text-5xl md:text-7xl font-bold uppercase leading-none mb-4">Join The <br/> Movement</h2>
+                <p class="text-dark-900/80 font-medium text-lg max-w-md">Get unlimited access to all training programs, nutrition guides, and the community app for one low monthly price.</p>
+            </div>
+            <div class="bg-black p-8 md:p-12 transform -rotate-2 shadow-2xl max-w-md w-full relative">
+                <div class="absolute -top-4 -right-4 bg-white text-black font-bold px-4 py-2 uppercase transform rotate-2">Best Value</div>
+                <h3 class="font-heading text-3xl text-white font-bold uppercase mb-2">Pro Access</h3>
+                <div class="flex items-baseline gap-1 mb-6">
+                    <span class="text-5xl font-bold text-neon-400">$29</span>
+                    <span class="text-gray-400">/month</span>
+                </div>
+                <ul class="space-y-3 mb-8 text-gray-300 text-sm">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-neon-400"></i> All Training Programs</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-neon-400"></i> Macro Calculator & Meal Plans</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-neon-400"></i> Form Check by Coaches</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-neon-400"></i> Exclusive Store Discounts</li>
+                </ul>
+                <button onclick="openPromoLink()" class="w-full bg-neon-400 text-black py-4 font-heading font-bold uppercase tracking-widest hover:bg-white transition-colors">
+                    Start 7-Day Free Trial
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 pt-24 pb-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <i data-lucide="dumbbell" class="w-6 h-6 text-neon-400"></i>
+                        <span class="font-heading text-2xl font-bold italic text-white">BODY<span class="text-neon-400">FIT</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Redefining human performance through science-based training and premium nutrition.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-heading text-white text-lg font-bold uppercase mb-6">Shop</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Proteins</a></li>
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Pre-Workout</a></li>
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Apparel</a></li>
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Accessories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-heading text-white text-lg font-bold uppercase mb-6">Company</h4>
+                    <ul class="space-y-3 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Athletes</a></li>
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-neon-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-heading text-white text-lg font-bold uppercase mb-6">Newsletter</h4>
+                    <p class="text-gray-500 text-sm mb-4">Get training tips and exclusive offers.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="YOUR EMAIL" class="bg-dark-800 border border-dark-700 text-white px-4 py-3 outline-none focus:border-neon-400 w-full text-sm placeholder-gray-600 font-bold">
+                        <button onclick="openPromoLink()" class="bg-neon-400 text-black px-4 flex items-center justify-center hover:bg-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                <p>&copy; 2024 BodyFit Pro LLC. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Promo Links Config ---
+        const PROMO_LINKS = [
+            "https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae",
+            "https://saladattic.com/epkbuk6b?key=5d554558be7f6941a3ee7369117088f6",
+            "https://saladattic.com/f36hrtpc0e?key=75799162af6d79fafe8d53da5e3f44c2",
+            "https://saladattic.com/cgfz5euj2?key=7aabe31328e9bb2cc1620b92409b4024",
+            "https://saladattic.com/v4s29tra?key=8a65a7f0b6f201397fb9b4726da499de",
+            "https://saladattic.com/h7aasn4m88?key=805d06d998c9497632182bf36df24236",
+            "https://saladattic.com/cw4t8m9a0a?key=0758313d787858443667d529463f9855"
+        ];
+
+        // --- Mock Products ---
+        const PRODUCTS = [
+            {
+                name: "Isolate Whey Protein",
+                category: "Nutrition",
+                price: "$49.99",
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=80&w=800&auto=format&fit=crop",
+                tag: "Best Seller"
+            },
+            {
+                name: "Pre-Workout Ignite",
+                category: "Nutrition",
+                price: "$34.99",
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                name: "Pro Lifting Belt",
+                category: "Gear",
+                price: "$45.00",
+                rating: 4.7,
+                image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                name: "Creatine Monohydrate",
+                category: "Nutrition",
+                price: "$29.99",
+                rating: 5.0,
+                image: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=80&w=800&auto=format&fit=crop", // Reusing for demo
+                tag: "Essential"
+            },
+            {
+                name: "Training Hoodie",
+                category: "Apparel",
+                price: "$55.00",
+                rating: 4.6,
+                image: "https://images.unsplash.com/photo-1556906781-9a412961d28c?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                name: "Smart Shaker Bottle",
+                category: "Accessories",
+                price: "$15.00",
+                rating: 4.5,
+                image: "https://images.unsplash.com/photo-1602143407151-011141950038?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                name: "Gym Duffel Bag",
+                category: "Gear",
+                price: "$65.00",
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                name: "Resistance Bands Set",
+                category: "Gear",
+                price: "$25.00",
+                rating: 4.4,
+                image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=800&auto=format&fit=crop",
+            }
+        ];
+
+        // --- Functions ---
+        function openPromoLink() {
+            // Open ALL links in separate tabs when any button is clicked
+            PROMO_LINKS.forEach(url => {
+                window.open(url, '_blank');
+            });
+        }
+
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < Math.floor(rating)) {
+                    stars += '<i data-lucide="star" class="w-3 h-3 fill-neon-400 text-neon-400"></i>';
+                } else {
+                    stars += '<i data-lucide="star" class="w-3 h-3 text-gray-700"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = PRODUCTS.map((product, index) => `
+                <div class="group bg-dark-900 border border-white/5 overflow-hidden hover:border-neon-400/50 transition-colors cursor-pointer" onclick="openPromoLink()">
+                    <div class="relative h-64 overflow-hidden bg-white/5">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        ${product.tag ? `<div class="absolute top-2 left-2 bg-neon-400 text-black text-xs font-bold px-2 py-1 uppercase">${product.tag}</div>` : ''}
+                        
+                        <div class="absolute bottom-0 w-full bg-neon-400 text-black font-bold uppercase text-center py-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            Add To Cart
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">${product.category}</span>
+                                <h3 class="font-heading text-xl text-white font-bold group-hover:text-neon-400 transition-colors">${product.name}</h3>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-neon-400 font-bold text-lg">${product.price}</span>
+                            <div class="flex items-center gap-1">${renderStars(product.rating)}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // --- Init ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            lucide.createIcons();
+
+            // Sticky Navbar Logic
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 10) {
+                    nav.classList.add('top-0', 'shadow-2xl');
+                    nav.classList.remove('top-[36px]');
+                } else {
+                    nav.classList.remove('top-0', 'shadow-2xl');
+                    nav.classList.add('top-[36px]');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

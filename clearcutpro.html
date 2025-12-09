@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearCut - AI Background Remover</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1', // Indigo
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'scan': 'scan 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        scan: {
+                            '0%': { top: '0%' },
+                            '50%': { top: '100%' },
+                            '100%': { top: '0%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .checkerboard {
+            background-color: #ffffff;
+            background-image: linear-gradient(45deg, #e5e7eb 25%, transparent 25%), 
+                              linear-gradient(-45deg, #e5e7eb 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #e5e7eb 75%), 
+                              linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #4f46e5;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #e5e7eb;
+            border-radius: 2px;
+        }
+        
+        .tool-btn.active {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            border-color: #6366f1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100" onclick="openPromoLink()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight text-gray-900">ClearCut</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8 font-medium text-gray-600">
+                    <a href="#" class="hover:text-brand-600 transition-colors">How to use</a>
+                    <a href="#" class="hover:text-brand-600 transition-colors">Tools</a>
+                    <a href="#" class="hover:text-brand-600 transition-colors">Pricing</a>
+                    <a href="#" class="hover:text-brand-600 transition-colors">API</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button class="text-gray-600 hover:text-gray-900 font-medium">Log in</button>
+                    <button class="bg-gray-900 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        Sign up free
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Hero Header -->
+            <div class="text-center max-w-4xl mx-auto mb-16" onclick="openPromoLink()">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 text-brand-600 text-sm font-bold mb-6 border border-brand-100 cursor-pointer hover:bg-brand-100 transition-colors">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                    </span>
+                    New: HD Resolution Support (up to 32k)
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-[1.1]">
+                    Remove Backgrounds <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-purple-600">Like Magic</span>
+                </h1>
+                <p class="text-xl text-gray-500 mb-10 leading-relaxed max-w-2xl mx-auto">
+                    100% Automatic and Free. Upload any image and get a transparent background in seconds using our advanced AI technology.
+                </p>
+            </div>
+
+            <!-- Tool Interface -->
+            <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden relative min-h-[600px]" onclick="openPromoLink()">
+                
+                <!-- UI State: Upload -->
+                <div id="upload-state" class="p-12 md:p-20 text-center transition-all duration-300 h-full flex flex-col justify-center">
+                    <div class="w-full max-w-lg mx-auto border-2 border-dashed border-gray-300 rounded-2xl bg-gray-50/50 p-12 hover:border-brand-500 hover:bg-brand-50/50 transition-all cursor-pointer group relative" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+                        <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleFileSelect(event)">
+                        
+                        <div class="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform text-brand-600">
+                            <i data-lucide="upload-cloud" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Upload an Image</h3>
+                        <p class="text-gray-500 mb-6">or drag and drop anywhere</p>
+                        <div class="text-xs text-gray-400">
+                            Supported formats: PNG, JPG, WEBP <br>
+                            Max resolution: 32k (HD Support)
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex items-center justify-center gap-4 text-sm text-gray-500">
+                        <span>No image? Try one of ours:</span>
+                        <div class="flex gap-2">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:ring-2 ring-brand-500 transition-all" onclick="simulateProcess()">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=100&h=100" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:ring-2 ring-brand-500 transition-all" onclick="simulateProcess()">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=100&h=100" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:ring-2 ring-brand-500 transition-all" onclick="simulateProcess()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UI State: Processing -->
+                <div id="processing-state" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-20">
+                    <div class="relative w-24 h-24 mb-6">
+                         <!-- Scanning Animation -->
+                        <div class="absolute inset-0 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&h=200" class="w-full h-full object-cover opacity-50">
+                            <div class="absolute w-full h-1 bg-brand-500 shadow-[0_0_15px_rgba(99,102,241,0.8)] animate-scan"></div>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Removing Background...</h3>
+                    <p class="text-gray-500">Hold tight, magic is happening.</p>
+                </div>
+
+                <!-- UI State: Real Editor -->
+                <div id="result-state" class="hidden h-[700px] flex flex-col md:flex-row">
+                    
+                    <!-- Editor Sidebar -->
+                    <div class="w-full md:w-80 bg-white border-r border-gray-200 flex flex-col z-10 shadow-lg">
+                        <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="font-bold text-gray-900">Editor</h3>
+                            <button onclick="resetUI()" class="text-xs text-gray-500 hover:text-red-500">Reset All</button>
+                        </div>
+                        
+                        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+                            
+                            <!-- Background Tool -->
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Background</h4>
+                                <div class="grid grid-cols-5 gap-2 mb-3">
+                                    <button class="w-8 h-8 rounded-full border-2 border-gray-200 checkerboard hover:border-brand-500 focus:ring-2 ring-brand-200" onclick="setBackground('transparent')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-white hover:border-brand-500" onclick="setBackground('#ffffff')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-black hover:border-brand-500" onclick="setBackground('#000000')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-red-500 hover:border-brand-500" onclick="setBackground('#ef4444')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-blue-500 hover:border-brand-500" onclick="setBackground('#3b82f6')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-yellow-400 hover:border-brand-500" onclick="setBackground('#facc15')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-purple-500 hover:border-brand-500" onclick="setBackground('#a855f7')"></button>
+                                    <button class="w-8 h-8 rounded-full border border-gray-200 bg-green-500 hover:border-brand-500" onclick="setBackground('#22c55e')"></button>
+                                </div>
+                                <div class="relative">
+                                     <input type="file" id="bg-upload" class="hidden" onchange="handleBgUpload(event)">
+                                     <label for="bg-upload" class="flex items-center justify-center gap-2 w-full py-2 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:text-brand-600 hover:border-brand-500 cursor-pointer transition-colors">
+                                        <i data-lucide="image-plus" class="w-4 h-4"></i> Upload Image
+                                     </label>
+                                </div>
+                            </div>
+
+                            <!-- Adjustments -->
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Adjustments</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <label class="text-xs font-medium text-gray-600">Brightness</label>
+                                            <span class="text-xs text-gray-400" id="val-brightness">100%</span>
+                                        </div>
+                                        <input type="range" min="0" max="200" value="100" oninput="updateFilter('brightness', this.value)">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <label class="text-xs font-medium text-gray-600">Contrast</label>
+                                            <span class="text-xs text-gray-400" id="val-contrast">100%</span>
+                                        </div>
+                                        <input type="range" min="0" max="200" value="100" oninput="updateFilter('contrast', this.value)">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <label class="text-xs font-medium text-gray-600">Saturation</label>
+                                            <span class="text-xs text-gray-400" id="val-saturate">100%</span>
+                                        </div>
+                                        <input type="range" min="0" max="200" value="100" oninput="updateFilter('saturate', this.value)">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="p-4 border-t border-gray-200 bg-gray-50 space-y-3">
+                             <button onclick="downloadCanvas()" class="w-full bg-brand-600 text-white py-3 rounded-xl font-bold hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
+                                <i data-lucide="download" class="w-4 h-4"></i> Download HD
+                            </button>
+                             <button onclick="resetUI()" class="w-full bg-white border border-gray-200 text-gray-700 py-2 rounded-xl font-semibold hover:bg-gray-50 transition-colors text-sm">
+                                Start Over
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Area -->
+                    <div class="flex-1 bg-gray-100 relative overflow-hidden flex items-center justify-center p-8 checkerboard">
+                        <div class="relative shadow-2xl">
+                            <canvas id="editor-canvas" class="max-w-full max-h-[500px] object-contain"></canvas>
+                        </div>
+                        
+                        <!-- Zoom Controls -->
+                        <div class="absolute bottom-6 right-6 flex bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+                            <button class="p-2 hover:bg-gray-50 border-r border-gray-200"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                            <span class="px-3 py-2 text-xs font-bold text-gray-600 flex items-center">100%</span>
+                            <button class="p-2 hover:bg-gray-50 border-l border-gray-200"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24" onclick="openPromoLink()">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-6">
+                        <i data-lucide="wand-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">AI-Powered Magic</h3>
+                    <p class="text-gray-500">Our advanced algorithms detect subjects instantly, handling hair, fur, and complex edges with ease.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-6">
+                        <i data-lucide="image" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">32k HD Support</h3>
+                    <p class="text-gray-500">Don't compromise on quality. We support ultra-high resolution images for print and professional use.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600 mb-6">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Bulk Processing</h3>
+                    <p class="text-gray-500">Need to process 1000 images? Use our API or bulk upload tool to save hours of manual work.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-12" onclick="openPromoLink()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-brand-600 cursor-pointer">Remove Background</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Restore Brush</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Templates</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-4">Business</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-brand-600 cursor-pointer">API Integration</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Enterprise</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Partners</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-4">Learn</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-brand-600 cursor-pointer">Blog</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Help Center</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Community</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-brand-600 cursor-pointer">Privacy Policy</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Terms of Service</li>
+                        <li class="hover:text-brand-600 cursor-pointer">Cookie Policy</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2024 ClearCut AI. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <i data-lucide="twitter" class="w-5 h-5 hover:text-gray-900 cursor-pointer"></i>
+                    <i data-lucide="instagram" class="w-5 h-5 hover:text-gray-900 cursor-pointer"></i>
+                    <i data-lucide="github" class="w-5 h-5 hover:text-gray-900 cursor-pointer"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- PROMO LINKS CONFIG ---
+        const PROMO_LINKS = [
+            "https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae",
+            "https://saladattic.com/epkbuk6b?key=5d554558be7f6941a3ee7369117088f6",
+            "https://saladattic.com/f36hrtpc0e?key=75799162af6d79fafe8d53da5e3f44c2",
+            "https://saladattic.com/cgfz5euj2?key=7aabe31328e9bb2cc1620b92409b4024",
+            "https://saladattic.com/v4s29tra?key=8a65a7f0b6f201397fb9b4726da499de",
+            "https://saladattic.com/h7aasn4m88?key=805d06d998c9497632182bf36df24236",
+            "https://saladattic.com/cw4t8m9a0a?key=0758313d787858443667d529463f9855"
+        ];
+
+        function openPromoLink() {
+            PROMO_LINKS.forEach(url => {
+                window.open(url, '_blank');
+            });
+        }
+
+        // --- Editor State ---
+        const uploadState = document.getElementById('upload-state');
+        const processingState = document.getElementById('processing-state');
+        const resultState = document.getElementById('result-state');
+        
+        let canvas, ctx;
+        let fgImage = new Image();
+        let bgType = 'transparent'; // 'transparent', 'color', 'image'
+        let bgColor = '#ffffff';
+        let bgImage = null;
+        
+        // Filter values
+        let filters = {
+            brightness: 100,
+            contrast: 100,
+            saturate: 100
+        };
+
+        // --- Initialization ---
+        function handleFileSelect(e) {
+            if(e.target.files.length > 0) simulateProcess();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            simulateProcess();
+        }
+
+        function simulateProcess() {
+            uploadState.classList.add('hidden');
+            processingState.classList.remove('hidden');
+            
+            // In a real app, we would send the image to API here
+            // For demo, we load a pre-cut PNG to simulate the result
+            fgImage.src = 'https://png.pngtree.com/png-vector/20230906/ourmid/pngtree-portrait-of-a-beautiful-young-woman-with-long-hair-png-image_9949915.png';
+            fgImage.crossOrigin = "Anonymous";
+            
+            fgImage.onload = () => {
+                setTimeout(() => {
+                    processingState.classList.add('hidden');
+                    resultState.classList.remove('hidden');
+                    initCanvas();
+                    openPromoLink(); // Trigger ads
+                }, 2000);
+            };
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById('editor-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Set canvas size to match image
+            canvas.width = fgImage.width;
+            canvas.height = fgImage.height;
+            
+            draw();
+        }
+
+        function draw() {
+            if (!ctx) return;
+
+            // Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Background
+            if (bgType === 'color') {
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (bgType === 'image' && bgImage) {
+                // Draw BG image to cover
+                const scale = Math.max(canvas.width / bgImage.width, canvas.height / bgImage.height);
+                const x = (canvas.width / 2) - (bgImage.width / 2) * scale;
+                const y = (canvas.height / 2) - (bgImage.height / 2) * scale;
+                ctx.drawImage(bgImage, x, y, bgImage.width * scale, bgImage.height * scale);
+            }
+
+            // Draw Foreground with Filters
+            ctx.filter = `brightness(${filters.brightness}%) contrast(${filters.contrast}%) saturate(${filters.saturate}%)`;
+            ctx.drawImage(fgImage, 0, 0);
+            ctx.filter = 'none'; // Reset
+        }
+
+        // --- Editor Functions ---
+
+        function setBackground(val) {
+            if (val === 'transparent') {
+                bgType = 'transparent';
+            } else {
+                bgType = 'color';
+                bgColor = val;
+            }
+            bgImage = null;
+            draw();
+        }
+
+        function handleBgUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        bgImage = img;
+                        bgType = 'image';
+                        draw();
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateFilter(type, val) {
+            filters[type] = val;
+            document.getElementById(`val-${type}`).innerText = val + '%';
+            draw();
+        }
+
+        function downloadCanvas() {
+            const link = document.createElement('a');
+            link.download = 'clearcut-edit.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            openPromoLink();
+        }
+
+        function resetUI() {
+            resultState.classList.add('hidden');
+            uploadState.classList.remove('hidden');
+            // Reset filters
+            filters = { brightness: 100, contrast: 100, saturate: 100 };
+            document.querySelectorAll('input[type=range]').forEach(el => el.value = 100);
+            ['brightness', 'contrast', 'saturate'].forEach(t => document.getElementById(`val-${t}`).innerText = '100%');
+            bgType = 'transparent';
+        }
+
+        // Init Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

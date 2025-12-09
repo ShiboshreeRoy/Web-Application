@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasily - Black Friday Daily Deals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 font-sans text-gray-900">
+
+    <!-- Top Bar -->
+    <div class="bg-black text-white py-2 px-4 text-center text-xs md:text-sm font-bold tracking-wide overflow-hidden relative">
+        <div class="animate-pulse flex items-center justify-center gap-2">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-yellow-400"></i>
+            <span>FREE SHIPPING ON ALL ORDERS OVER $50 - BLACK FRIDAY EXCLUSIVE</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="bg-black text-white p-2 rounded-lg">
+                        <i data-lucide="tag" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="font-black text-2xl tracking-tighter">DASILY<span class="text-red-600">.</span></span>
+                </div>
+
+                <!-- Desktop Search -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-8 relative">
+                    <input 
+                        type="text" 
+                        placeholder="Search for black friday deals..." 
+                        class="w-full bg-gray-100 border-none rounded-full py-3 pl-12 pr-4 focus:ring-2 focus:ring-black outline-none transition-all placeholder-gray-400 font-medium"
+                    >
+                    <i data-lucide="search" class="absolute left-4 top-3.5 text-gray-400 w-5 h-5"></i>
+                </div>
+
+                <!-- Icons -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <button onclick="openPromoLink()" class="text-gray-600 hover:text-black font-medium transition-colors">Sign In</button>
+                    <button class="relative p-2 text-gray-900 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+                        <i data-lucide="shopping-bag" class="w-[22px] h-[22px]"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">3</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 text-gray-600">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 z-50 shadow-xl">
+            <div class="px-4 py-6 space-y-4">
+                <input 
+                    type="text" 
+                    placeholder="Search deals..." 
+                    class="w-full bg-gray-100 rounded-lg py-3 px-4 outline-none"
+                >
+                <div id="mobile-categories" class="space-y-2">
+                    <!-- Mobile categories injected here -->
+                </div>
+                <div class="pt-4 flex flex-col gap-3">
+                    <button onclick="openPromoLink()" class="w-full bg-black text-white py-3 rounded-lg font-bold">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-[#0a0a0a] text-white overflow-hidden">
+        <!-- Background Patterns -->
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="absolute -top-20 -right-20 w-96 h-96 bg-red-600 rounded-full blur-[128px] opacity-40"></div>
+        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-600 rounded-full blur-[128px] opacity-30"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="flex-1 text-center md:text-left z-10">
+                <div class="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-6 animate-bounce">
+                    LIVE NOW: BLACK FRIDAY
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black leading-tight tracking-tighter mb-6">
+                    PRICES <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-500">SLASHED</span> <br/>
+                    UP TO 80% OFF.
+                </h1>
+                <p class="text-gray-400 text-lg mb-8 max-w-xl mx-auto md:mx-0 font-medium">
+                    Don't miss out on the biggest sale of the year. Stocks are limited and selling out fast. Free shipping on all electronics.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                    <button onclick="openPromoLink()" class="w-full sm:w-auto bg-white text-black font-black py-4 px-8 rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                        SHOP ALL DEALS <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                    <div class="flex items-center gap-2 text-sm font-bold text-gray-400">
+                        <i data-lucide="shield-check" class="w-[18px] h-[18px] text-green-500"></i> 30-Day Returns
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 shadow-2xl w-full max-w-md">
+                <h3 class="text-xl font-bold mb-6 text-gray-200 flex items-center gap-2">
+                    <i data-lucide="clock" class="w-5 h-5 text-red-500"></i>
+                    OFFER ENDS IN
+                </h3>
+                <!-- Timer -->
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center mx-1">
+                        <div class="bg-white text-black font-black text-xl md:text-3xl w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-lg shadow-lg" id="timer-h">24</div>
+                        <span class="text-xs uppercase mt-1 font-bold tracking-wider text-white/80">Hrs</span>
+                    </div>
+                    <span class="text-2xl font-black mx-1 -mt-4">:</span>
+                    <div class="flex flex-col items-center mx-1">
+                        <div class="bg-white text-black font-black text-xl md:text-3xl w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-lg shadow-lg" id="timer-m">00</div>
+                        <span class="text-xs uppercase mt-1 font-bold tracking-wider text-white/80">Mins</span>
+                    </div>
+                    <span class="text-2xl font-black mx-1 -mt-4">:</span>
+                    <div class="flex flex-col items-center mx-1">
+                        <div class="bg-white text-black font-black text-xl md:text-3xl w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-lg shadow-lg" id="timer-s">00</div>
+                        <span class="text-xs uppercase mt-1 font-bold tracking-wider text-white/80">Secs</span>
+                    </div>
+                </div>
+                <p class="mt-6 text-center text-sm text-gray-400">
+                    Limited time only. While stocks last.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Flash Deals Section -->
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-black italic uppercase flex items-center gap-2">
+                    <i data-lucide="zap" class="w-8 h-8 text-yellow-500 fill-yellow-500"></i>
+                    Flash Deals
+                </h2>
+                <a href="#" class="text-red-600 font-bold hover:underline flex items-center gap-1">View All <i data-lucide="chevron-right" class="w-4 h-4"></i></a>
+            </div>
+            
+            <div id="flash-deals-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Flash deals injected here -->
+            </div>
+        </section>
+
+        <!-- Categories Filter -->
+        <div class="sticky top-20 z-40 bg-gray-50/95 backdrop-blur py-4 mb-8 -mx-4 px-4 md:mx-0 md:px-0 overflow-x-auto no-scrollbar">
+            <div class="flex gap-3" id="category-filters">
+                <button class="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full font-bold text-gray-700 hover:bg-gray-100 shadow-sm">
+                    <i data-lucide="filter" class="w-4 h-4"></i> Filters
+                </button>
+                <div class="w-px h-10 bg-gray-200 mx-2"></div>
+                <!-- Category buttons injected here -->
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10">
+            <!-- Products injected here -->
+        </div>
+
+        <!-- Load More -->
+        <div class="mt-16 text-center">
+            <button onclick="openPromoLink()" class="bg-white border-2 border-black text-black font-bold py-3 px-10 rounded-full hover:bg-black hover:text-white transition-all uppercase tracking-wide">
+                Load More Deals
+            </button>
+        </div>
+
+        <!-- Features / Benefits -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24 py-12 border-t border-gray-200">
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="truck" class="w-8 h-8"></i>
+                </div>
+                <h4 class="font-bold text-lg mb-2">Fast Global Delivery</h4>
+                <p class="text-gray-500 text-sm">Free shipping on orders over $50. Arrives in 2-5 business days.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-16 h-16 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
+                <h4 class="font-bold text-lg mb-2">Extended Warranty</h4>
+                <p class="text-gray-500 text-sm">Automated 2-year warranty on all electronics purchased today.</p>
+            </div>
+            <div class="flex flex-col items-center text-center p-4">
+                <div class="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="tag" class="w-8 h-8"></i>
+                </div>
+                <h4 class="font-bold text-lg mb-2">Lowest Price Guarantee</h4>
+                <p class="text-gray-500 text-sm">Find it cheaper elsewhere? We'll match the price + 10% off.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Newsletter -->
+    <section class="bg-black text-white py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-5xl font-black mb-6">NEVER MISS A DROP.</h2>
+            <p class="text-gray-400 mb-8 text-lg">Sign up for early access to Cyber Monday deals and exclusive flash sales.</p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input 
+                    type="email" 
+                    placeholder="Enter your email" 
+                    class="flex-1 bg-white/10 border border-white/20 text-white px-6 py-4 rounded-full focus:outline-none focus:bg-white/20 transition-colors placeholder-gray-500"
+                >
+                <button onclick="openPromoLink()" class="bg-white text-black font-black px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">
+                    SUBSCRIBE
+                </button>
+            </div>
+            <p class="text-gray-600 text-xs mt-6">By subscribing you agree to our Terms & Privacy Policy.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="bg-white text-black p-1.5 rounded">
+                        <i data-lucide="tag" class="w-4 h-4 text-black fill-black"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">DASILY.</span>
+                </div>
+                <p class="text-sm text-gray-500">
+                    The premier destination for daily deals on tech, fashion, and home essentials.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Shop</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">New Arrivals</a></li>
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Best Sellers</a></li>
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Flash Sales</a></li>
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Gift Cards</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Support</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Help Center</a></li>
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Returns & Refunds</a></li>
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Track Order</a></li>
+                    <li><a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Social</h4>
+                <div class="flex space-x-4">
+                    <a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="w-10 h-10 bg-gray-800 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all">T</a>
+                    <a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="w-10 h-10 bg-gray-800 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all">I</a>
+                    <a href="https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae" class="w-10 h-10 bg-gray-800 flex items-center justify-center rounded-full hover:bg-white hover:text-black transition-all">F</a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-gray-800 text-center text-xs text-gray-600">
+            &copy; 2024 Dasily Deals Inc. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const CATEGORIES = ["All Deals", "Tech", "Fashion", "Home", "Gaming"];
+
+        // Ad Links Configuration
+        const PROMO_LINKS = [
+            "https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae",
+            "https://saladattic.com/epkbuk6b?key=5d554558be7f6941a3ee7369117088f6",
+            "https://saladattic.com/f36hrtpc0e?key=75799162af6d79fafe8d53da5e3f44c2"
+        ];
+
+        function openPromoLink() {
+            const url = PROMO_LINKS[Math.floor(Math.random() * PROMO_LINKS.length)];
+            window.open(url, '_blank');
+        }
+
+        const FLASH_DEALS = [
+            {
+                id: 101,
+                name: "Sony WH-1000XM5",
+                category: "Tech",
+                price: 299,
+                originalPrice: 399,
+                rating: 4.9,
+                reviews: 2400,
+                image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800",
+                discount: 25,
+                stockLeft: 12,
+                totalStock: 150
+            },
+            {
+                id: 102,
+                name: "Ultra 4K Gaming Monitor",
+                category: "Gaming",
+                price: 450,
+                originalPrice: 899,
+                rating: 4.7,
+                reviews: 850,
+                image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=800",
+                discount: 50,
+                stockLeft: 5,
+                totalStock: 50
+            }
+        ];
+
+        const PRODUCTS = [
+            {
+                id: 1,
+                name: "MacBook Air M2",
+                category: "Tech",
+                price: 899,
+                originalPrice: 1199,
+                rating: 4.8,
+                reviews: 1205,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800",
+                discount: 25,
+                tag: "Best Seller"
+            },
+            {
+                id: 2,
+                name: "Smart Fitness Watch",
+                category: "Tech",
+                price: 129,
+                originalPrice: 199,
+                rating: 4.5,
+                reviews: 890,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800",
+                discount: 35
+            },
+            {
+                id: 3,
+                name: "Designer Leather Jacket",
+                category: "Fashion",
+                price: 150,
+                originalPrice: 350,
+                rating: 4.2,
+                reviews: 340,
+                image: "https://images.unsplash.com/photo-1551028919-30164a7ed40c?auto=format&fit=crop&q=80&w=800",
+                discount: 57
+            },
+            {
+                id: 4,
+                name: "Wireless Earbuds Pro",
+                category: "Tech",
+                price: 89,
+                originalPrice: 159,
+                rating: 4.6,
+                reviews: 2100,
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=800",
+                discount: 44
+            },
+            {
+                id: 5,
+                name: "Console Series X",
+                category: "Gaming",
+                price: 449,
+                originalPrice: 499,
+                rating: 4.9,
+                reviews: 5000,
+                image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?auto=format&fit=crop&q=80&w=800",
+                discount: 10
+            },
+            {
+                id: 6,
+                name: "Ergonomic Office Chair",
+                category: "Home",
+                price: 250,
+                originalPrice: 500,
+                rating: 4.3,
+                reviews: 450,
+                image: "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=800",
+                discount: 50
+            },
+            {
+                id: 7,
+                name: "Mechanical Keyboard",
+                category: "Gaming",
+                price: 85,
+                originalPrice: 140,
+                rating: 4.7,
+                reviews: 670,
+                image: "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=800",
+                discount: 39
+            },
+            {
+                id: 8,
+                name: "Robot Vacuum Cleaner",
+                category: "Home",
+                price: 199,
+                originalPrice: 399,
+                rating: 4.4,
+                reviews: 120,
+                image: "https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&q=80&w=800",
+                discount: 50,
+                tag: "Hot Deal"
+            }
+        ];
+
+        // State
+        let activeCategory = "All Deals";
+
+        // DOM Elements
+        const productGrid = document.getElementById('product-grid');
+        const flashDealsContainer = document.getElementById('flash-deals-container');
+        const categoryFilters = document.getElementById('category-filters');
+        const mobileCategories = document.getElementById('mobile-categories');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Initial Render
+        function init() {
+            renderFlashDeals();
+            renderCategories();
+            renderMobileCategories();
+            renderProducts();
+            startTimer();
+            lucide.createIcons();
+        }
+
+        // Render Functions
+        function renderFlashDeals() {
+            flashDealsContainer.innerHTML = FLASH_DEALS.map(product => {
+                const progress = (product.stockLeft / product.totalStock) * 100;
+                return `
+                <div class="bg-white rounded-2xl p-4 flex flex-col md:flex-row items-center gap-6 border-2 border-red-50 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bg-red-600 text-white text-xs font-bold px-4 py-1 rounded-br-xl z-10 flex items-center gap-1">
+                        <i data-lucide="zap" class="w-3 h-3 fill-current"></i> FLASH DEAL
+                    </div>
+                    
+                    <div class="w-full md:w-1/3 aspect-square relative rounded-xl overflow-hidden bg-gray-50">
+                        <img src="${product.image}" alt="${product.name}" class="object-cover w-full h-full" />
+                    </div>
+                    
+                    <div class="flex-1 w-full">
+                        <h3 class="text-xl font-bold text-gray-900 mb-1">${product.name}</h3>
+                        <p class="text-sm text-gray-500 mb-4">${product.category}</p>
+                        
+                        <div class="flex items-baseline gap-3 mb-4">
+                            <span class="text-3xl font-black text-red-600">$${product.price}</span>
+                            <span class="text-lg text-gray-400 line-through">$${product.originalPrice}</span>
+                        </div>
+
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-xs font-bold uppercase text-gray-500">
+                                <span>Available: ${product.stockLeft}</span>
+                                <span class="text-red-600">Selling Fast!</span>
+                            </div>
+                            <div class="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div 
+                                    class="h-full bg-red-500 rounded-full animate-pulse" 
+                                    style="width: ${progress}%"
+                                ></div>
+                            </div>
+                        </div>
+
+                        <button onclick="openPromoLink()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-red-200 flex items-center justify-center gap-2">
+                            Claim Deal <i data-lucide="arrow-right" class="w-[18px] h-[18px]"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function renderProducts() {
+            const filtered = activeCategory === "All Deals" 
+                ? PRODUCTS 
+                : PRODUCTS.filter(p => p.category === activeCategory);
+
+            productGrid.innerHTML = filtered.map(product => `
+            <div class="group relative bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
+                ${product.tag ? `
+                <div class="absolute top-3 left-3 bg-black text-white text-xs font-bold px-3 py-1 rounded-full z-10 uppercase tracking-wide">
+                    ${product.tag}
+                </div>` : ''}
+                <div class="absolute top-3 right-3 z-10">
+                    <button class="bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-sm hover:text-red-600 transition-colors">
+                        <div class="w-5 h-5 flex items-center justify-center">♥</div>
+                    </button>
+                </div>
+                
+                <div class="relative aspect-square overflow-hidden bg-gray-50">
+                    <img 
+                        src="${product.image}" 
+                        alt="${product.name}" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+
+                <div class="p-4 flex flex-col flex-grow">
+                    <div class="flex items-center text-yellow-500 mb-1 space-x-1">
+                        <i data-lucide="star" class="w-[14px] h-[14px] fill-current"></i>
+                        <span class="text-xs text-gray-500 font-medium">(${product.reviews})</span>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-lg mb-1 leading-tight group-hover:text-red-600 transition-colors">
+                        ${product.name}
+                    </h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-3">${product.category}</p>
+                    
+                    <div class="mt-auto flex items-end justify-between">
+                        <div>
+                            <span class="text-gray-400 text-sm line-through decoration-red-500 decoration-2">$${product.originalPrice}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl font-black text-gray-900">$${product.price}</span>
+                                <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded">
+                                    -${product.discount}%
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="openPromoLink()" class="bg-gray-900 hover:bg-black text-white p-3 rounded-xl transition-transform active:scale-95 shadow-lg shadow-gray-200">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            `).join('');
+            
+            // Re-initialize icons for new elements
+            lucide.createIcons();
+        }
+
+        function renderCategories() {
+            // Keep the first "Filters" button static in HTML, just append categories
+            const categoryHTML = CATEGORIES.map(cat => `
+                <button
+                    onclick="setCategory('${cat}')"
+                    class="whitespace-nowrap px-6 py-2 rounded-full font-bold transition-all transform hover:scale-105 ${
+                        activeCategory === cat
+                            ? 'bg-black text-white shadow-lg shadow-black/20'
+                            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                    }"
+                >
+                    ${cat}
+                </button>
+            `).join('');
+            
+            // We need to keep the static elements in the container
+            const staticContent = `
+                <button class="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full font-bold text-gray-700 hover:bg-gray-100 shadow-sm">
+                    <i data-lucide="filter" class="w-4 h-4"></i> Filters
+                </button>
+                <div class="w-px h-10 bg-gray-200 mx-2"></div>
+            `;
+            
+            categoryFilters.innerHTML = staticContent + categoryHTML;
+            lucide.createIcons();
+        }
+
+        function renderMobileCategories() {
+            mobileCategories.innerHTML = CATEGORIES.map(cat => `
+                <button onclick="setCategory('${cat}'); toggleMenu()" class="block w-full text-left font-bold text-gray-800 py-2 border-b border-gray-100">
+                  ${cat}
+                </button>
+            `).join('');
+        }
+
+        // Interaction Functions
+        function setCategory(cat) {
+            activeCategory = cat;
+            renderCategories();
+            renderProducts();
+        }
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenu.classList.contains('hidden') ? 'menu' : 'x';
+            mobileMenuBtn.innerHTML = `<i data-lucide="${icon}" class="w-6 h-6"></i>`;
+            lucide.createIcons();
+        }
+
+        // Event Listeners
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+
+        // Timer Logic
+        function startTimer() {
+            let h = 24, m = 0, s = 0;
+            const hEl = document.getElementById('timer-h');
+            const mEl = document.getElementById('timer-m');
+            const sEl = document.getElementById('timer-s');
+
+            setInterval(() => {
+                if (s > 0) {
+                    s--;
+                } else {
+                    if (m > 0) {
+                        m--;
+                        s = 59;
+                    } else {
+                        if (h > 0) {
+                            h--;
+                            m = 59;
+                            s = 59;
+                        } else {
+                            // Reset
+                            h = 24; m = 0; s = 0;
+                        }
+                    }
+                }
+                hEl.innerText = h.toString().padStart(2, '0');
+                mEl.innerText = m.toString().padStart(2, '0');
+                sEl.innerText = s.toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        // Run
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+    <script
+  type="text/javascript"
+  src="//saladattic.com/6d/e1/a5/6de1a54944bcbb862a6ebe0822d7eabc.js"
+></script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMIÈRE | Black Friday Premium Sale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        gold: {
+                            100: '#F9F1D8',
+                            300: '#E4D4A3',
+                            500: '#D4AF37',
+                            900: '#8A711F',
+                        },
+                        charcoal: '#121212',
+                        darkgray: '#1A1A1A',
+                        rose: {
+                            50: '#FFF0F5',
+                            100: '#FFE4E1',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-charcoal text-gray-200 font-sans antialiased selection:bg-gold-500 selection:text-black">
+
+    <!-- Promo Bar (Black Friday) -->
+    <div onclick="openPromoLink()" class="cursor-pointer bg-black text-gold-500 py-3 text-center text-xs md:text-sm font-bold tracking-widest uppercase border-b border-gold-900/30 hover:bg-gold-900/10 transition-colors">
+        <span class="animate-pulse-slow">● BLACK FRIDAY EXCLUSIVE ●</span> 
+        <span class="mx-2 text-white">UP TO 60% OFF SITEWIDE</span>
+        <span class="animate-pulse-slow">● SHOP NOW ●</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav onclick="openPromoLink()" class="fixed w-full z-50 transition-all duration-300 bg-charcoal/90 backdrop-blur-md border-b border-white/5 top-[40px]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Mobile Menu -->
+                <button class="md:hidden text-gray-300 hover:text-gold-300">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 mx-auto md:mx-0 cursor-pointer group">
+                    <span class="font-serif text-3xl font-bold tracking-widest text-white group-hover:text-gold-300 transition-colors">LUMIÈRE</span>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-12 items-center">
+                    <a href="#new" class="text-sm uppercase tracking-widest text-gray-300 hover:text-gold-300 transition-colors">Black Friday</a>
+                    <a href="#skincare" class="text-sm uppercase tracking-widest text-gray-300 hover:text-gold-300 transition-colors">Skincare</a>
+                    <a href="#fragrance" class="text-sm uppercase tracking-widest text-gray-300 hover:text-gold-300 transition-colors">Fragrance</a>
+                    <a href="#makeup" class="text-sm uppercase tracking-widest text-gray-300 hover:text-gold-300 transition-colors">Makeup</a>
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center space-x-6">
+                    <button class="text-gray-300 hover:text-gold-300 transition-colors hidden sm:block">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-gray-300 hover:text-gold-300 transition-colors">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                    </button>
+                    <button class="relative text-gray-300 hover:text-gold-300 transition-colors group">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-gold-500 rounded-full group-hover:animate-ping"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden pt-10">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=2574&auto=format&fit=crop" 
+                alt="Luxury Skincare Texture" 
+                class="w-full h-full object-cover opacity-60 scale-105 animate-float"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16">
+            <div class="inline-block border border-gold-500 px-4 py-1 mb-6 animate-fade-in" style="animation-delay: 0.1s">
+                <span class="text-gold-500 text-xs font-bold uppercase tracking-widest">Black Friday Event</span>
+            </div>
+            <h2 class="text-gold-300 text-sm md:text-base uppercase tracking-[0.3em] mb-4 animate-fade-in" style="animation-delay: 0.2s">The Essence of Beauty</h2>
+            <h1 class="font-serif text-5xl md:text-8xl text-white mb-6 leading-tight animate-fade-in" style="animation-delay: 0.4s">
+                Radiance <br/> <span class="italic text-gold-200">Redefined</span>
+            </h1>
+            <p class="text-gray-300 text-lg md:text-xl font-light mb-10 max-w-xl mx-auto animate-fade-in" style="animation-delay: 0.6s">
+                Unlock exclusive Black Friday pricing on our award-winning collection. Limited quantities available.
+            </p>
+            <div class="animate-fade-in" style="animation-delay: 0.8s">
+                <button onclick="openPromoLink()" class="bg-gold-500 text-charcoal px-10 py-4 font-semibold uppercase tracking-widest hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg shadow-gold-500/20">
+                    Shop Black Friday
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Featured Categories (Parallax-ish) -->
+    <section class="py-24 bg-charcoal relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group relative h-[500px] overflow-hidden cursor-pointer" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1615397349754-084b732876e4?q=80&w=800&auto=format&fit=crop" alt="Perfume" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    <div class="absolute top-4 left-4 bg-black text-white text-xs px-2 py-1 uppercase tracking-widest z-10">30% Off</div>
+                    <div class="absolute bottom-8 left-8">
+                        <p class="text-gold-300 text-xs uppercase tracking-widest mb-2">Fragrance</p>
+                        <h3 class="font-serif text-3xl text-white italic group-hover:translate-x-2 transition-transform">Eau de Parfum</h3>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative h-[500px] overflow-hidden cursor-pointer mt-0 md:-mt-12" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop" alt="Serum" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    <div class="absolute top-4 left-4 bg-black text-white text-xs px-2 py-1 uppercase tracking-widest z-10">50% Off</div>
+                    <div class="absolute bottom-8 left-8">
+                        <p class="text-gold-300 text-xs uppercase tracking-widest mb-2">Skincare</p>
+                        <h3 class="font-serif text-3xl text-white italic group-hover:translate-x-2 transition-transform">Active Serums</h3>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative h-[500px] overflow-hidden cursor-pointer" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=800&auto=format&fit=crop" alt="Makeup" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    <div class="absolute top-4 left-4 bg-black text-white text-xs px-2 py-1 uppercase tracking-widest z-10">40% Off</div>
+                    <div class="absolute bottom-8 left-8">
+                        <p class="text-gold-300 text-xs uppercase tracking-widest mb-2">Cosmetics</p>
+                        <h3 class="font-serif text-3xl text-white italic group-hover:translate-x-2 transition-transform">Matte Revolution</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Sellers -->
+    <section class="py-24 bg-darkgray border-t border-white/5" id="new">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-gold-500 text-xs uppercase tracking-[0.2em] font-semibold">Black Friday Deals</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-white mt-4 mb-6">Curated Essentials</h2>
+                <div class="w-24 h-px bg-gold-500 mx-auto"></div>
+            </div>
+
+            <!-- Product Carousel/Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12" id="product-grid">
+                <!-- Products Injected by JS -->
+            </div>
+
+            <div class="text-center mt-16">
+                <button onclick="openPromoLink()" class="border border-white/20 text-white px-8 py-3 hover:bg-white hover:text-black transition-all uppercase tracking-widest text-sm">
+                    View All Deals
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ingredients / Feature Section -->
+    <section class="relative py-32 overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1556228720-1915006b997c?q=80&w=2070&auto=format&fit=crop" alt="Texture" class="w-full h-full object-cover opacity-20">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/90 to-transparent"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+            <div class="max-w-2xl">
+                <h2 class="font-serif text-4xl md:text-6xl text-white mb-6 leading-tight">Pure, Potent, <br/> <span class="text-gold-300 italic">Proven.</span></h2>
+                <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                    We believe in the power of nature refined by science. Our formulas are crafted with ethically sourced botanicals and clinically proven actives to deliver visible transformation.
+                </p>
+                <div class="grid grid-cols-2 gap-8 mb-10">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 rounded-full border border-gold-500/30 text-gold-400">
+                            <i data-lucide="leaf" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-serif text-lg mb-1">100% Vegan</h4>
+                            <p class="text-sm text-gray-500">No animal by-products, ever.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 rounded-full border border-gold-500/30 text-gold-400">
+                            <i data-lucide="flask-conical" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-serif text-lg mb-1">Clean Science</h4>
+                            <p class="text-sm text-gray-500">Paraben, sulfate, and phthalate free.</p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="openPromoLink()" class="text-gold-300 border-b border-gold-300 pb-1 hover:text-white hover:border-white transition-colors uppercase tracking-widest text-sm">
+                    Read Our Manifesto
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer onclick="openPromoLink()" class="bg-[#0a0a0a] text-white pt-20 pb-10 border-t border-white/5 cursor-pointer">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-1">
+                    <span class="font-serif text-2xl font-bold tracking-widest block mb-6">LUMIÈRE</span>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        Elevating the ritual of self-care with luxurious formulations and timeless elegance.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-gold-300 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold-300 transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold-300 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-gold-500 text-xs uppercase tracking-widest font-bold mb-6">Shop</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Best Sellers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Sets & Gifts</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Consultations</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-gold-500 text-xs uppercase tracking-widest font-bold mb-6">About</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Our Story</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Ingredients</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Sustainability</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-gold-500 text-xs uppercase tracking-widest font-bold mb-6">The Edit</h4>
+                    <p class="text-gray-500 text-sm mb-4">Join our list for exclusive drops and beauty tips.</p>
+                    <div class="flex border-b border-gray-700 pb-2">
+                        <input type="email" placeholder="Your email address" class="bg-transparent border-none outline-none text-white w-full placeholder-gray-600 text-sm">
+                        <button class="text-gold-300 uppercase text-xs font-bold hover:text-white transition-colors">Join</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                <p>&copy; 2024 Lumière Beauty. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-gray-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Configuration ---
+        // All links added to the pool as requested
+        const PROMO_LINKS = [
+            "https://saladattic.com/cw4t8m9a0a?key=0758313d787858443667d529463f9855",
+            "https://saladattic.com/h7aasn4m88?key=805d06d998c9497632182bf36df24236",
+            "https://saladattic.com/v4s29tra?key=8a65a7f0b6f201397fb9b4726da499de",
+            "https://saladattic.com/cgfz5euj2?key=7aabe31328e9bb2cc1620b92409b4024"
+        ];
+
+        // --- Data ---
+        const PRODUCTS = [
+            {
+                id: 1,
+                name: "Midnight Recovery Elixir",
+                category: "Face",
+                price: "42.50",
+                originalPrice: "85.00",
+                image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=800&auto=format&fit=crop", 
+                tag: "50% OFF"
+            },
+            {
+                id: 2,
+                name: "Velvet Matte Lipstick",
+                category: "Lips",
+                price: "24.00",
+                originalPrice: "32.00",
+                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?q=80&w=800&auto=format&fit=crop",
+                tag: "Black Friday"
+            },
+            {
+                id: 3,
+                name: "24K Gold Radiance Cream",
+                category: "Face",
+                price: "84.00",
+                originalPrice: "120.00",
+                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop",
+                tag: "Best Seller"
+            },
+            {
+                id: 4,
+                name: "Opulence No. 5 Parfum",
+                category: "Fragrance",
+                price: "101.50",
+                originalPrice: "145.00",
+                image: "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                id: 5,
+                name: "Crystal Facial Roller",
+                category: "Tools",
+                price: "12.00",
+                originalPrice: "24.00",
+                image: "https://images.unsplash.com/photo-1616164283307-2a443657b987?q=80&w=800&auto=format&fit=crop",
+                tag: "50% OFF"
+            },
+            {
+                id: 6,
+                name: "Hydrating Rose Mist",
+                category: "Face",
+                price: "36.00",
+                originalPrice: "45.00",
+                image: "https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=800&auto=format&fit=crop",
+            },
+            {
+                id: 7,
+                name: "Nude Sensation Palette",
+                category: "Eyes",
+                price: "47.60",
+                originalPrice: "68.00",
+                image: "https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=800&auto=format&fit=crop",
+                tag: "Limited Stock"
+            },
+            {
+                id: 8,
+                name: "Whipped Shea Body Butter",
+                category: "Body",
+                price: "38.50",
+                originalPrice: "55.00",
+                image: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=800&auto=format&fit=crop",
+            }
+        ];
+
+        // --- Functions ---
+        function openPromoLink() {
+            // Randomly select one of the provided links to open in a new tab
+            const url = PROMO_LINKS[Math.floor(Math.random() * PROMO_LINKS.length)];
+            window.open(url, '_blank');
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = PRODUCTS.map((product, index) => `
+                <div class="group relative animate-fade-in cursor-pointer" style="animation-delay: ${index * 0.1}s" onclick="openPromoLink()">
+                    <div class="relative aspect-[3/4] overflow-hidden bg-white/5 mb-4 rounded-sm">
+                        ${product.tag ? `
+                            <span class="absolute top-0 left-0 bg-gold-500 text-charcoal text-[10px] font-bold uppercase px-3 py-1.5 z-10 tracking-widest shadow-md">
+                                ${product.tag}
+                            </span>
+                        ` : ''}
+                        
+                        <img 
+                            src="${product.image}" 
+                            alt="${product.name}" 
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        
+                        <!-- Quick Add Overlay -->
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center translate-y-4 group-hover:translate-y-0">
+                            <button class="bg-white text-charcoal px-6 py-3 uppercase text-xs font-bold tracking-widest hover:bg-gold-500 transition-colors shadow-lg">
+                                Add to Bag
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center group-hover:-translate-y-1 transition-transform duration-300">
+                        <p class="text-gold-500 text-xs uppercase tracking-widest mb-1 opacity-80">${product.category}</p>
+                        <h3 class="font-serif text-xl text-white mb-2 group-hover:text-gold-300 transition-colors">${product.name}</h3>
+                        <div class="flex items-center justify-center gap-2">
+                             <span class="text-gray-500 font-light line-through text-sm">$${product.originalPrice}</span>
+                             <span class="text-white font-medium">$${product.price}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        // --- Init ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            lucide.createIcons();
+            
+            // Scroll Header Effect
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('shadow-lg', 'bg-charcoal/95');
+                } else {
+                    nav.classList.remove('shadow-lg', 'bg-charcoal/95');
+                }
+            });
+        });
+    </script>
+    <script
+  type="text/javascript"
+  src="//saladattic.com/48/24/22/482422e8e2eaf4439d11d155b044423c.js"
+></script>
+</body>
+</html>

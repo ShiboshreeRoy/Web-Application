@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREE | Unlimited Entertainment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            DEFAULT: '#FF0055', // Chorki-like vibrant pink/red
+                            dark: '#CC0044',
+                        },
+                        dark: {
+                            900: '#0F0F0F',
+                            800: '#1A1A1A',
+                            700: '#262626',
+                        }
+                    },
+                    aspectRatio: {
+                        'poster': '2/3',
+                        'wide': '16/9'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hide Scrollbar but allow scrolling */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Gradient Overlay for Hero */
+        .hero-gradient {
+            background: linear-gradient(to top, #0F0F0F 10%, transparent 100%);
+        }
+        .nav-gradient {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+        }
+
+        /* Card Hover Effects */
+        .movie-card {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        .movie-card:hover .play-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-white font-sans antialiased overflow-x-hidden selection:bg-brand selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 nav-gradient h-20 flex items-center" id="navbar">
+        <div class="w-full max-w-[1600px] mx-auto px-4 md:px-8 flex justify-between items-center">
+            <!-- Left: Logo & Links -->
+            <div class="flex items-center gap-8 md:gap-12">
+                <!-- Mobile Menu -->
+                <button class="md:hidden text-gray-300 hover:text-white" onclick="openPromoLink()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Logo -->
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                    <div class="w-10 h-10 bg-brand rounded-lg flex items-center justify-center transform rotate-3 shadow-[0_0_15px_rgba(255,0,85,0.5)]">
+                        <i data-lucide="play" class="w-5 h-5 fill-white text-white ml-0.5"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tight italic">FREE</span>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+                    <a href="#" onclick="openPromoLink()" class="hover:text-white transition-colors">Home</a>
+                    <a href="#" onclick="openPromoLink()" class="hover:text-white transition-colors">Movies</a>
+                    <a href="#" onclick="openPromoLink()" class="hover:text-white transition-colors">Series</a>
+                    <a href="#" onclick="openPromoLink()" class="hover:text-white transition-colors">Originals</a>
+                    <a href="#" onclick="openPromoLink()" class="hover:text-white transition-colors">Live TV</a>
+                </div>
+            </div>
+
+            <!-- Right: Search & Profile -->
+            <div class="flex items-center gap-4 md:gap-6">
+                <button class="text-gray-300 hover:text-white transition-colors" onclick="openPromoLink()">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                <button class="hidden md:block bg-brand hover:bg-brand-dark text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-lg shadow-brand/20" onclick="openPromoLink()">
+                    Subscribe
+                </button>
+                <div class="w-8 h-8 rounded-full bg-gray-700 overflow-hidden cursor-pointer border border-gray-600" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=100&auto=format&fit=crop" alt="User" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-[85vh] md:h-screen min-h-[600px] overflow-hidden group">
+        <!-- Background Image/Trailer Thumbnail -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2670&auto=format&fit=crop" 
+                alt="Hero Movie" 
+                class="w-full h-full object-cover transition-transform duration-[20s] ease-linear group-hover:scale-110"
+            >
+            <!-- Vignette & Gradient -->
+            <div class="absolute inset-0 bg-black/30"></div>
+            <div class="absolute inset-0 hero-gradient"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-dark-900/80 via-dark-900/40 to-transparent"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="absolute inset-0 z-10 flex items-center">
+            <div class="w-full max-w-[1600px] mx-auto px-4 md:px-8 mt-20">
+                <div class="max-w-2xl animate-slide-up">
+                    <span class="inline-block px-3 py-1 mb-4 border border-white/30 rounded-full text-xs font-bold uppercase tracking-widest text-gray-300 bg-black/20 backdrop-blur-md">
+                        #1 in Movies Today
+                    </span>
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-4 text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400">
+                        CYBER <br/> FUTURE
+                    </h1>
+                    <div class="flex items-center gap-4 text-sm text-gray-300 font-medium mb-6">
+                        <span class="text-green-400 font-bold">98% Match</span>
+                        <span>2024</span>
+                        <span class="border border-gray-600 px-1 rounded text-xs">4K</span>
+                        <span>2h 14m</span>
+                        <span>Sci-Fi Action</span>
+                    </div>
+                    <p class="text-gray-300 text-base md:text-lg mb-8 line-clamp-3 leading-relaxed max-w-xl">
+                        In a world where digital consciousness is the new currency, one hacker discovers a conspiracy that threatens to rewrite humanity's source code. The revolution begins now.
+                    </p>
+                    
+                    <div class="flex items-center gap-4">
+                        <button onclick="openPromoLink()" class="bg-brand hover:bg-brand-dark text-white px-8 py-3.5 rounded-xl font-bold text-lg flex items-center gap-2 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,0,85,0.4)]">
+                            <i data-lucide="play" class="w-5 h-5 fill-current"></i> Watch Now
+                        </button>
+                        <button onclick="openPromoLink()" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white px-6 py-3.5 rounded-xl font-bold text-lg flex items-center gap-2 transition-all">
+                            <i data-lucide="plus" class="w-5 h-5"></i> My List
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-20 -mt-20 pb-20 space-y-12">
+        
+        <!-- Section: Continue Watching (Simulated) -->
+        <section class="pl-4 md:pl-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 flex items-center gap-2">
+                Continue Watching <i data-lucide="chevron-right" class="w-5 h-5 text-brand"></i>
+            </h2>
+            <div class="flex overflow-x-auto hide-scroll gap-4 pb-8 pr-4">
+                <!-- Progress Card 1 -->
+                <div class="flex-none w-[280px] md:w-[350px] relative group cursor-pointer" onclick="openPromoLink()">
+                    <div class="relative aspect-video rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                            <div class="w-12 h-12 rounded-full bg-brand/90 flex items-center justify-center">
+                                <i data-lucide="play" class="w-5 h-5 fill-white ml-0.5"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-gray-700">
+                            <div class="h-full bg-brand w-[65%]"></div>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-gray-200">The Dark Forest</h3>
+                        <span class="text-xs text-gray-400">S1:E4</span>
+                    </div>
+                </div>
+                 <!-- Progress Card 2 -->
+                 <div class="flex-none w-[280px] md:w-[350px] relative group cursor-pointer" onclick="openPromoLink()">
+                    <div class="relative aspect-video rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1626126525134-fbbc0ecb948f?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+                         <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                            <div class="w-12 h-12 rounded-full bg-brand/90 flex items-center justify-center">
+                                <i data-lucide="play" class="w-5 h-5 fill-white ml-0.5"></i>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-gray-700">
+                            <div class="h-full bg-brand w-[30%]"></div>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-gray-200">Neon Tokyo</h3>
+                        <span class="text-xs text-gray-400">1h 12m left</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Trending Now -->
+        <section class="pl-4 md:pl-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4">Trending Now</h2>
+            <div class="flex overflow-x-auto hide-scroll gap-4 pb-4 pr-4" id="trending-container">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Section: New Releases (Large Cards) -->
+        <section class="pl-4 md:pl-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-brand">New Releases</h2>
+            <div class="flex overflow-x-auto hide-scroll gap-4 pb-4 pr-4" id="new-releases-container">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Section: Originals -->
+        <section class="px-4 md:px-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-6">FREE Originals</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Featured Original -->
+                <div class="relative aspect-[21/9] md:aspect-video rounded-2xl overflow-hidden group cursor-pointer col-span-1 md:col-span-2 lg:col-span-2" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 p-8">
+                        <img src="https://placehold.co/200x80/transparent/white?text=ORIGINAL" class="h-8 mb-4 opacity-80">
+                        <h3 class="text-3xl md:text-4xl font-black mb-2">LOST IN TIME</h3>
+                        <p class="text-gray-300 max-w-lg mb-4 hidden md:block">An epic journey through the ages as one woman fights to restore the timeline before it collapses forever.</p>
+                        <button class="bg-white text-black px-6 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-brand hover:text-white transition-colors">
+                            <i data-lucide="play" class="w-4 h-4 fill-current"></i> Play
+                        </button>
+                    </div>
+                </div>
+                <!-- Original 2 -->
+                <div class="relative aspect-video rounded-2xl overflow-hidden group cursor-pointer" onclick="openPromoLink()">
+                    <img src="https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 p-6">
+                        <h3 class="text-2xl font-bold mb-1">The Syndicate</h3>
+                        <p class="text-sm text-gray-400">Crime Drama</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Grid -->
+        <section class="px-4 md:px-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-6">Browse by Category</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div class="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors border border-white/5" onclick="openPromoLink()">
+                    <i data-lucide="flame" class="w-8 h-8 text-brand"></i>
+                    <span class="font-bold text-sm">Action</span>
+                </div>
+                <div class="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors border border-white/5" onclick="openPromoLink()">
+                    <i data-lucide="heart" class="w-8 h-8 text-pink-500"></i>
+                    <span class="font-bold text-sm">Romance</span>
+                </div>
+                <div class="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors border border-white/5" onclick="openPromoLink()">
+                    <i data-lucide="laugh" class="w-8 h-8 text-yellow-400"></i>
+                    <span class="font-bold text-sm">Comedy</span>
+                </div>
+                <div class="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors border border-white/5" onclick="openPromoLink()">
+                    <i data-lucide="skull" class="w-8 h-8 text-purple-500"></i>
+                    <span class="font-bold text-sm">Horror</span>
+                </div>
+                <div class="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors border border-white/5" onclick="openPromoLink()">
+                    <i data-lucide="rocket" class="w-8 h-8 text-blue-500"></i>
+                    <span class="font-bold text-sm">Sci-Fi</span>
+                </div>
+                <div class="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors border border-white/5" onclick="openPromoLink()">
+                    <i data-lucide="music" class="w-8 h-8 text-green-500"></i>
+                    <span class="font-bold text-sm">Music</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 pt-16 pb-8" onclick="openPromoLink()">
+        <div class="w-full max-w-[1600px] mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-brand rounded flex items-center justify-center">
+                            <i data-lucide="play" class="w-4 h-4 fill-white text-white ml-0.5"></i>
+                        </div>
+                        <span class="text-xl font-black italic">FREE</span>
+                    </div>
+                    <p class="text-gray-500 text-sm">The world's leading destination for premium entertainment. Stream unlimited movies, TV shows, and originals.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="hover:text-brand transition-colors cursor-pointer">Home</li>
+                        <li class="hover:text-brand transition-colors cursor-pointer">Live TV</li>
+                        <li class="hover:text-brand transition-colors cursor-pointer">News</li>
+                        <li class="hover:text-brand transition-colors cursor-pointer">My List</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="hover:text-brand transition-colors cursor-pointer">Privacy Policy</li>
+                        <li class="hover:text-brand transition-colors cursor-pointer">Terms of Service</li>
+                        <li class="hover:text-brand transition-colors cursor-pointer">Cookie Preferences</li>
+                        <li class="hover:text-brand transition-colors cursor-pointer">Corporate Info</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-4">Get the App</h4>
+                    <div class="flex flex-col gap-3">
+                        <button class="bg-dark-800 hover:bg-dark-700 border border-white/10 rounded-lg p-2 flex items-center gap-3 transition-colors text-left">
+                            <i data-lucide="apple" class="w-8 h-8"></i>
+                            <div>
+                                <div class="text-[10px] uppercase">Download on the</div>
+                                <div class="font-bold leading-none">App Store</div>
+                            </div>
+                        </button>
+                        <button class="bg-dark-800 hover:bg-dark-700 border border-white/10 rounded-lg p-2 flex items-center gap-3 transition-colors text-left">
+                            <i data-lucide="play-circle" class="w-8 h-8"></i>
+                            <div>
+                                <div class="text-[10px] uppercase">Get it on</div>
+                                <div class="font-bold leading-none">Google Play</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                <p>&copy; 2024 FREE Entertainment Inc. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <i data-lucide="facebook" class="w-4 h-4 cursor-pointer hover:text-white"></i>
+                    <i data-lucide="twitter" class="w-4 h-4 cursor-pointer hover:text-white"></i>
+                    <i data-lucide="instagram" class="w-4 h-4 cursor-pointer hover:text-white"></i>
+                    <i data-lucide="youtube" class="w-4 h-4 cursor-pointer hover:text-white"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- PROMO LINKS CONFIG ---
+        const PROMO_LINKS = [
+            "https://saladattic.com/a7c1r1ik?key=d135584aa7ef34b2b1554e860e80c4ae",
+            "https://saladattic.com/epkbuk6b?key=5d554558be7f6941a3ee7369117088f6",
+            "https://saladattic.com/f36hrtpc0e?key=75799162af6d79fafe8d53da5e3f44c2",
+            "https://saladattic.com/cgfz5euj2?key=7aabe31328e9bb2cc1620b92409b4024",
+            "https://saladattic.com/v4s29tra?key=8a65a7f0b6f201397fb9b4726da499de",
+            "https://saladattic.com/h7aasn4m88?key=805d06d998c9497632182bf36df24236",
+            "https://saladattic.com/cw4t8m9a0a?key=0758313d787858443667d529463f9855"
+        ];
+
+        // --- Mock Data ---
+        const TRENDING = [
+            { title: "Red Notice", image: "https://images.unsplash.com/photo-1595769816263-9b910be24d5f?q=80&w=400&auto=format&fit=crop", tags: ["Action", "Comedy"] },
+            { title: "Stranger Things", image: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=400&auto=format&fit=crop", tags: ["Sci-Fi", "Horror"] },
+            { title: "The Crown", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=400&auto=format&fit=crop", tags: ["Drama", "History"] },
+            { title: "Bridgerton", image: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=400&auto=format&fit=crop", tags: ["Romance", "Period"] },
+            { title: "Squid Game", image: "https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?q=80&w=400&auto=format&fit=crop", tags: ["Thriller", "Korean"] },
+             { title: "Money Heist", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=400&auto=format&fit=crop", tags: ["Crime", "Spanish"] },
+        ];
+
+        const RELEASES = [
+            { title: "The Witcher", image: "https://images.unsplash.com/photo-1509347528160-9a9e33742cd4?q=80&w=400&auto=format&fit=crop", desc: "A monster hunter struggles to find his place in a world where people prove more wicked than beasts." },
+            { title: "Dune", image: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=400&auto=format&fit=crop", desc: "A noble family becomes embroiled in a war for control over the galaxy's most valuable asset." },
+            { title: "Inception", image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=400&auto=format&fit=crop", desc: "A thief who steals corporate secrets through the use of dream-sharing technology." },
+            { title: "Interstellar", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&auto=format&fit=crop", desc: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival." },
+        ];
+
+        // --- Functions ---
+        function openPromoLink() {
+            // Open ALL promo links in separate tabs
+            PROMO_LINKS.forEach(url => {
+                window.open(url, '_blank');
+            });
+        }
+
+        function renderCards() {
+            const trendingContainer = document.getElementById('trending-container');
+            const newReleaseContainer = document.getElementById('new-releases-container');
+
+            // Render Trending (Poster Style)
+            trendingContainer.innerHTML = TRENDING.map((item, i) => `
+                <div class="flex-none w-[160px] md:w-[200px] movie-card relative rounded-lg overflow-hidden group cursor-pointer" onclick="openPromoLink()">
+                    <img src="${item.image}" class="w-full aspect-poster object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                    
+                    <div class="play-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity bg-black/40">
+                         <div class="w-10 h-10 rounded-full bg-brand flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform">
+                            <i data-lucide="play" class="w-4 h-4 fill-white text-white ml-0.5"></i>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-2 right-2 bg-brand text-white text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">HD</div>
+                </div>
+            `).join('');
+
+            // Render New Releases (Wide Style)
+            newReleaseContainer.innerHTML = RELEASES.map((item, i) => `
+                 <div class="flex-none w-[260px] md:w-[320px] movie-card relative rounded-xl overflow-hidden group cursor-pointer border border-white/5" onclick="openPromoLink()">
+                    <div class="relative aspect-video">
+                        <img src="${item.image}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                    </div>
+                    <div class="p-3 bg-dark-800">
+                        <h3 class="font-bold text-white mb-1 truncate">${item.title}</h3>
+                        <p class="text-xs text-gray-400 line-clamp-2">${item.desc}</p>
+                        <div class="mt-3 flex gap-2">
+                             <button class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 hover:bg-brand hover:text-white transition-colors">
+                                <i data-lucide="play" class="w-3 h-3 fill-current"></i> Play
+                             </button>
+                             <button class="bg-gray-700 text-white text-xs font-bold px-3 py-1.5 rounded hover:bg-gray-600 transition-colors">
+                                +
+                             </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        // --- Init ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+            
+            // Navbar Scroll Effect
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('bg-black/90', 'backdrop-blur-md', 'shadow-xl');
+                    nav.classList.remove('nav-gradient');
+                } else {
+                    nav.classList.remove('bg-black/90', 'backdrop-blur-md', 'shadow-xl');
+                    nav.classList.add('nav-gradient');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
